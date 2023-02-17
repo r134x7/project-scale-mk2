@@ -58,9 +58,12 @@ const Home: NextPage = () => {
 
 export default Home;
 
+// consider moving this to its own component file and then export 
 const AuthShowcase: React.FC = () => {
+  // note useSession hook use of methods below
   const { data: sessionData } = useSession();
 
+  // undefined = no input when wanting to make an automatic query...
   const { data: secretMessage } = api.example.getSecretMessage.useQuery(
     undefined, // no input
     { enabled: sessionData?.user !== undefined },
