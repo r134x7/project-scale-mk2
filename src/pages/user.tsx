@@ -1,4 +1,8 @@
 import { useSession } from "next-auth/react"
+import CreateAmbition from "../components/CreateAmbition";
+import CreateBond from "../components/CreateBond";
+import ViewAmbitions from "../components/ViewAmbitions";
+import ViewBonds from "../components/ViewBonds";
 
 export default function User() {
 
