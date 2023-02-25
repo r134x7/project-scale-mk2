@@ -8,26 +8,28 @@ export default function Layout() {
     // need to create a layout to wrap around the _app.tsx return statement to persist the layout between pages
     // source: https://nextjs.org/docs/basic-features/layouts
     return (
+        <div className={"p-1 bg-slate-400"}>
         <Menu>
-            <Menu.Button>Menu</Menu.Button>
-            <Menu.Items>
+            <Menu.Button className={"p-2 bg-slate-600 rounded-lg font-bold text-white uppercase font-mono"}
+            >Menu</Menu.Button>
+            <Menu.Items className={"grid grid-cols-1"}>
                 <Menu.Item>
                     {({active}) => (
-                        <Link className={`${active ? 'bg-blue-500' : "bg-red-400"}`} href="/">
+                        <Link className={`${active ? 'bg-slate-600' : "bg-slate-900"}  text-white text-left p-2 m-1 rounded-lg`} href="/">
                             Home
                         </Link>
                     )}
                 </Menu.Item>
                 <Menu.Item>
                     {({active}) => (
-                        <Link className={`${active ? 'bg-blue-500' : "bg-red-400"}`} href="/">
+                        <Link className={`${active ? 'bg-slate-600' : "bg-slate-900"} text-white text-left p-2 m-1 rounded-lg`} href="/user">
                             User
                         </Link>
                     )}
                 </Menu.Item>
                 <Menu.Item>
                     {({active}) => (
-                        <button className={`${active ? 'bg-blue-500' : "bg-red-400"}`}
+                        <button className={`${active ? 'bg-slate-600' : "bg-slate-900"} text-white text-left p-2 m-1 rounded-lg`}
                         onClick={sessionData ? () => void signOut() : () => void signIn()}
                         >
                             {sessionData ? "Sign out" : "Sign in"}
@@ -36,5 +38,6 @@ export default function Layout() {
                 </Menu.Item>
             </Menu.Items>
         </Menu>
+        </div>
     )
 }
