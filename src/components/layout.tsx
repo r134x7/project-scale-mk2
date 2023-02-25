@@ -12,24 +12,24 @@ export default function Layout() {
         <Menu>
             <Menu.Button className={"p-2 bg-slate-600 rounded-lg font-bold text-white uppercase font-mono"}
             >Menu</Menu.Button>
-            <Menu.Items className={"grid grid-cols-1"}>
+            <Menu.Items className={"grid grid-cols-1 bg-slate-200 rounded-lg"}>
                 <Menu.Item>
                     {({active}) => (
-                        <Link className={`${active ? 'bg-slate-600' : "bg-slate-900"}  text-white text-left p-2 m-1 rounded-lg`} href="/">
+                        <Link className={`${active ? 'bg-slate-600 text-cyan-200' : "bg-slate-900 text-white"}   text-left p-2 m-1 rounded-lg`} href="/">
                             Home
                         </Link>
                     )}
                 </Menu.Item>
                 <Menu.Item>
                     {({active}) => (
-                        <Link className={`${active ? 'bg-slate-600' : "bg-slate-900"} text-white text-left p-2 m-1 rounded-lg`} href="/user">
+                        <Link className={`${active ? 'bg-slate-600 text-cyan-200' : "bg-slate-900 text-white"} text-left p-2 m-1 rounded-lg`} href="/user">
                             User
                         </Link>
                     )}
                 </Menu.Item>
                 <Menu.Item>
                     {({active}) => (
-                        <button className={`${active ? 'bg-slate-600' : "bg-slate-900"} text-white text-left p-2 m-1 rounded-lg`}
+                        <button className={`${active ? 'bg-slate-600 text-cyan-200' : "bg-slate-900 text-white"} text-left p-2 m-1 rounded-lg`}
                         onClick={sessionData ? () => void signOut() : () => void signIn()}
                         >
                             {sessionData ? "Sign out" : "Sign in"}
