@@ -42,12 +42,23 @@ export default function User() {
                     how to communicate/what can be shared?... 
                         shared weight records
                         communicate using premade messages/emojis/stickers... 
-                        
+
             bond type: other
                 ... 
                 the goal of the group is...
                 support each other to reach their goals
         
+    */
+
+    /*
+        structure of the user dashboard... 
+            - create new ambition
+            - view ambitions
+            - create bond (how?... some of kind of code?) {
+                ... 
+                user creates a "room", that room has an id, user gives that ID to other person to join room. The room will then have the shared details for the users to see their progress and communicate.
+            }
+            - account settings (deleting user account? delete ambitions? )
     */
 
     return (
