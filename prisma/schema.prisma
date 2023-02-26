@@ -59,6 +59,7 @@ model User {
     accounts      Account[]
     sessions      Session[]
     ambitions     Ambitions[]
+    bonds         Bonds[]
 }
 
 model VerificationToken {
@@ -76,13 +77,30 @@ model Ambitions {
     createdAt     DateTime @default(now())
     updatedAt     DateTime @updatedAt
     record        Record[]
+    bonds         Bonds[]
     user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+// Will need to make sure to check project-scale how I dealt with getting the client's current time and not the SERVER TIME to make sure one record per day works
 model Record {
     id            String    @id @default(cuid())
     ambitionId    String
     value         Float
     journal       String
+    createdAt     DateTime @default(now())
     ambition      Ambitions @relation(fields: [ambitionId], references: [id], onDelete: Cascade)
+}
+
+// this will be complicated as it is a one to many relationship... Have I even covered that it also needs the other user's Id? or an alternative way to deal with that?
+// this model is probably also not covering how to show the ambitions from both users...
+model Bonds {
+    id            String   @id @default(cuid())
+    userId        String
+    ambitionId    String
+    name          String?
+    bond          String
+
+    createdAt     DateTime @default(now())
+    ambition      Ambitions @relation(fields: [ambitionId], references: [id], onDelete: Cascade)
+    user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

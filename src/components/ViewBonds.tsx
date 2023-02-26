@@ -1,3 +1,14 @@
 export default function ViewBonds() {
-    return {}
+
+    /*
+        .............. 
+    */
+
+    return (
+        <>
+            <button>
+                View Bonds
+            </button>
+        </>
+    )
 }
