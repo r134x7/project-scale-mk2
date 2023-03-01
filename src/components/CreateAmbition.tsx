@@ -1,3 +1,6 @@
+import { Dialog, Listbox } from "@headlessui/react"
+import { useState } from "react"
+
 export default function CreateAmbition() {
 
     /*
@@ -24,5 +27,45 @@ export default function CreateAmbition() {
                 Create Ambition
             </button> 
         </>
+    )
+}
+
+function ModalForm() {
+    
+    const ambitions = [
+        { id: 1, name: "Lose Weight"},
+        { id: 2, name: "Do nothing..."},
+    ];
+
+    const [open, setOpen] = useState(true);
+    const [value, setValue] = useState(ambitions?.[1] ?? { id: 3, name: "Error"})
+
+
+    return (
+        <Dialog open={open} onClose={() => setOpen(false)}>
+          <Dialog.Panel>
+            <Dialog.Title>Create Ambition</Dialog.Title>
+            <Dialog.Description>
+                Something
+            </Dialog.Description>
+
+            <Listbox value={value} onChange={setValue}>
+                <Listbox.Button>{value.name}</Listbox.Button>
+                <Listbox.Options>
+                  {ambitions.map((data) => (
+                    <Listbox.Option
+                      key={data.id}
+                      value={data}
+                    >
+                      {data.name}
+                    </Listbox.Option>
+                  ))}
+                </Listbox.Options>
+            </Listbox>
+
+            <button onClick={() => setOpen(false)}>Create</button>
+            <button onClick={() => setOpen(false)}>Cancel</button>
+          </Dialog.Panel>
+        </Dialog>
     )
 }
