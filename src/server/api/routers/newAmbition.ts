@@ -5,12 +5,19 @@ import { createTRPCRouter, protectedProcedure } from "../trpc";
 // need to create a mutation
 export const newAmbitionRouter = createTRPCRouter({
   createAmbition: protectedProcedure
-      .input(z.object({ text: z.string() }))
-      .mutation(({ input }) => {
+      .input(z.object({ 
+        category: z.string(), 
+        endValue: z.number(),
+        dailyPlan: z.string(),
+      }))
+      .mutation(({ input, ctx }) => {
 
-        // need to figure out how to mutate the user's ambition model...
-          return {
-            something: input,
+        return ctx.prisma.ambitions.create({
+          data: {
+            name: input.category,
+            endValue: input.endValue,
+            dailyPlan: input.dailyPlan,
           }
+        })
     }) 
 });
