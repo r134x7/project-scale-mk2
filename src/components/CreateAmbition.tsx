@@ -40,6 +40,8 @@ function ModalForm() {
     const [open, setOpen] = useState(true);
     const [value, setValue] = useState(ambitions?.[1] ?? { id: 3, name: "Error"})
     const [target, setTarget] = useState(0);
+    const [plan, setPlan] = useState("");
+
 
     // code reused from project-scale
     // const handleAmbitionSubmit = async (event: Event) => {
@@ -74,27 +76,35 @@ function ModalForm() {
             <form //onSubmit={handleAmbitionSubmit}
             >
 
-            <Listbox value={value} onChange={setValue}>
-                <Listbox.Button>{value.name}</Listbox.Button>
-                <Listbox.Options>
-                  {ambitions.map((data) => (
-                    <Listbox.Option
-                      key={data.id}
-                      value={data}
-                    >
-                      {data.name}
-                    </Listbox.Option>
-                  ))}
-                </Listbox.Options>
-            </Listbox>
+                <Listbox value={value} onChange={setValue}>
+                    <Listbox.Button>{value.name}</Listbox.Button>
+                    <Listbox.Options>
+                      {ambitions.map((data) => (
+                        <Listbox.Option
+                          key={data.id}
+                          value={data}
+                        >
+                          {data.name}
+                        </Listbox.Option>
+                      ))}
+                    </Listbox.Options>
+                </Listbox>
 
-            <input 
-                type="number" 
-                onChange={(event) => setTarget(Number(event.target.value))}
-                value={target}
-            />
+                <input 
+                    type="number" 
+                    onChange={(event) => setTarget(Number(event.target.value))}
+                    value={target}
+                />
 
-            <button onClick={() => setOpen(false)}>Create</button>
+                <textarea  
+                    onChange={(event) => setPlan(event.target.value)}
+                    value={plan}
+                />
+
+                <button 
+                    type="submit"
+                    onSubmit={() => setOpen(false)}
+                >Create</button>
 
             </form>
 
