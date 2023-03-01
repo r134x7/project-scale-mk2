@@ -39,7 +39,29 @@ function ModalForm() {
 
     const [open, setOpen] = useState(true);
     const [value, setValue] = useState(ambitions?.[1] ?? { id: 3, name: "Error"})
+    const [target, setTarget] = useState(0);
 
+    // code reused from project-scale
+    // const handleAmbitionSubmit = async (event: Event) => {
+    //     event.preventDefault();
+        
+    //     try {
+    //         // addAmbition is a useMutation
+    //         const { data } = await addAmbition({
+    //             variables: {
+    //                 category: ambition,
+    //                 dailyPlan: dailyPlan,
+    //                 endValue: endValue,
+    //             },
+    //         });
+    //         } catch (error) {
+    //             console.log(error);
+    //         }
+
+    //         // setDailyPlan("");
+    //         // setEndValue("");
+    //         // setOpenNewAmbition((o) => (!o));
+    // };
 
     return (
         <Dialog open={open} onClose={() => setOpen(false)}>
@@ -48,6 +70,9 @@ function ModalForm() {
             <Dialog.Description>
                 Something
             </Dialog.Description>
+
+            <form //onSubmit={handleAmbitionSubmit}
+            >
 
             <Listbox value={value} onChange={setValue}>
                 <Listbox.Button>{value.name}</Listbox.Button>
@@ -63,7 +88,16 @@ function ModalForm() {
                 </Listbox.Options>
             </Listbox>
 
+            <input 
+                type="number" 
+                onChange={(event) => setTarget(Number(event.target.value))}
+                value={target}
+            />
+
             <button onClick={() => setOpen(false)}>Create</button>
+
+            </form>
+
             <button onClick={() => setOpen(false)}>Cancel</button>
           </Dialog.Panel>
         </Dialog>
