@@ -1,5 +1,6 @@
 import { Dialog, Listbox } from "@headlessui/react"
 import { useState } from "react"
+import { useSession } from "next-auth/react";
 
 export default function CreateAmbition() {
 
@@ -31,7 +32,10 @@ export default function CreateAmbition() {
 }
 
 function ModalForm() {
-    
+
+    // to retrieve user id.
+    const { data: sessionData } = useSession();
+
     const ambitions = [
         { id: 1, name: "Lose Weight"},
         { id: 2, name: "Do nothing..."},
@@ -42,7 +46,6 @@ function ModalForm() {
     const [target, setTarget] = useState(0);
     const [plan, setPlan] = useState("");
 
-
     // code reused from project-scale
     // const handleAmbitionSubmit = async (event: Event) => {
     //     event.preventDefault();
@@ -51,6 +54,7 @@ function ModalForm() {
     //         // addAmbition is a useMutation
     //         const { data } = await addAmbition({
     //             variables: {
+    //                 id: sessionData?.user.id
     //                 category: ambition,
     //                 dailyPlan: dailyPlan,
     //                 endValue: endValue,

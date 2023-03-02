@@ -18,4 +18,19 @@ export const exampleRouter = createTRPCRouter({
   getSecretMessage: protectedProcedure.query(() => {
     return "you can now see this secret message!";
   }),
+
+  // tested and no unsafe type any return error appeared...
+  post: protectedProcedure
+      .input(
+        z.object({
+          id: z.string(),
+        })
+      )
+      .mutation(({ input, ctx }) => {
+    return ctx.prisma.example.create({
+      data: {
+        id: input.id,
+      }
+    })
+  })
 });

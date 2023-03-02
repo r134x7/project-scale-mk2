@@ -1,6 +1,8 @@
 import { createTRPCRouter } from "./trpc";
 import { exampleRouter } from "./routers/example";
 import { newAmbitionRouter } from "./routers/newAmbition";
+import { newRecordRouter } from "./routers/newRecord";
+import { newBondRouter } from "./routers/newBond";
 
 /**
  * This is the primary router for your server.
@@ -10,6 +12,8 @@ import { newAmbitionRouter } from "./routers/newAmbition";
 export const appRouter = createTRPCRouter({
   example: exampleRouter,
   newAmbition: newAmbitionRouter,
+  newRecord: newRecordRouter,
+  newBond: newBondRouter,
 });
 
 // export type definition of API
