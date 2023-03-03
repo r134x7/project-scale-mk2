@@ -58,7 +58,7 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
-    // ambitions     Ambitions[]
+    ambitions     Ambitions[]
     bonds         Bonds[]
 }
 
@@ -79,8 +79,8 @@ model Ambitions {
     updatedAt     DateTime @updatedAt
     // record        Record[]
     // bonds         Bonds[]
-    // user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    // userId        String
+    user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId        String
 }
 
 // Will need to make sure to check project-scale how I dealt with getting the client's current time and not the SERVER TIME to make sure one record per day works
