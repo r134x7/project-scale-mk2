@@ -16,7 +16,7 @@ export const newRecordRouter = createTRPCRouter({
             ambitionId: input.ambitionId,
             value: input.value,
             journal: input.journal,
-          }
+          },
         })
     }) 
 });

@@ -6,7 +6,7 @@ import { createTRPCRouter, protectedProcedure } from "../trpc";
 export const newAmbitionRouter = createTRPCRouter({
   createAmbition: protectedProcedure
       .input(z.object({ 
-        userId: z.string(),
+        // userId: z.string(),
         name: z.string(), 
         endValue: z.number(),
         dailyPlan: z.string(),
@@ -15,11 +15,16 @@ export const newAmbitionRouter = createTRPCRouter({
 
         return ctx.prisma.ambitions.create({
           data: {
-            userId: input.userId,
+            // userId: input.userId,
             name: input.name,
             endValue: input.endValue,
             dailyPlan: input.dailyPlan,
-          }
+            userId: {
+                connect: {
+                  id: ctx.session.user.id,
+                },
+              },
+            },
         })
     }) 
 });
