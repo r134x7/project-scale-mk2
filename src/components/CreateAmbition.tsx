@@ -26,7 +26,10 @@ export default function CreateAmbition() {
 
     return (
         <>
-            <button onClick={() => setMenuOpen(!menuOpen)}>
+            <button 
+            className="bg-gray-600 rounded-lg"
+            onClick={() => setMenuOpen(!menuOpen)}
+            >
                 Create Ambition
             </button> 
 
@@ -45,6 +48,9 @@ function ModalForm() {
 
     // to retrieve user id.
     // const { data: sessionData } = useSession();
+    
+    // you have to call useMutation here i.e. the top level of the function. do not call it inside handleAmbitionSubmit else it errors due to invalid hook call - rule of hooks error
+    const testAPI = api.newAmbition.createAmbition.useMutation();
 
     const ambitions = [
         { id: 1, name: "Lose Weight"},
@@ -57,17 +63,24 @@ function ModalForm() {
     const [plan, setPlan] = useState("");
 
     // code reused from project-scale
-    const handleAmbitionSubmit = (event: Event) => {
-        event.preventDefault();
+    const handleAmbitionSubmit = () => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        // event.preventDefault();
+        console.log("begin");
+
+        
     // const testAPI = api.newAmbition.createAmbition.useMutation()
         
         try {
-            api.newAmbition.createAmbition.useMutation().mutate({
+            // api.newAmbition.createAmbition.useMutation().mutate({
+            testAPI.mutate({
                 name: ambitionName,
                 endValue: target,
                 dailyPlan: plan,
             })
 
+            console.log("did it submit????");
+            
             // addAmbition is a useMutation
             // const { data } = await addAmbition({
             //     variables: {
@@ -84,11 +97,16 @@ function ModalForm() {
             // setDailyPlan("");
             // setEndValue("");
             // setOpenNewAmbition((o) => (!o));
-            setOpen(false)
+            // setOpen(false)
+            console.log("end of submit");
+            
     };
 
     return (
-        <Dialog open={open} onClose={() => setOpen(false)}>
+        <Dialog 
+        className={"bg-stone-600"}
+        open={open} onClose={() => setOpen(false)}
+        >
           <Dialog.Panel>
             <Dialog.Title>Create Ambition</Dialog.Title>
             <Dialog.Description>
@@ -97,7 +115,11 @@ function ModalForm() {
 
             {/* <form onSubmit={(event) => handleAmbitionSubmit(event)} */}
             {/* seemingly have to call the function like this due to the React.EventFormHandler<T> */}
-            <form onSubmit={() => handleAmbitionSubmit}
+            <form 
+            className="bg-slate-50 grid grid-cols-1"
+            onSubmit={(event) => { 
+                event.preventDefault()
+                handleAmbitionSubmit() }}
             >
 
                 <Listbox value={ambitionName} onChange={setAmbitionName}>
@@ -106,7 +128,7 @@ function ModalForm() {
                       {ambitions.map((data) => (
                         <Listbox.Option
                           key={data.id}
-                          value={data}
+                          value={data.name /* value here goes to the onChange in Listbox parent */}
                         >
                           {data.name}
                         </Listbox.Option>
@@ -115,6 +137,7 @@ function ModalForm() {
                 </Listbox>
 
                 <input 
+                    className="border"
                     type="number" 
                     onChange={(event) => setTarget(Number(event.target.value))}
                     value={target}
@@ -126,6 +149,7 @@ function ModalForm() {
                 />
 
                 <button 
+                    className="border"
                     type="submit"
                     // onSubmit={() => setOpen(false)}
                 >Create</button>

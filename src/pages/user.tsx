@@ -69,6 +69,8 @@ export default function User() {
         (sessionData)
         ? <div>
             Welcome, {sessionData.user?.name ?? "ERROR"}.
+        <br />
+            <CreateAmbition />
         </div>
         : <div>
             You need to sign in to view this page.
