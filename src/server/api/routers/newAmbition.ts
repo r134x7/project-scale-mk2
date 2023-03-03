@@ -16,14 +16,15 @@ export const newAmbitionRouter = createTRPCRouter({
         return ctx.prisma.ambitions.create({
           data: {
             // userId: input.userId,
+            // userId: ctx.session.user.id,
             name: input.name,
             endValue: input.endValue,
             dailyPlan: input.dailyPlan,
-            userId: {
-                connect: {
-                  id: ctx.session.user.id,
-                },
-              },
+            // userId: {
+            //     connect: {
+            //       id: ctx.session.user.id,
+            //     },
+              // },
             },
         })
     }) 
