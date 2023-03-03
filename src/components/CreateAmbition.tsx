@@ -22,12 +22,19 @@ export default function CreateAmbition() {
         have to put the form inside the modal, the form needs onSubmit.
 
     */
+   const [menuOpen, setMenuOpen] = useState(false);
 
     return (
         <>
-            <button>
+            <button onClick={() => setMenuOpen(!menuOpen)}>
                 Create Ambition
             </button> 
+
+            {
+                menuOpen 
+                ? <ModalForm />
+                : undefined
+            }
         </>
     )
 }
