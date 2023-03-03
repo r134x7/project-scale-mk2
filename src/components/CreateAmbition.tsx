@@ -1,6 +1,7 @@
 import { Dialog, Listbox } from "@headlessui/react"
 import { useState } from "react"
 import { useSession } from "next-auth/react";
+import { api } from "../utils/api";
 
 export default function CreateAmbition() {
 
@@ -33,8 +34,10 @@ export default function CreateAmbition() {
 
 function ModalForm() {
 
+    // const hello = api.example.hello.useQuery({ text: "from tRPC" });
+
     // to retrieve user id.
-    const { data: sessionData } = useSession();
+    // const { data: sessionData } = useSession();
 
     const ambitions = [
         { id: 1, name: "Lose Weight"},
@@ -42,32 +45,40 @@ function ModalForm() {
     ];
 
     const [open, setOpen] = useState(true);
-    const [value, setValue] = useState(ambitions?.[1] ?? { id: 3, name: "Error"})
+    const [ambitionName, setAmbitionName] = useState(ambitions?.[1]?.name ?? "ERROR")
     const [target, setTarget] = useState(0);
     const [plan, setPlan] = useState("");
 
     // code reused from project-scale
-    // const handleAmbitionSubmit = async (event: Event) => {
-    //     event.preventDefault();
+    const handleAmbitionSubmit = (event: Event) => {
+        event.preventDefault();
+    // const testAPI = api.newAmbition.createAmbition.useMutation()
         
-    //     try {
-    //         // addAmbition is a useMutation
-    //         const { data } = await addAmbition({
-    //             variables: {
-    //                 id: sessionData?.user.id
-    //                 category: ambition,
-    //                 dailyPlan: dailyPlan,
-    //                 endValue: endValue,
-    //             },
-    //         });
-    //         } catch (error) {
-    //             console.log(error);
-    //         }
+        try {
+            api.newAmbition.createAmbition.useMutation().mutate({
+                name: ambitionName,
+                endValue: target,
+                dailyPlan: plan,
+            })
 
-    //         // setDailyPlan("");
-    //         // setEndValue("");
-    //         // setOpenNewAmbition((o) => (!o));
-    // };
+            // addAmbition is a useMutation
+            // const { data } = await addAmbition({
+            //     variables: {
+            //         id: sessionData?.user.id
+            //         category: ambition,
+            //         dailyPlan: dailyPlan,
+            //         endValue: endValue,
+            //     },
+            // });
+            } catch (error) {
+                console.log(error);
+            }
+
+            // setDailyPlan("");
+            // setEndValue("");
+            // setOpenNewAmbition((o) => (!o));
+            setOpen(false)
+    };
 
     return (
         <Dialog open={open} onClose={() => setOpen(false)}>
@@ -77,11 +88,13 @@ function ModalForm() {
                 Something
             </Dialog.Description>
 
-            <form //onSubmit={handleAmbitionSubmit}
+            {/* <form onSubmit={(event) => handleAmbitionSubmit(event)} */}
+            {/* seemingly have to call the function like this due to the React.EventFormHandler<T> */}
+            <form onSubmit={() => handleAmbitionSubmit}
             >
 
-                <Listbox value={value} onChange={setValue}>
-                    <Listbox.Button>{value.name}</Listbox.Button>
+                <Listbox value={ambitionName} onChange={setAmbitionName}>
+                    <Listbox.Button>{ambitionName}</Listbox.Button>
                     <Listbox.Options>
                       {ambitions.map((data) => (
                         <Listbox.Option
@@ -107,7 +120,7 @@ function ModalForm() {
 
                 <button 
                     type="submit"
-                    onSubmit={() => setOpen(false)}
+                    // onSubmit={() => setOpen(false)}
                 >Create</button>
 
             </form>
