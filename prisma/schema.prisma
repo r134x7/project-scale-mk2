@@ -77,7 +77,7 @@ model Ambitions {
     dailyPlan     String
     createdAt     DateTime @default(now())
     updatedAt     DateTime @updatedAt
-    // record        Record[]
+    record        Record[]
     // bonds         Bonds[]
     user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId        String
@@ -86,23 +86,23 @@ model Ambitions {
 // Will need to make sure to check project-scale how I dealt with getting the client's current time and not the SERVER TIME to make sure one record per day works
 model Record {
     id            String    @id @default(cuid())
-    ambitionId    String
     value         Float
     journal       String
     createdAt     DateTime @default(now())
-    // ambition      Ambitions @relation(fields: [ambitionId], references: [id], onDelete: Cascade)
+    ambition      Ambitions @relation(fields: [ambitionId], references: [id], onDelete: Cascade)
+    ambitionId    String
 }
 
 // this will be complicated as it is a one to many relationship... Have I even covered that it also needs the other user's Id? or an alternative way to deal with that?
 // this model is probably also not covering how to show the ambitions from both users...
 model Bonds {
     id            String   @id @default(cuid())
-    userId        String
-    ambitionId    String
     name          String?
     bond          String
 
     createdAt     DateTime @default(now())
     // ambition      Ambitions @relation(fields: [ambitionId], references: [id], onDelete: Cascade)
+    ambitionId    String
     user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId        String
 }

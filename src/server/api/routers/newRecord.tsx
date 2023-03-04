@@ -11,6 +11,7 @@ export const newRecordRouter = createTRPCRouter({
       }))
       .mutation(({ input, ctx }) => {
 
+        // need to see where to query the ambitionId...
         return ctx.prisma.record.create({
           data: {
             ambitionId: input.ambitionId,
