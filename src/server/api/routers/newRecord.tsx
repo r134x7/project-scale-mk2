@@ -3,6 +3,7 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const newRecordRouter = createTRPCRouter({
+  // POST
   createRecord: protectedProcedure
       .input(z.object({ 
         ambitionId: z.string(),
@@ -19,5 +20,18 @@ export const newRecordRouter = createTRPCRouter({
             journal: input.journal,
           },
         })
-    }) 
+    }),
+    
+    // GET ALL
+    getRecords: protectedProcedure
+      .input(z.object({
+        ambitionId: z.string(),
+      }))
+      .query(({ input, ctx }) => {
+        return ctx.prisma.record.findMany({
+          where: {
+            ambitionId: input.ambitionId
+          }
+        })
+      })
 });
