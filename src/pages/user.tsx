@@ -71,6 +71,8 @@ export default function User() {
             Welcome, {sessionData.user?.name ?? "ERROR"}.
         <br />
             <CreateAmbition />
+        <br />
+            <ViewAmbitions />
         </div>
         : <div>
             You need to sign in to view this page.
