@@ -4,6 +4,7 @@ import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 // need to create a mutation
 export const newAmbitionRouter = createTRPCRouter({
+  // POST
   createAmbition: protectedProcedure
       .input(z.object({ 
         name: z.string(), 
@@ -20,5 +21,42 @@ export const newAmbitionRouter = createTRPCRouter({
             dailyPlan: input.dailyPlan,
             },
         })
-    }) 
+    }),
+
+  // GET BY ID
+  getAmbitionById: protectedProcedure
+    .input(z.object({
+      id: z.string()
+    }))
+    .query(({ input, ctx }) => {
+        return ctx.prisma.ambitions.findUnique({
+          where: {
+            id: input.id,
+          },
+        })
+    }),
+  
+  // GET ALL
+  getAmbitions: protectedProcedure.query(({ ctx }) => {
+    return ctx.prisma.ambitions.findMany({
+      where: {
+        userId: ctx.session.user.id
+      }
+    })
+  }),
+      
+  // DELETE
+  deleteAmbitions: protectedProcedure
+    .input(z.object({
+      id: z.string()
+    }))
+    .mutation(({ input, ctx }) => {
+      return ctx.prisma.ambitions.delete({
+        where: {
+          id: input.id,
+        }
+      })
+    })
+  
+  // UPDATE
 });
