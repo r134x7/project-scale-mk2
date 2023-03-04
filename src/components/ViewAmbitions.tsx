@@ -40,6 +40,10 @@ function AmbitionCards() {
     create bond?...
     */
 
+    /*
+    would need to create a function that takes new Date() and compares it to Date() in the records to make sure that only a record has already been recorded for the day...
+    */
+
     const callAmbitions = api.newAmbition.getAmbitions.useQuery();
 
     const { data } = callAmbitions
