@@ -1,5 +1,6 @@
 import { api } from "../utils/api"
 import { useState } from "react";
+import CreateRecord from "./CreateRecord";
 
 export default function ViewAmbitions() {
 
@@ -62,6 +63,7 @@ function AmbitionCards() {
                          <br />
                          <p>{elem.dailyPlan}</p> 
                          <br />
+                         <CreateRecord ambitionIdPass={elem.id} />
                         
                     </div>
                 )

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { api } from "../utils/api";
 import { Dialog } from "@headlessui/react";
 
-export default function CreateRecord() {
+export default function CreateRecord(props: {ambitionIdPass: string}) {
 
     /*
         create a button to create record
@@ -22,14 +22,15 @@ export default function CreateRecord() {
 
             {
                 menuOpen 
-                ? <RecordModal />
+                ? <RecordModal ambitionIdGet={props.ambitionIdPass
+                } />
                 : undefined
             }
         </>
     )
 }
 
-function RecordModal() {
+function RecordModal(props: {ambitionIdGet: string}) {
 
     const writeRecord = api.newRecord.createRecord.useMutation();
 
@@ -42,9 +43,9 @@ function RecordModal() {
         
         try {
             writeRecord.mutate({
-                ambitionId: "something",
-                value: 0,
-                journal: "",
+                ambitionId: props.ambitionIdGet,
+                value: inputValue,
+                journal: notes,
             })
             } catch (error) {
                 console.log(error);
