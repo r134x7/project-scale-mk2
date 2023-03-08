@@ -7,12 +7,31 @@ export default function CreateRecord(props: {ambitionIdPass: string}) {
     /*
         create a button to create record
         need a modal to enter a value and journal record for the day
+
+        need to get 
     */
 
     const [menuOpen, setMenuOpen] = useState(false);
+
+    const { data } = api.newRecord.getRecords.useQuery({ ambitionId: props.ambitionIdPass }); 
+
+    const latestDate = data?.at?.(-1)?.createdAt ?? new Date("Wednesday, March 8, 2022");
+
+    const dateMatch = (latestDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) === "Wednesday, March 8, 2023")
+        ? "Match"
+        : "No" 
+
+    const today = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
     
     return (
         <>
+            <div>
+                <p> 
+                    {latestDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} 
+                    {dateMatch}
+                    {today}
+                </p>
+            </div>
             <button 
             className="bg-gray-600 rounded-lg"
             onClick={() => setMenuOpen(!menuOpen)}
