@@ -32,11 +32,19 @@ export default function ViewRecords(props: {ambitionIdPass: string}) {
 
 function RecordCards(props: {ambitionIdGet: string}) {
     
-    const callRecords = api.newRecord.getRecords.useQuery({ ambitionId: props.ambitionIdGet });
+    const { data } = api.newRecord.getRecords.useQuery({ ambitionId: props.ambitionIdGet }); 
 
     return (
         <>
-        
+        {
+            data?.map((elem) => {
+                return (
+                    <div key={elem.id}>
+                    Value = {elem.value}, Notes = {elem.journal}
+                    </div>
+                )
+            })
+        }
         </>
     )
 }
