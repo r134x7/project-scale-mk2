@@ -15,32 +15,25 @@ export default function CreateRecord(props: {ambitionIdPass: string}) {
 
     const { data } = api.newRecord.getRecords.useQuery({ ambitionId: props.ambitionIdPass }); 
 
-    const latestDate = data?.at?.(-1)?.createdAt ?? new Date("Wednesday, March 8, 2022");
-
-    const dateMatch = (latestDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) === "Wednesday, March 8, 2023")
-        ? "Match"
-        : "No" 
+    const latestDate = data?.at?.(-1)?.createdAt.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) ?? "ERROR";
 
     const today = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+
+    const buttonText = (latestDate !== today)
+        ? "Create Record"
+        : "Record saved for today"
     
     return (
         <>
-            <div>
-                <p> 
-                    {latestDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} 
-                    {dateMatch}
-                    {today}
-                </p>
-            </div>
             <button 
             className="bg-gray-600 rounded-lg"
             onClick={() => setMenuOpen(!menuOpen)}
             >
-                Create Record
+                {buttonText}
             </button>
 
             {
-                menuOpen 
+                menuOpen && latestDate !== today
                 ? <RecordModal ambitionIdGet={props.ambitionIdPass
                 } />
                 : undefined
