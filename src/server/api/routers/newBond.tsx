@@ -6,19 +6,16 @@ import { createTRPCRouter, protectedProcedure } from "../trpc";
 export const newBondRouter = createTRPCRouter({
   createBond: protectedProcedure
       .input(z.object({ 
-        userId: z.string(),
-        ambitionId: z.string(), 
-        name: z.string(),
-        bond: z.string(),
+        bondName: z.string(),
+        partnerId: z.string(),
       }))
       .mutation(({ input, ctx }) => {
 
         return ctx.prisma.bonds.create({
           data: {
-            userId: input.userId,
-            ambitionId: input.name,
-            name: input.name,
-            bond: input.bond,
+            userId: ctx.session.user.id,
+            partnerId: input.partnerId,
+            bondName: input.bondName,
           }
         })
     }) 

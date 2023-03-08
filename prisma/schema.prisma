@@ -97,12 +97,12 @@ model Record {
 // this model is probably also not covering how to show the ambitions from both users...
 model Bonds {
     id            String   @id @default(cuid())
-    name          String?
-    bond          String
+    bondName      String
+    partnerId     String
 
     createdAt     DateTime @default(now())
     // ambition      Ambitions @relation(fields: [ambitionId], references: [id], onDelete: Cascade)
-    ambitionId    String
+    // ambitionId    String
     user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId        String
 }
