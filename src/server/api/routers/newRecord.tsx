@@ -7,6 +7,7 @@ export const newRecordRouter = createTRPCRouter({
   createRecord: protectedProcedure
       .input(z.object({ 
         ambitionId: z.string(),
+        createdAt: z.date(),
         value: z.number(),
         journal: z.string(),
       }))
@@ -16,6 +17,7 @@ export const newRecordRouter = createTRPCRouter({
         return ctx.prisma.record.create({
           data: {
             ambitionId: input.ambitionId,
+            createdAt: input.createdAt,
             value: input.value,
             journal: input.journal,
           },

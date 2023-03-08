@@ -63,6 +63,12 @@ function RecordModal(props: {ambitionIdGet: string}) {
         try {
             writeRecord.mutate({
                 ambitionId: props.ambitionIdGet,
+                /* 
+                    new Date must be created from client side to prevent a bug found back in project-scale 
+                    where the server time is in a different time zone compared to the client which
+                    can prevent making one record per day from working.
+                */
+                createdAt: new Date(), 
                 value: inputValue,
                 journal: notes,
             })
