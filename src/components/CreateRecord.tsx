@@ -26,7 +26,7 @@ export default function CreateRecord(props: {ambitionIdPass: string}) {
     return (
         <>
             <button 
-            className="bg-gray-600 rounded-lg"
+            className="bg-gray-600 border-solid border-l-indigo-800 border-r-indigo-800 border-t-purple-800 border-b-purple-800 border-2 rounded-lg text-white text-sm p-1 m-1"
             onClick={() => setMenuOpen(!menuOpen)}
             >
                 {buttonText}
@@ -68,6 +68,10 @@ function RecordModal(props: {ambitionIdGet: string}) {
             } catch (error) {
                 console.log(error);
             }
+
+            setNotes("");
+            setInputValue(0);
+            setOpen(false);
     };
 
     return (
