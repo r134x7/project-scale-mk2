@@ -98,7 +98,8 @@ model Record {
 model Bonds {
     id            String   @id @default(cuid())
     bondName      String
-    partnerId     String
+    partnerId     String?
+    friendCode    String 
 
     createdAt     DateTime @default(now())
     // ambition      Ambitions @relation(fields: [ambitionId], references: [id], onDelete: Cascade)
