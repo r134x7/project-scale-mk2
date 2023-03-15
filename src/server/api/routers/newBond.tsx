@@ -14,6 +14,13 @@ export const newBondRouter = createTRPCRouter({
           bond is tied to the user,
           partnerId will query the ambitionId of the other person...
           .............
+
+          need to create another model? Message
+          user creates a bond.
+          sends a request to another user (using username but I don't know how duplicate usernames will be dealt with...)
+          
+          message is created for other user
+          user will find in "inbox" a request. If they accept then user's bond gets a Boolean change, a bond is created for the other user... ambitions are shared... the inbox request gets deleted after request is accepted/declined, if declined the boolean doesn't change.
           
         */
 

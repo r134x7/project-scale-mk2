@@ -67,11 +67,9 @@ export default function User() {
 
     return (
         (sessionData)
-        ? <div>
+        ? <div className={"grid grid-cols-1 gap-y-2  justify-center items-center"}>
             Welcome, {sessionData.user?.name ?? "ERROR"}.
-        <br />
             <CreateAmbition />
-        <br />
             <ViewAmbitions />
         </div>
         : <div>

@@ -16,7 +16,7 @@ export default function ViewAmbitions() {
     return (
         <>
             <button 
-            className="bg-gray-600 rounded-lg"
+            className="bg-gray-600 border-solid border-4 border-zinc-300 rounded-lg text-white"
             onClick={() => setMenuOpen(!menuOpen)}
             >
                 View Ambitions

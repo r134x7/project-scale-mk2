@@ -27,7 +27,7 @@ export default function CreateAmbition() {
     return (
         <>
             <button 
-            className="bg-gray-600 rounded-lg"
+            className="bg-gray-600 border-solid border-4 border-zinc-300 rounded-lg text-white"
             onClick={() => setMenuOpen(!menuOpen)}
             >
                 Create Ambition
@@ -66,7 +66,6 @@ function ModalForm() {
     const handleAmbitionSubmit = () => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         // event.preventDefault();
-        console.log("begin");
 
         
     // const testAPI = api.newAmbition.createAmbition.useMutation()
@@ -79,7 +78,6 @@ function ModalForm() {
                 dailyPlan: plan,
             })
 
-            console.log("did it submit????");
             
             // addAmbition is a useMutation
             // const { data } = await addAmbition({
@@ -98,20 +96,16 @@ function ModalForm() {
             // setEndValue("");
             // setOpenNewAmbition((o) => (!o));
             // setOpen(false)
-            console.log("end of submit");
             
     };
 
     return (
         <Dialog 
-        className={"bg-stone-600"}
+        className={"bg-stone-600 mt-2"}
         open={open} onClose={() => setOpen(false)}
         >
           <Dialog.Panel>
-            <Dialog.Title>Create Ambition</Dialog.Title>
-            <Dialog.Description>
-                Something
-            </Dialog.Description>
+            <Dialog.Title className={"text-white flex justify-center items-center"}>Create an Ambition</Dialog.Title>
 
             {/* <form onSubmit={(event) => handleAmbitionSubmit(event)} */}
             {/* seemingly have to call the function like this due to the React.EventFormHandler<T> */}
@@ -123,10 +117,13 @@ function ModalForm() {
             >
 
                 <Listbox value={ambitionName} onChange={setAmbitionName}>
-                    <Listbox.Button>{ambitionName}</Listbox.Button>
-                    <Listbox.Options>
+                    <Listbox.Button className={"mt-2 ml-2 mr-2 border-solid border-4 rounded-md border-cyan-500"}>
+                      Selected Ambition: {ambitionName}
+                    </Listbox.Button>
+                    <Listbox.Options className={"ml-2 mr-2 border-solid border-4 rounded-md"}>
                       {ambitions.map((data) => (
                         <Listbox.Option
+                          className={"border-solid border hover:bg-emerald-800 hover:text-white"}
                           key={data.id}
                           value={data.name /* value here goes to the onChange in Listbox parent */}
                         >
@@ -136,27 +133,36 @@ function ModalForm() {
                     </Listbox.Options>
                 </Listbox>
 
+                <label className="flex justify-center mt-2">Select target value in kilograms:</label>
                 <input 
-                    className="border"
+                    className="border-solid border-cyan-500 rounded-md border-4 m-2"
                     type="number" 
                     onChange={(event) => setTarget(Number(event.target.value))}
                     value={target}
                 />
 
+
+                <label className="flex justify-center mt-2">Write a daily plan for achieving your ambition:</label>
                 <textarea  
+                    className="border-solid border-cyan-500 rounded-md border-4 m-2"
                     onChange={(event) => setPlan(event.target.value)}
                     value={plan}
                 />
 
                 <button 
-                    className="border"
+                    className="m-2 rounded-md border-4 border-cyan-500 bg-sky-200 text-sky-900 font-bold"
                     type="submit"
                     // onSubmit={() => setOpen(false)}
-                >Create</button>
+                >Submit</button>
 
             </form>
 
-            <button onClick={() => setOpen(false)}>Cancel</button>
+            {/* <button 
+                className={"text-white flex justify-center items-center"}
+                onClick={() => setOpen(false)}
+            >
+                Cancel
+            </button> */}
           </Dialog.Panel>
         </Dialog>
     )
