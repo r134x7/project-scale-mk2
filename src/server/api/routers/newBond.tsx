@@ -7,7 +7,8 @@ export const newBondRouter = createTRPCRouter({
   createBond: protectedProcedure
       .input(z.object({ 
         bondName: z.string(),
-        partnerId: z.string(),
+        // partnerId: z.string(),
+        ambitionId: z.string(),
       }))
       .mutation(({ input, ctx }) => {
         /*
@@ -22,15 +23,44 @@ export const newBondRouter = createTRPCRouter({
           message is created for other user
           user will find in "inbox" a request. If they accept then user's bond gets a Boolean change, a bond is created for the other user... ambitions are shared... the inbox request gets deleted after request is accepted/declined, if declined the boolean doesn't change.
           
+          settled on exchanging ambition IDs, will need to create a copy field to make it easy to enter 
         */
 
         return ctx.prisma.bonds.create({
           data: {
             userId: ctx.session.user.id,
-            partnerId: input.partnerId,
+            ambitionId: input.ambitionId,
+            // partnerId: input.partnerId,
             bondName: input.bondName,
-            friendCode: Math.floor(Math.random() * (999999-100000) + 100000).toString(),
           }
         })
-    }) 
+    }),
+
+  updateBond: protectedProcedure
+      .input(z.object({
+        id: z.string(),
+        partnerId: z.string(),
+      }))
+      .mutation(({ input, ctx }) => {
+        return ctx.prisma.bonds.update({
+          where: {
+            id: input.id,
+          },
+          data: {
+            partnerId: input.partnerId,
+          }
+        })
+      }),
+  
+  deleteBond: protectedProcedure
+      .input(z.object({
+        id: z.string(),
+      }))
+      .mutation(({ input, ctx }) => {
+        return ctx.prisma.bonds.delete({
+          where: {
+            id: input.id,
+          }
+        })
+      }),
 });
