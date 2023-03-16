@@ -1,4 +1,8 @@
-export default function CreateBond() {
+import { api } from "../utils/api";
+import { useState } from "react";
+import { Listbox } from "@headlessui/react";
+
+export default function CreateBond(props: {ambitionIdPass: string}) {
 
     /*
         need to useMutation to create a bond... 
@@ -18,6 +22,34 @@ export default function CreateBond() {
             <button>
                 Create Bond
             </button>
+        </>
+    )
+}
+
+function BondForm(props: {ambitionIdGet: string}) {
+
+    const bondAPI = api.newBond.createBond.useMutation();
+
+    const [open, setOpen] = useState(true);
+
+    // make a form to submit bondName which will be selected from a list.
+    // after creating a bond, then I need to make another form for updating the bond when viewing that bond.
+
+    const handleBondSubmit = () => {
+
+        try {
+            bondAPI.mutate({
+                ambitionId: props.ambitionIdGet,
+            })
+        } catch (error) {
+            console.log(error);
+            
+        }
+    };
+
+    return (
+        <>
+
         </>
     )
 }

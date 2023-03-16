@@ -6,7 +6,6 @@ import { createTRPCRouter, protectedProcedure } from "../trpc";
 export const newBondRouter = createTRPCRouter({
   createBond: protectedProcedure
       .input(z.object({ 
-        bondName: z.string(),
         // partnerId: z.string(),
         ambitionId: z.string(),
       }))
@@ -31,7 +30,6 @@ export const newBondRouter = createTRPCRouter({
             userId: ctx.session.user.id,
             ambitionId: input.ambitionId,
             // partnerId: input.partnerId,
-            bondName: input.bondName,
           }
         })
     }),

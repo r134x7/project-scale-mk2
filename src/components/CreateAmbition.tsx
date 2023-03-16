@@ -1,5 +1,5 @@
-import { Dialog, Listbox } from "@headlessui/react"
-import { useState } from "react"
+import { Dialog, Listbox } from "@headlessui/react";
+import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { api } from "../utils/api";
 
@@ -50,7 +50,7 @@ function ModalForm() {
     // const { data: sessionData } = useSession();
     
     // you have to call useMutation here i.e. the top level of the function. do not call it inside handleAmbitionSubmit else it errors due to invalid hook call - rule of hooks error
-    const testAPI = api.newAmbition.createAmbition.useMutation();
+    const ambitionAPI = api.newAmbition.createAmbition.useMutation();
 
     const ambitions = [
         { id: 1, name: "Lose Weight"},
@@ -72,7 +72,7 @@ function ModalForm() {
         
         try {
             // api.newAmbition.createAmbition.useMutation().mutate({
-            testAPI.mutate({
+            ambitionAPI.mutate({
                 name: ambitionName,
                 endValue: target,
                 dailyPlan: plan,
