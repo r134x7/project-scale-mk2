@@ -78,7 +78,7 @@ model Ambitions {
     createdAt     DateTime @default(now())
     updatedAt     DateTime @updatedAt
     record        Record[]
-    // bonds         Bonds[]
+    bonds         Bonds[]
     user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId        String
 }
@@ -99,11 +99,10 @@ model Bonds {
     id            String   @id @default(cuid())
     bondName      String
     partnerId     String?
-    friendCode    String 
-
     createdAt     DateTime @default(now())
-    // ambition      Ambitions @relation(fields: [ambitionId], references: [id], onDelete: Cascade)
-    // ambitionId    String
+
+    ambition      Ambitions @relation(fields: [ambitionId], references: [id], onDelete: Cascade)
+    ambitionId    String
     user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId        String
 }
