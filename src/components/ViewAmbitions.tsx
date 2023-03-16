@@ -22,11 +22,9 @@ export default function ViewAmbitions() {
                 View Ambitions
             </button>
 
-            {
-                menuOpen 
-                ? <AmbitionCards />
-                : undefined
-            }
+            <div className={`${menuOpen ? "" : "invisible" }`}>
+                <AmbitionCards />
+            </div>
         </>
     )
 }

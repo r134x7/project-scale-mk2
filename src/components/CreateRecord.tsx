@@ -32,12 +32,10 @@ export default function CreateRecord(props: {ambitionIdPass: string}) {
                 {buttonText}
             </button>
 
-            {
-                menuOpen && latestDate !== today
-                ? <RecordModal ambitionIdGet={props.ambitionIdPass
+            <div className={`${menuOpen && latestDate !== today ? "" : "invisible" }`}>
+                <RecordModal ambitionIdGet={props.ambitionIdPass
                 } />
-                : undefined
-            }
+            </div>
         </>
     )
 }

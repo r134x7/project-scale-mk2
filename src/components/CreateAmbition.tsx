@@ -33,11 +33,9 @@ export default function CreateAmbition() {
                 Create Ambition
             </button> 
 
-            {
-                menuOpen 
-                ? <ModalForm />
-                : undefined
-            }
+            <div className={`${menuOpen ? "" : "invisible" }`}>
+                <ModalForm />
+            </div>
         </>
     )
 }

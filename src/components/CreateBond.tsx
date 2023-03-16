@@ -1,6 +1,6 @@
 import { api } from "../utils/api";
 import { useState } from "react";
-import { Listbox } from "@headlessui/react";
+import { Dialog } from "@headlessui/react";
 
 export default function CreateBond(props: {ambitionIdPass: string}) {
 
@@ -17,11 +17,22 @@ export default function CreateBond(props: {ambitionIdPass: string}) {
 
     */
 
+    const [menuOpen, setMenuOpen] = useState(false);
+
     return (
         <>
-            <button>
+            <button 
+            className="bg-gray-600 border-solid border-4 border-zinc-300 rounded-lg text-white"
+            onClick={() => setMenuOpen(!menuOpen)}
+            >
                 Create Bond
             </button>
+
+            {
+                <div className={`${menuOpen ? "" : "invisible" }`}>
+                    <BondForm ambitionIdGet={props.ambitionIdPass} />
+                </div>
+            }
         </>
     )
 }
@@ -32,7 +43,7 @@ function BondForm(props: {ambitionIdGet: string}) {
 
     const [open, setOpen] = useState(true);
 
-    // make a form to submit bondName which will be selected from a list.
+    // make a simple modal with instructions for how to create and use a bond... 
     // after creating a bond, then I need to make another form for updating the bond when viewing that bond.
 
     const handleBondSubmit = () => {
@@ -45,11 +56,41 @@ function BondForm(props: {ambitionIdGet: string}) {
             console.log(error);
             
         }
+
+        setOpen(false);
     };
 
     return (
         <>
+        <Dialog 
+        className={"bg-stone-600 mt-2"}
+        open={open} onClose={() => setOpen(false)}
+        >
+          <Dialog.Panel>
+            <Dialog.Title className={"text-white flex justify-center items-center"}>Confirm Bond Creation</Dialog.Title>
 
+            <Dialog.Description>
+                To create a bond with another user:
+                1) Click the submit button to confirm creating bond for this ambition you are on.
+                2) Go to View Bond for this ambition.
+                3) View Bond will display the ID number for your ambition.
+                4) You can copy the ID number and share it through your preferred means of communication with the person who you want to create a bond with.
+                5) The person you want to create a bond with will need to create their own bond from one of their ambitions and then share the ID number of their ambition with you.
+                6) Take the ID from the other person you want to create a bond with and go to Update Bond.
+                7) Enter the ID into form for Update Bond and update the bond.
+                8) You will then be able to view the ambition and records of the other person.
+            </Dialog.Description>
+
+                <button 
+                    className="m-2 rounded-md border-4 border-cyan-500 bg-sky-200 text-sky-900 font-bold"
+                    type="submit"
+                    onSubmit={(event) => { 
+                        event.preventDefault()
+                        handleBondSubmit() }}
+                >Submit</button>
+
+          </Dialog.Panel>
+        </Dialog>
         </>
     )
 }
