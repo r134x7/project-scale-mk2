@@ -15,6 +15,8 @@ export default function ViewBonds(props: {ambitionIdPass: string }) {
     })
 
     const [menuOpen, setMenuOpen] = useState(false);
+    const [updateOpen, setUpateOpen] = useState(false);
+    const [deleteOpen, setDeleteOpen] = useState(false);
 
     return (
         <>
@@ -26,7 +28,28 @@ export default function ViewBonds(props: {ambitionIdPass: string }) {
             </button>
 
             <div className={`${menuOpen ? "" : "invisible" }`}>
-                <UpdateBond bondIdsGet={bondIDs} />
+
+
+                <button 
+                className="bg-gray-600 rounded-lg text-sm text-white p-1 m-1 border-solid border-l-indigo-800 border-r-indigo-800 border-t-purple-800 border-b-purple-800 border-2" 
+                onClick={() => setUpateOpen(!updateOpen)}
+                >
+                   Update Bonds 
+                </button>
+                <div className={`${updateOpen ? "" : "invisible" }`}>
+                    <UpdateBond bondIdsGet={bondIDs} />
+                </div>
+
+                <button 
+                className="bg-gray-600 rounded-lg text-sm text-white p-1 m-1 border-solid border-l-indigo-800 border-r-indigo-800 border-t-purple-800 border-b-purple-800 border-2" 
+                onClick={() => setDeleteOpen(!deleteOpen)}
+                >
+                   Delete Bonds 
+                </button>
+                <div className={`${updateOpen ? "" : "invisible" }`}>
+                    <DeleteBond bondIdsGet={bondIDs} />
+                </div>
+
             </div>
         </>
     )
@@ -52,7 +75,6 @@ function UpdateBond(props: {bondIdsGet: string[][] | undefined}) {
             })
         } catch (error) {
             console.log(error);
-            
         }
     };
 
@@ -100,9 +122,61 @@ function UpdateBond(props: {bondIdsGet: string[][] | undefined}) {
     )
 }
 
-// function DeleteBond() {
+function DeleteBond(props: {bondIdsGet: string[][] | undefined}) {
 
-// }
+    const deleteBondAPI = api.newBond.deleteBond.useMutation();
+
+    const [partnerBondId, setPartnerBondId] = useState("")
+
+    const handleBondDeleteSubmit = (bondId: string | undefined) => {
+
+        if (bondId === undefined) {
+            return console.log("bondId is undefined.");
+        }
+
+        try {
+            deleteBondAPI.mutate({
+                id: bondId,
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    return (
+        <>
+            {
+                props?.bondIdsGet?.map((elem, index, array) => {
+                    return (
+                        <div
+                            key={elem[2]} 
+                            className={`border-black border flex justify-center items-end rounded-lg mt-2 ${index % 2 === 0 ? "bg-slate-500 text-slate-50" : "bg-sky-500 text-slate-900"}`}
+                        >
+
+
+                        <label className="flex justify-center mt-2">Enter the ambition ID within the quotes `&quot;`{elem[1]}`&quot;` to enable the delete button and then click delete:</label>
+                        <input 
+                            className="border-solid border-cyan-500 rounded-md border-4 m-2"
+                            onChange={(event) => setPartnerBondId(event.target.value)}
+                            value={partnerBondId}
+                        />
+
+                        <button 
+                            disabled={partnerBondId !== elem[1] ? true : false }
+                            className="m-2 rounded-md border-4 border-cyan-500 bg-sky-200 text-sky-900 font-bold"
+                            type="submit"
+                            onSubmit={(event) => { 
+                            event.preventDefault()
+                            handleBondDeleteSubmit(elem[0]) }}
+                        >Delete</button>
+                        </div>
+                    )
+                })
+            } 
+        </>
+    )
+
+}
 
 // function BondCards() {
 
