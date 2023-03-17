@@ -34,6 +34,18 @@ export const newBondRouter = createTRPCRouter({
         })
     }),
 
+  getBonds: protectedProcedure
+      .input(z.object({
+        ambitionId: z.string(),
+      }))
+      .query(({ input, ctx }) => {
+        return ctx.prisma.bonds.findMany({
+          where: {
+            ambitionId: input.ambitionId
+          }
+        })
+      }),
+
   updateBond: protectedProcedure
       .input(z.object({
         id: z.string(),
