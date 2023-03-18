@@ -17,6 +17,7 @@ export default function ViewBonds(props: {ambitionIdPass: string }) {
     const [menuOpen, setMenuOpen] = useState(false);
     const [updateOpen, setUpateOpen] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
+    const [viewOpen, setViewOpen] = useState(false);
 
     return (
         <>
@@ -24,10 +25,20 @@ export default function ViewBonds(props: {ambitionIdPass: string }) {
             className="bg-gray-600 rounded-lg text-sm text-white p-1 m-1 border-solid border-l-indigo-800 border-r-indigo-800 border-t-purple-800 border-b-purple-800 border-2" 
             onClick={() => setMenuOpen(!menuOpen)}
             >
-                View Bonds
+                Bonds
             </button>
 
             <div className={`${menuOpen ? "" : "invisible" }`}>
+
+                <button 
+                className="bg-gray-600 rounded-lg text-sm text-white p-1 m-1 border-solid border-l-indigo-800 border-r-indigo-800 border-t-purple-800 border-b-purple-800 border-2" 
+                onClick={() => setViewOpen(!viewOpen)}
+                >
+                   View Bonds 
+                </button>
+                <div className={`${viewOpen ? "" : "invisible" }`}>
+                    <BondCards ambitionIdGet={props.ambitionIdPass} bondIdsGet={bondIDs} />
+                </div>
 
 
                 <button 
@@ -46,9 +57,10 @@ export default function ViewBonds(props: {ambitionIdPass: string }) {
                 >
                    Delete Bonds 
                 </button>
-                <div className={`${updateOpen ? "" : "invisible" }`}>
+                <div className={`${deleteOpen ? "" : "invisible" }`}>
                     <DeleteBond bondIdsGet={bondIDs} />
                 </div>
+
 
             </div>
         </>
@@ -180,18 +192,55 @@ function DeleteBond(props: {bondIdsGet: string[][] | undefined}) {
 
 function BondCards(props: {bondIdsGet: string[][] | undefined, ambitionIdGet: string}) {
 
-    // have to rethink here... check if you already have the ambition data so you don't have to call it with a query again
-
-    // you have to filter out empty ambition ids and then I have to call multiple ambitions asynchronously...
-
     const filteredBonds = props?.bondIdsGet?.filter((value) => {
-                    // filtering out bonds that are already updated
-                    return value[1] === "Empty"
+                    // filtering out bonds that are not updated
+                    return value[1] !== "Empty"
                 });
+
+    const filteredAmbitionIds = filteredBonds?.flatMap(elem => {
+        return elem?.[1] ?? []
+    }) ?? ["ERROR"] // not the best error handling... I need to see what goes wrong to fix it 
     
-    // Not the best idea for error handling...
-    const ambitionGetAPI = api.newAmbition.getAmbitionById
-    //.useQuery({ id: filteredBonds?.[0]?.[0] ?? "ERROR"})
+    const { data, error } = api.newAmbition.getManyAmbitionsByIds.useQuery({ id: filteredAmbitionIds })
 
+    console.log(error);
+    
+    return (
+        <>
+        {
+            data?.map((elem, index) => {
+                return (
+                    <div
+                        key={elem.id}
+                        className={`border-black border flex justify-center items-end rounded-lg mt-2 ${index % 2 === 0 ? "bg-slate-500 text-slate-50" : "bg-sky-500 text-slate-900"}`}
+                    >
 
+                        Ambition: {elem.name}
+                        End value: {elem.endValue}
+                        <br />
+
+                        {
+                            elem.record.map((value, secondIndex, secondArray) => {
+                                return (
+                                    <div
+                                        key={value.id}
+                                        className={`border-black border flex justify-center items-end rounded-lg mt-2 ${secondIndex % 2 === 0 ? "bg-slate-500 text-slate-50" : "bg-sky-500 text-slate-900"}`}
+                                    >
+                                        Date recorded: {value.createdAt.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                                        <br />
+                                        Weight: {value.value}kg 
+                                        <br />
+                                        Difference to previous record: {value.value - (secondArray?.at((index === 0 
+                                            ? 0 
+                                            : secondIndex-1))?.value ?? 0)}kg
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+                )
+            })
+        }
+        </>
+    )
 }
