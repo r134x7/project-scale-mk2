@@ -178,6 +178,20 @@ function DeleteBond(props: {bondIdsGet: string[][] | undefined}) {
 
 }
 
-// function BondCards() {
+function BondCards(props: {bondIdsGet: string[][] | undefined, ambitionIdGet: string}) {
 
-// }
+    // have to rethink here... check if you already have the ambition data so you don't have to call it with a query again
+
+    // you have to filter out empty ambition ids and then I have to call multiple ambitions asynchronously...
+
+    const filteredBonds = props?.bondIdsGet?.filter((value) => {
+                    // filtering out bonds that are already updated
+                    return value[1] === "Empty"
+                });
+    
+    // Not the best idea for error handling...
+    const ambitionGetAPI = api.newAmbition.getAmbitionById
+    //.useQuery({ id: filteredBonds?.[0]?.[0] ?? "ERROR"})
+
+
+}

@@ -35,6 +35,19 @@ export const newAmbitionRouter = createTRPCRouter({
           },
         })
     }),
+
+  // GET MANY BY MANY IDS
+  getManyAmbitionsByIds: protectedProcedure
+    .input(z.object({
+      id: z.string().array()
+    }))
+    .query(({ input, ctx }) => {
+      return ctx.prisma.ambitions.findMany({
+        where: {
+          id: { in: input.id },
+        },
+      })
+    }),
   
   // GET ALL
   getAmbitions: protectedProcedure.query(({ ctx }) => {
