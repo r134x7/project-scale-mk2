@@ -37,6 +37,7 @@ export const newAmbitionRouter = createTRPCRouter({
     }),
 
   // GET MANY BY MANY IDS
+  // need to include retrieving records as well
   getManyAmbitionsByIds: protectedProcedure
     .input(z.object({
       id: z.string().array()
@@ -46,6 +47,9 @@ export const newAmbitionRouter = createTRPCRouter({
         where: {
           id: { in: input.id },
         },
+        include: {
+          record: true,
+        }
       })
     }),
   
