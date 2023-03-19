@@ -51,16 +51,16 @@ function AmbitionCards() {
     return (
         <>
         <div>
-            {data?.map((elem) => {
+            {data?.map((elem, index) => {
 
 
                 return (
-                    <div key={elem.id} className={"border rounded-lg"} >
-                         <p>{elem.name}</p> 
+                    <div key={elem.id} className={"border-2 rounded-lg grid grid-cols-1 "} >
+                         <p className="flex justify-center ">Ambition {index + 1}: {elem.name}</p> 
                          <br />
-                         <p>{elem.endValue}</p> 
+                         <p className="flex justify-center ">Target value: {elem.endValue}</p> 
                          <br />
-                         <p>{elem.dailyPlan}</p> 
+                         <p className="flex justify-center ">Daily Plan: {elem.dailyPlan}</p> 
                          <br />
                          <CreateRecord ambitionIdPass={elem.id} />
                          <br />
