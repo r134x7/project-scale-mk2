@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { api } from "../utils/api";
-import { Dialog } from "@headlessui/react";
 
 export default function CreateRecord(props: {ambitionIdPass: string}) {
 
@@ -32,7 +31,7 @@ export default function CreateRecord(props: {ambitionIdPass: string}) {
                 {buttonText}
             </button>
 
-            <div className={`${menuOpen && latestDate !== today ? "" : "invisible" }`}>
+            <div className={`${menuOpen && latestDate !== today ? "" : "hidden" }`}>
                 <RecordModal ambitionIdGet={props.ambitionIdPass
                 } />
             </div>
@@ -45,7 +44,7 @@ function RecordModal(props: {ambitionIdGet: string}) {
     const writeRecord = api.newRecord.createRecord.useMutation();
 
 
-    const [open, setOpen] = useState(true);
+    // const [open, setOpen] = useState(true);
     const [inputValue, setInputValue] = useState(0);
     const [notes, setNotes] = useState("");
 
@@ -69,11 +68,12 @@ function RecordModal(props: {ambitionIdGet: string}) {
 
             setNotes("");
             setInputValue(0);
-            setOpen(false);
+            // setOpen(false);
     };
 
     return (
-        <Dialog 
+        <>
+        {/* <Dialog 
         className={"bg-stone-600"}
         open={open} onClose={() => setOpen(false)}
         >
@@ -81,36 +81,42 @@ function RecordModal(props: {ambitionIdGet: string}) {
             <Dialog.Title>Create Record</Dialog.Title>
             <Dialog.Description>
                Do something... 
-            </Dialog.Description>
+            </Dialog.Description> */}
 
             <form 
-            className="bg-slate-50 grid grid-cols-1"
+            className="bg-slate-50 grid grid-cols-1 border-2 border-black rounded-lg"
             onSubmit={(event) => { 
                 event.preventDefault()
                 handleRecordSubmit() }}
             >
 
+
+                <label className="flex justify-center mt-2">Record today&apos;s weight:</label>
                 <input 
-                    className="border"
+                    className="border-solid border-cyan-500 rounded-md border-4 m-2"
                     type="number" 
                     onChange={(event) => setInputValue(Number(event.target.value))}
                     value={inputValue}
                 />
 
+                <label className="flex justify-center mt-2">Journal for today:</label>
                 <textarea  
+                    className="border-solid border-cyan-500 rounded-md border-4 m-2"
                     onChange={(event) => setNotes(event.target.value)}
                     value={notes}
                 />
 
                 <button 
-                    className="border"
+                    className="m-2 rounded-md border-4 border-cyan-500 bg-sky-200 text-sky-900 font-bold"
                     type="submit"
                 >Create</button>
 
             </form>
 
-            <button onClick={() => setOpen(false)}>Cancel</button>
-          </Dialog.Panel>
-        </Dialog>
+            {/* <button onClick={() => setOpen(false)}>Cancel</button> */}
+          {/* </Dialog.Panel>
+        </Dialog> */}
+
+        </>
     )
 }

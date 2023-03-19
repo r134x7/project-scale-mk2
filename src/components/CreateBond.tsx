@@ -29,7 +29,7 @@ export default function CreateBond(props: {ambitionIdPass: string}) {
             </button>
 
             {
-                <div className={`${menuOpen ? "" : "invisible" }`}>
+                <div className={`${menuOpen ? "" : "hidden" }`}>
                     <BondForm ambitionIdGet={props.ambitionIdPass} />
                 </div>
             }

@@ -28,7 +28,7 @@ export default function ViewBonds(props: {ambitionIdPass: string }) {
                 Bonds
             </button>
 
-            <div className={`${menuOpen ? "" : "invisible" }`}>
+            <div className={`${menuOpen ? "" : "hidden" }`}>
 
                 <button 
                 className="bg-gray-600 rounded-lg text-sm text-white p-1 m-1 border-solid border-l-indigo-800 border-r-indigo-800 border-t-purple-800 border-b-purple-800 border-2" 
@@ -36,7 +36,7 @@ export default function ViewBonds(props: {ambitionIdPass: string }) {
                 >
                    View Bonds 
                 </button>
-                <div className={`${viewOpen ? "" : "invisible" }`}>
+                <div className={`${viewOpen ? "" : "hidden" }`}>
                     <BondCards ambitionIdGet={props.ambitionIdPass} bondIdsGet={bondIDs} />
                 </div>
 
@@ -47,7 +47,7 @@ export default function ViewBonds(props: {ambitionIdPass: string }) {
                 >
                    Update Bonds 
                 </button>
-                <div className={`${updateOpen ? "" : "invisible" }`}>
+                <div className={`${updateOpen ? "" : "hidden" }`}>
                     <UpdateBond bondIdsGet={bondIDs} />
                 </div>
 
@@ -57,7 +57,7 @@ export default function ViewBonds(props: {ambitionIdPass: string }) {
                 >
                    Delete Bonds 
                 </button>
-                <div className={`${deleteOpen ? "" : "invisible" }`}>
+                <div className={`${deleteOpen ? "" : "hidden" }`}>
                     <DeleteBond bondIdsGet={bondIDs} />
                 </div>
 

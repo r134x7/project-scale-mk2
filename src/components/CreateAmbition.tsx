@@ -1,6 +1,5 @@
 import { Dialog, Listbox } from "@headlessui/react";
 import { useState } from "react";
-import { useSession } from "next-auth/react";
 import { api } from "../utils/api";
 
 export default function CreateAmbition() {
@@ -33,7 +32,9 @@ export default function CreateAmbition() {
                 Create Ambition
             </button> 
 
-            <div className={`${menuOpen ? "" : "invisible" }`}>
+            <div 
+            className={`${menuOpen ? "" : "hidden" }`}
+            >
                 <ModalForm />
             </div>
         </>
@@ -55,7 +56,7 @@ function ModalForm() {
         { id: 2, name: "Do nothing..."},
     ];
 
-    const [open, setOpen] = useState(true);
+    // const [open, setOpen] = useState(props.menu);
     const [ambitionName, setAmbitionName] = useState(ambitions?.[1]?.name ?? "ERROR")
     const [target, setTarget] = useState(0);
     const [plan, setPlan] = useState("");
@@ -98,17 +99,20 @@ function ModalForm() {
     };
 
     return (
-        <Dialog 
+        <>
+            
+        {/* <Dialog 
         className={"bg-stone-600 mt-2"}
-        open={open} onClose={() => setOpen(false)}
+        open={open} 
+        onClose={() => setOpen(false)}
         >
           <Dialog.Panel>
-            <Dialog.Title className={"text-white flex justify-center items-center"}>Create an Ambition</Dialog.Title>
+            <Dialog.Title className={"text-white flex justify-center items-center"}>Create an Ambition</Dialog.Title> */}
 
             {/* <form onSubmit={(event) => handleAmbitionSubmit(event)} */}
             {/* seemingly have to call the function like this due to the React.EventFormHandler<T> */}
             <form 
-            className="bg-slate-50 grid grid-cols-1"
+            className="bg-slate-50 grid grid-cols-1 border-2 border-black rounded-lg"
             onSubmit={(event) => { 
                 event.preventDefault()
                 handleAmbitionSubmit() }}
@@ -161,7 +165,8 @@ function ModalForm() {
             >
                 Cancel
             </button> */}
-          </Dialog.Panel>
-        </Dialog>
+          {/* </Dialog.Panel>
+        </Dialog> */}
+        </>
     )
 }

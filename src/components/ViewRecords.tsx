@@ -21,7 +21,7 @@ export default function ViewRecords(props: {ambitionIdPass: string}) {
                View Records 
             </button>
 
-            <div className={`${menuOpen ? "" : "invisible" }`}>
+            <div className={`${menuOpen ? "" : "hidden" }`}>
                 <RecordCards ambitionIdGet={props.ambitionIdPass} />
             </div>
         </>

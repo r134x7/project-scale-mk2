@@ -22,7 +22,7 @@ export default function ViewAmbitions() {
                 View Ambitions
             </button>
 
-            <div className={`${menuOpen ? "" : "invisible" }`}>
+            <div className={`${menuOpen ? "" : "hidden" }`}>
                 <AmbitionCards />
             </div>
         </>
