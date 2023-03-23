@@ -14,6 +14,11 @@ export default function ViewBonds(props: {ambitionIdPass: string }) {
         return [elem.id, elem.partnerId ?? "Empty", index.toString()]
     })
 
+    const checkEmptyBonds = bondIDs?.filter((value) => {
+                    // filtering out bonds that are already updated
+                    return value[1] === "Empty"
+                }).length
+
     const [menuOpen, setMenuOpen] = useState(false);
     const [updateOpen, setUpateOpen] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
@@ -42,7 +47,7 @@ export default function ViewBonds(props: {ambitionIdPass: string }) {
 
 
                 <button 
-                className="bg-gray-600 rounded-lg text-sm text-white p-1 m-1 border-solid border-l-indigo-800 border-r-indigo-800 border-t-purple-800 border-b-purple-800 border-2" 
+                className={`bg-gray-600 rounded-lg text-sm text-white p-1 m-1 border-solid border-l-indigo-800 border-r-indigo-800 border-t-purple-800 border-b-purple-800 border-2 ${checkEmptyBonds !== 0 ? "" : "hidden" }`} 
                 onClick={() => setUpateOpen(!updateOpen)}
                 >
                    Update Bonds 
@@ -216,6 +221,8 @@ function BondCards(props: {bondIdsGet: string[][] | undefined, ambitionIdGet: st
                         key={elem.id}
                         className={`border-black border grid grid-cols-1 justify-center items-end rounded-lg mt-2 ${index % 2 === 0 ? "bg-green-500 text-slate-50" : "bg-sky-500 text-slate-900"}`}
                     >
+                        Bonded with: {elem.userName}
+                        <br />
                         Ambition: {elem.name}
                         <br />
                         End value: {elem.endValue}kg
