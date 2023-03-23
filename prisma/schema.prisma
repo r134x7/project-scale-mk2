@@ -81,6 +81,7 @@ model Ambitions {
     bonds         Bonds[]
     user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId        String
+    userName      String?
 }
 
 // Will need to make sure to check project-scale how I dealt with getting the client's current time and not the SERVER TIME to make sure one record per day works

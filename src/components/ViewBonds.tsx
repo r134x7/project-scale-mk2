@@ -214,11 +214,11 @@ function BondCards(props: {bondIdsGet: string[][] | undefined, ambitionIdGet: st
                 return (
                     <div
                         key={elem.id}
-                        className={`border-black border flex justify-center items-end rounded-lg mt-2 ${index % 2 === 0 ? "bg-slate-500 text-slate-50" : "bg-sky-500 text-slate-900"}`}
+                        className={`border-black border grid grid-cols-1 justify-center items-end rounded-lg mt-2 ${index % 2 === 0 ? "bg-green-500 text-slate-50" : "bg-sky-500 text-slate-900"}`}
                     >
-
                         Ambition: {elem.name}
-                        End value: {elem.endValue}
+                        <br />
+                        End value: {elem.endValue}kg
                         <br />
 
                         {
@@ -226,7 +226,7 @@ function BondCards(props: {bondIdsGet: string[][] | undefined, ambitionIdGet: st
                                 return (
                                     <div
                                         key={value.id}
-                                        className={`border-black border flex justify-center items-end rounded-lg mt-2 ${secondIndex % 2 === 0 ? "bg-slate-500 text-slate-50" : "bg-sky-500 text-slate-900"}`}
+                                        className={`border-black border grid grid-cols-1 justify-center items-end rounded-lg mt-2 ${secondIndex % 2 === 0 ? "bg-slate-500 text-slate-50" : "bg-sky-500 text-slate-900"}`}
                                     >
                                         Date recorded: {value.createdAt.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                                         <br />

@@ -19,6 +19,7 @@ export const newAmbitionRouter = createTRPCRouter({
             name: input.name,
             endValue: input.endValue,
             dailyPlan: input.dailyPlan,
+            userName: ctx.session.user.name,
             },
         })
     }),
