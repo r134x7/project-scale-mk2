@@ -66,11 +66,11 @@ function AmbitionCards() {
                          <br />
                          <CreateRecord ambitionIdPass={elem.id} />
                          <br />
-                         <ViewRecords ambitionIdPass={elem.id} />
+                         <ViewRecords ambitionPass={elem} />
                          <br />
                          <CreateBond ambitionIdPass={elem.id} />
                          <br />
-                         <ViewBonds ambitionIdPass={elem.id} />
+                         <ViewBonds ambitionPass={elem} />
                          <br />
                     </div>
                 )

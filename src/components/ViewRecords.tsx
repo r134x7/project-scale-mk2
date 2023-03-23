@@ -1,7 +1,10 @@
-import { api } from "../utils/api";
+// import { api } from "../utils/api";
 import { useState } from "react";
+import type { Ambitions, Record } from "@prisma/client";
 
-export default function ViewRecords(props: {ambitionIdPass: string}) {
+export default function ViewRecords(props: {ambitionPass: Ambitions & {
+    record: Record[];
+}}) {
 
     /*
         create a button to view records
@@ -22,15 +25,19 @@ export default function ViewRecords(props: {ambitionIdPass: string}) {
             </button>
 
             <div className={`${menuOpen ? "" : "hidden" }`}>
-                <RecordCards ambitionIdGet={props.ambitionIdPass} />
+                <RecordCards ambitionGet={props.ambitionPass} />
             </div>
         </>
     )
 }
 
-function RecordCards(props: {ambitionIdGet: string}) {
+function RecordCards(props: {ambitionGet: Ambitions & {
+    record: Record[];
+}}) {
     
-    const { data } = api.newRecord.getRecords.useQuery({ ambitionId: props.ambitionIdGet }); 
+    // const { data } = api.newRecord.getRecords.useQuery({ ambitionId: props.ambitionIdGet }); 
+
+    const data = props.ambitionGet.record
 
     return (
         <>

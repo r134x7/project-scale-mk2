@@ -59,6 +59,9 @@ export const newAmbitionRouter = createTRPCRouter({
     return ctx.prisma.ambitions.findMany({
       where: {
         userId: ctx.session.user.id
+      },
+      include: {
+        record: true,
       }
     })
   }),
