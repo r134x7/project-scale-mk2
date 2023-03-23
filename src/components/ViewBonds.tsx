@@ -111,9 +111,9 @@ function UpdateBond(props: {bondIdsGet: string[][] | undefined}) {
                             handleBondUpdateSubmit(elem[0]) }}
                         >
 
-                        <label className="flex justify-center mt-2">Enter the ambition ID of the other person you will share a bond with:</label>
+                        <label className="flex justify-center mt-2 text-black">Enter the ambition ID of the other person you will share a bond with:</label>
                         <input 
-                            className="border-solid border-cyan-500 rounded-md border-4 m-2"
+                            className="border-solid border-cyan-500 rounded-md border-4 m-2 text-black"
                             onChange={(event) => setPartnerBondId(event.target.value)}
                             value={partnerBondId}
                         />
@@ -165,22 +165,24 @@ function DeleteBond(props: {bondIdsGet: string[][] | undefined}) {
                             className={`border-black border flex justify-center items-end rounded-lg mt-2 ${index % 2 === 0 ? "bg-slate-500 text-slate-50" : "bg-sky-500 text-slate-900"}`}
                         >
 
-
-                        <label className="flex justify-center mt-2">Enter the ambition ID within the quotes `&quot;`{elem[1]}`&quot;` to enable the delete button and then click delete:</label>
-                        <input 
-                            className="border-solid border-cyan-500 rounded-md border-4 m-2"
-                            onChange={(event) => setPartnerBondId(event.target.value)}
-                            value={partnerBondId}
-                        />
-
-                        <button 
-                            disabled={partnerBondId !== elem[1] ? true : false }
-                            className="m-2 rounded-md border-4 border-cyan-500 bg-sky-200 text-sky-900 font-bold"
-                            type="submit"
+                        <form
                             onSubmit={(event) => { 
                             event.preventDefault()
                             handleBondDeleteSubmit(elem[0]) }}
-                        >Delete</button>
+                        >
+                            <label className="flex justify-center mt-2">Enter the ambition ID within the quotes &quot;{elem[1]}&quot; to enable the delete button and then click delete:</label>
+                            <input 
+                                className="border-solid border-cyan-500 rounded-md border-4 m-2 text-black"
+                                onChange={(event) => setPartnerBondId(event.target.value)}
+                                value={partnerBondId}
+                            />
+
+                            <button 
+                                disabled={partnerBondId !== elem[1] ? true : false }
+                                className="disabled:opacity-25 disabled:border-gray-500 m-2 rounded-md border-4 border-cyan-500 bg-sky-200 text-sky-900 font-bold"
+                                type="submit"
+                            >Delete</button>
+                            </form>
                         </div>
                     )
                 })
