@@ -2,6 +2,8 @@ import { api } from "../utils/api"
 import { useState } from "react";
 import CreateRecord from "./CreateRecord";
 import ViewRecords from "./ViewRecords";
+import CreateBond from "./CreateBond";
+import ViewBonds from "./ViewBonds";
 
 export default function ViewAmbitions() {
 
@@ -65,7 +67,11 @@ function AmbitionCards() {
                          <CreateRecord ambitionIdPass={elem.id} />
                          <br />
                          <ViewRecords ambitionIdPass={elem.id} />
-                        
+                         <br />
+                         <CreateBond ambitionIdPass={elem.id} />
+                         <br />
+                         <ViewBonds ambitionIdPass={elem.id} />
+                         <br />
                     </div>
                 )
             })}
