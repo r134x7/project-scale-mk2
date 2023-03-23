@@ -1,14 +1,19 @@
+import type { Ambitions, Record } from "@prisma/client";
 import { useState } from "react";
 import { api } from "../utils/api"
 
-export default function ViewBonds(props: {ambitionIdPass: string }) {
+export default function ViewBonds(props: {ambitionPass: Ambitions & {
+    record: Record[];
+} }) {
 
     /*
         .............. 
         passing down the ambition and record data from viewAmbitions query
+
+        when viewing bonds... instead of viewing individual records... should use chart.js to generate line charts
     */
 
-    const { data } = api.newBond.getBonds.useQuery({ ambitionId: props.ambitionIdPass})
+    const { data } = api.newBond.getBonds.useQuery({ ambitionId: props.ambitionPass.id})
 
     const bondIDs: string[][] | undefined = data?.map((elem, index) => {
         return [elem.id, elem.partnerId ?? "Empty", index.toString()]
@@ -42,7 +47,7 @@ export default function ViewBonds(props: {ambitionIdPass: string }) {
                    View Bonds 
                 </button>
                 <div className={`${viewOpen ? "" : "hidden" }`}>
-                    <BondCards ambitionIdGet={props.ambitionIdPass} bondIdsGet={bondIDs} />
+                    <BondCards ambitionGet={props.ambitionPass} bondIdsGet={bondIDs} />
                 </div>
 
 
@@ -197,7 +202,9 @@ function DeleteBond(props: {bondIdsGet: string[][] | undefined}) {
 
 }
 
-function BondCards(props: {bondIdsGet: string[][] | undefined, ambitionIdGet: string}) {
+function BondCards(props: {bondIdsGet: string[][] | undefined, ambitionGet: Ambitions & {
+    record: Record[];
+}}) {
 
     const filteredBonds = props?.bondIdsGet?.filter((value) => {
                     // filtering out bonds that are not updated
@@ -210,7 +217,10 @@ function BondCards(props: {bondIdsGet: string[][] | undefined, ambitionIdGet: st
     
     const { data, error } = api.newAmbition.getManyAmbitionsByIds.useQuery({ id: filteredAmbitionIds })
 
-    console.log(error);
+    // console.log(error);
+
+    const userRecords = props.ambitionGet.record;
+
     
     return (
         <>
