@@ -11,6 +11,10 @@ export default function ViewAmbitions() {
         need to useQuery to fetch ambitions
 
         to make sure only one record can be recorded per day. need to check new Date() and compare it to new Date(recentRecord)
+
+        displaying: {
+            growth onion: to display growth in the form of ................ goals achieved which are layered on top of each other in an onion with the earliest growth at the center and latest growth at the edge.
+        }
     */
 
     const [menuOpen, setMenuOpen] = useState(false);

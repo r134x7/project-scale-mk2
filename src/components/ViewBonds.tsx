@@ -221,6 +221,26 @@ function BondCards(props: {bondIdsGet: string[][] | undefined, ambitionGet: Ambi
 
     const userRecords = props.ambitionGet.record;
 
+    /*
+        changing this to charts to make an easier summary.
+
+        should grab every bond to put everything into one chart, else, can also have one to one charts too and then a total as well... should use pagination to make it easier to not scroll down onto everything... 
+
+        displaying {
+            chart:
+            - need to check ambitions to make sure the Y-Axis values say the correct measurements
+            - displays user names
+            - ambitions names on title
+            
+            record:
+            - displays latest record from each user
+            - option to react to record
+            - need to add to API to mutate adding a reaction to a record
+
+            growth onion:
+            - similar to growth onion in personal ambitions but goals achieved with who you bond.
+        }
+    */
     
     return (
         <>
