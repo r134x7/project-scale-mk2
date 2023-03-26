@@ -1,16 +1,11 @@
-// import { api } from "../utils/api";
 import { useState } from "react";
 import type { Ambitions, Record } from "@prisma/client";
 
-export default function ViewRecords(props: {ambitionPass: Ambitions & {
+export default function ViewGrowth(props: {ambitionPass: Ambitions & {
     record: Record[];
 }}) {
 
     /*
-        create a button to view records
-
-        since I am not using Mantine this time and HeadlessUI does not have a calendar... 
-
         Now that I have a growth onion:
         - need to create a function that makes a nested span for every piece of growth that you've made.
         - need to think of a way to create a list of progressive points...
@@ -27,11 +22,11 @@ export default function ViewRecords(props: {ambitionPass: Ambitions & {
             className="bg-gray-600 rounded-lg text-sm text-white p-1 m-1 border-solid border-l-indigo-800 border-r-indigo-800 border-t-purple-800 border-b-purple-800 border-2" 
             onClick={() => setMenuOpen(!menuOpen)}
             >
-               View Records 
+               View Growth 
             </button>
 
             <div className={`${menuOpen ? "" : "hidden" }`}>
-                <RecordCards ambitionGet={props.ambitionPass} />
+                <GrowthOnion ambitionGet={props.ambitionPass} />
             </div>
             <div >
                <span className={`border bg-slate-500 rounded-full p-2 grid col-span-1 justify-items-stretch text-center`}>
@@ -52,36 +47,33 @@ export default function ViewRecords(props: {ambitionPass: Ambitions & {
     )
 }
 
-function RecordCards(props: {ambitionGet: Ambitions & {
+function GrowthOnion(props: {ambitionGet: Ambitions & {
     record: Record[];
 }}) {
     
-    // const { data } = api.newRecord.getRecords.useQuery({ ambitionId: props.ambitionIdGet }); 
+    const endValue = props.ambitionGet.endValue;
 
-    const data = props.ambitionGet.record
+    const startValue = props.ambitionGet.record[0]?.value;
+    
+    const latestValue = props.ambitionGet.record?.at(-1)?.value;
+
+    const progressValue = (startValue ?? 0) - (latestValue ?? 0)
+
+    // const data = props.ambitionGet.record
+
+    // need to get the target value from ambition and then the first record value which is the start value and then for weight loss: start value - end value * .2 to get 20% value... don't want to use 10% to give almost instant gratification
+    // having found a way to calculate this using array length, could have the option changing the growth values from 20% to 10%
+    const growthValues = Array.from({length:5},(v,i) => {
+
+        return (startValue === undefined)
+            ? []
+            : (endValue - startValue) * ((i+1) / length)
+    }).flat()
 
     return (
         <>
         {
-            data?.map((elem, index, array) => {
-                return (
-                    <div 
-                        key={elem.id}
-                        className={`border-black border flex justify-center items-end rounded-lg mt-2 ${index % 2 === 0 ? "bg-slate-500 text-slate-50" : "bg-sky-500 text-slate-900"}`}
-                    >
-                    Date recorded: {elem.createdAt.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-                    <br />
-                    Weight: {elem.value}kg 
-                    <br />
-                    Difference to previous record: {elem.value - (array?.at((index === 0 
-                        ? 0 
-                        : index-1))?.value ?? 0)}kg
-                    <br />
-                    Notes: {elem.journal} 
-                    <br />
-                    </div>
-                )
-            })
+
         }
         </>
     )
