@@ -4,6 +4,7 @@ import CreateRecord from "./CreateRecord";
 import ViewRecords from "./ViewRecords";
 import CreateBond from "./CreateBond";
 import ViewBonds from "./ViewBonds";
+import ViewGrowth from "./ViewGrowth";
 
 export default function ViewAmbitions() {
 
@@ -71,6 +72,8 @@ function AmbitionCards() {
                          <CreateRecord ambitionIdPass={elem.id} />
                          <br />
                          <ViewRecords ambitionPass={elem} />
+                         <br />
+                         <ViewGrowth ambitionPass={elem} />
                          <br />
                          <CreateBond ambitionIdPass={elem.id} />
                          <br />

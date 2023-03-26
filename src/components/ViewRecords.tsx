@@ -33,21 +33,6 @@ export default function ViewRecords(props: {ambitionPass: Ambitions & {
             <div className={`${menuOpen ? "" : "hidden" }`}>
                 <RecordCards ambitionGet={props.ambitionPass} />
             </div>
-            <div >
-               <span className={`border bg-slate-500 rounded-full p-2 grid col-span-1 justify-items-stretch text-center`}>
-                Test.................
-                    <span className={`border bg-slate-400 rounded-full p-2 grid col-span-1 justify-items-stretch text-center`}>What....................................................................
-                        <span className={`border bg-slate-300 rounded-full p-2 grid col-span-1 justify-items-stretch text-center`}>Very Long Sentence ............ 
-                            <span className={`border bg-slate-200 rounded-full p-2 grid col-span-1 justify-items-stretch text-center`}>surface?
-                                <span className={`border bg-slate-100 rounded-full p-2 grid col-span-1 justify-items-stretch text-center`}>or core?  .........
-                                </span>
-                            </span>
-                        </span>
-                    </span>
-                </span> 
-                
-                
-            </div>
         </>
     )
 }

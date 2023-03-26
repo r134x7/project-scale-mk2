@@ -28,21 +28,6 @@ export default function ViewGrowth(props: {ambitionPass: Ambitions & {
             <div className={`${menuOpen ? "" : "hidden" }`}>
                 <GrowthOnion ambitionGet={props.ambitionPass} />
             </div>
-            <div >
-               <span className={`border bg-slate-500 rounded-full p-2 grid col-span-1 justify-items-stretch text-center`}>
-                Test.................
-                    <span className={`border bg-slate-400 rounded-full p-2 grid col-span-1 justify-items-stretch text-center`}>What....................................................................
-                        <span className={`border bg-slate-300 rounded-full p-2 grid col-span-1 justify-items-stretch text-center`}>Very Long Sentence ............ 
-                            <span className={`border bg-slate-200 rounded-full p-2 grid col-span-1 justify-items-stretch text-center`}>surface?
-                                <span className={`border bg-slate-100 rounded-full p-2 grid col-span-1 justify-items-stretch text-center`}>or core?  .........
-                                </span>
-                            </span>
-                        </span>
-                    </span>
-                </span> 
-                
-                
-            </div>
         </>
     )
 }
@@ -57,7 +42,7 @@ function GrowthOnion(props: {ambitionGet: Ambitions & {
     
     const latestValue = props.ambitionGet.record?.at(-1)?.value;
 
-    const progressValue = (startValue ?? 0) - (latestValue ?? 0)
+    const progressValue = -((startValue ?? 0) - (latestValue ?? 0))
 
     // const data = props.ambitionGet.record
 
@@ -67,16 +52,25 @@ function GrowthOnion(props: {ambitionGet: Ambitions & {
 
         return (startValue === undefined)
             ? []
-            : (endValue - startValue) * ((i+1) / length)
+            : (endValue - startValue) * ((i+1) / 5)
     }).flat()
 
     // make a loop checking that the progress value is greater than the growth value to get the onionDepth
     const onionDepth = growthValues?.flatMap(elem => {
 
-        return (progressValue > elem)
+        console.log(progressValue < elem);
+        
+        return (progressValue < elem)
             ? elem
             : []
     })
+
+    // console.log(progressValue);
+    
+    // console.log(growthValues);
+    
+    console.log(onionDepth);
+    
 
     // need to figure out how to make this nested...
     /*
@@ -87,26 +81,26 @@ function GrowthOnion(props: {ambitionGet: Ambitions & {
             </span>
         </span>
     */
-    function recursiveOnion(depth: number[], index: number, onion: JSX.Element): JSX.Element {
+    function recursiveOnion(depth: number[], index: number, onion: JSX.Element, colorRange: number): JSX.Element {
 
-        if (index === depth.length - 1) {
+        if (depth?.[index] === undefined) {
             return onion
         } else {
-            onion = (
-                    <span className={`border bg-slate-500 rounded-full p-2 grid col-span-1 justify-items-stretch text-center`}>
-                        {depth[index]}kg
+            const newOnion = (
+                    <span className={`border bg-slate-${colorRange > 900 ? "900" : colorRange.toString()} rounded-full p-2 grid col-span-1 justify-items-stretch text-center text-white`}>
+                       Lost {depth[index]}kg
                         {onion}
                     </span>
             )
 
-            return recursiveOnion(depth, index + 1, onion)
+            return recursiveOnion(depth, index + 1, newOnion, colorRange + 100)
         }
     }
 
     return (
         <div>
         {
-            recursiveOnion(onionDepth, 0, <></>)
+            recursiveOnion(onionDepth, 0, <></>, 400)
         }
         {
             // onionDepth?.reduce((acc, next) => {
