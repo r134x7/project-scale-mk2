@@ -102,15 +102,6 @@ function GrowthOnion(props: {ambitionGet: Ambitions & {
         {
             recursiveOnion(onionDepth, 0, <></>, 400)
         }
-        {
-            // onionDepth?.reduce((acc, next) => {
-            //     return (
-            //         <span className={`border bg-slate-500 rounded-full p-2 grid col-span-1 justify-items-stretch text-center`}>
-            //             {next}kg
-            //         </span>
-            //     )
-            // }, <></>)
-        }
         </div>
     )
 }
