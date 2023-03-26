@@ -70,11 +70,53 @@ function GrowthOnion(props: {ambitionGet: Ambitions & {
             : (endValue - startValue) * ((i+1) / length)
     }).flat()
 
-    return (
-        <>
-        {
+    // make a loop checking that the progress value is greater than the growth value to get the onionDepth
+    const onionDepth = growthValues?.flatMap(elem => {
 
+        return (progressValue > elem)
+            ? elem
+            : []
+    })
+
+    // need to figure out how to make this nested...
+    /*
+        <span className={`border bg-slate-500 rounded-full p-2 grid col-span-1 justify-items-stretch text-center`}>
+            text
+            <span ...> 
+                nested text
+            </span>
+        </span>
+    */
+    function recursiveOnion(depth: number[], index: number, onion: JSX.Element): JSX.Element {
+
+        if (index === depth.length - 1) {
+            return onion
+        } else {
+            onion = (
+                    <span className={`border bg-slate-500 rounded-full p-2 grid col-span-1 justify-items-stretch text-center`}>
+                        {depth[index]}kg
+                        {onion}
+                    </span>
+            )
+
+            return recursiveOnion(depth, index + 1, onion)
         }
-        </>
+    }
+
+    return (
+        <div>
+        {
+            recursiveOnion(onionDepth, 0, <></>)
+        }
+        {
+            // onionDepth?.reduce((acc, next) => {
+            //     return (
+            //         <span className={`border bg-slate-500 rounded-full p-2 grid col-span-1 justify-items-stretch text-center`}>
+            //             {next}kg
+            //         </span>
+            //     )
+            // }, <></>)
+        }
+        </div>
     )
 }
