@@ -78,11 +78,10 @@ export default function ViewBonds(props: {ambitionPass: Ambitions & {
     )
 }
 
-function UpdateBond(props: {bondIdsGet: string[][] | undefined}) {
-    
+function UpdateBondInner(props: {bondId: string | undefined, bondIndex: string | undefined}) {
+
     const updateBondAPI = api.newBond.updateBond.useMutation();
 
-    // const [open, setOpen] = useState(true);
     const [partnerBondId, setPartnerBondId] = useState("")
 
     const handleBondUpdateSubmit = (bondId: string | undefined) => {
@@ -101,25 +100,18 @@ function UpdateBond(props: {bondIdsGet: string[][] | undefined}) {
         }
     };
 
-    return (
-        <>
-            {
-                props?.bondIdsGet?.filter((value) => {
-                    // filtering out bonds that are already updated
-                    return value[1] === "Empty"
-                })
-                .map((elem, index, array) => {
                     return (
                         <div
-                            key={elem[2]} 
-                            className={`border-black border flex justify-center items-end rounded-lg mt-2 ${index % 2 === 0 ? "bg-slate-500 text-slate-50" : "bg-sky-500 text-slate-900"}`}
+                            key={props.bondIndex} 
+                            className={`border-black border flex justify-center items-end rounded-lg mt-2 ${Number(props.bondIndex) % 2 === 0 ? "bg-slate-500 text-slate-50" : "bg-sky-500 text-slate-900"}`}
                         >
                         
                         <form 
                         className="bg-slate-50 grid grid-cols-1"
                         onSubmit={(event) => { 
                             event.preventDefault()
-                            handleBondUpdateSubmit(elem[0]) }}
+                            handleBondUpdateSubmit(props.bondId) 
+                        }}
                         >
 
                         <label className="flex justify-center mt-2 text-black">Enter the ambition ID of the other person you will share a bond with:</label>
@@ -138,6 +130,21 @@ function UpdateBond(props: {bondIdsGet: string[][] | undefined}) {
                         </form>
 
                         </div>
+                    )
+}
+
+function UpdateBond(props: {bondIdsGet: string[][] | undefined}) {
+
+    return (
+        <>
+            {
+                props?.bondIdsGet?.filter((value) => {
+                    // filtering out bonds that are already updated
+                    return value[1] === "Empty"
+                })
+                .map((elem, index, array) => {
+                    return (
+                        <UpdateBondInner key={elem[2]} bondId={elem[0]} bondIndex={elem[2]} />
                     )
                 })
             }        
