@@ -81,26 +81,51 @@ function GrowthOnion(props: {ambitionGet: Ambitions & {
             </span>
         </span>
     */
-    function recursiveOnion(depth: number[], index: number, onion: JSX.Element, colorRange: number): JSX.Element {
+
+    /*
+        there is possibly a runtime issue with tailwind where I cannot get the colour I want to use... 
+        
+        Works fine with slate colour probably because it's being used elsewhere.
+    */
+    function recursiveOnion(depth: number[], index: number, onion: JSX.Element, colorRange: string[]): JSX.Element {
 
         if (depth?.[index] === undefined) {
             return onion
         } else {
+
             const newOnion = (
-                    <span className={`border bg-slate-${colorRange > 900 ? "900" : colorRange.toString()} rounded-full p-2 grid col-span-1 justify-items-stretch text-center text-white`}>
+                    <span className={`border rounded-full p-2 grid col-span-1 justify-items-stretch text-center text-cyan-900`} style={{ backgroundColor: colorRange?.[index] ?? colorRange.at(-1)}}>
                        Lost {depth[index]}kg
                         {onion}
                     </span>
             )
 
-            return recursiveOnion(depth, index + 1, newOnion, colorRange + 100)
+            return recursiveOnion(depth, index + 1, newOnion, runtimeColours)
         }
     }
+
+    const runtimeColours = [
+        // "rgb(207 250 254)", // cyan-100 
+        "rgb(165 243 252)", // cyan-200
+        "rgb(103 232 249)", // cyan-300
+        "rgb(34 211 238)", // cyan-400
+        "rgb(6 182 212)", // cyan-500
+        "rgb(8 145 178)", // cyan-600
+        "rgb(14 116 144)", // cyan-700
+        "rgb(21 94 117)", // cyan-800 
+        "rgb(22 78 99)", // cyan-900 
+        "rgb(8 51 68)", // cyan-950
+    ]
 
     return (
         <div>
         {
-            recursiveOnion(onionDepth, 0, <></>, 400)
+            recursiveOnion(onionDepth, 0, 
+            // <></>, 
+            <span className={`border bg-cyan-100 rounded-full p-2 grid col-span-1 justify-items-stretch text-center text-cyan-900`}>
+                Beginning...
+                    </span>,
+            runtimeColours)
         }
         </div>
     )

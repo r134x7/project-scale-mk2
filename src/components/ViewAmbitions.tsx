@@ -63,11 +63,11 @@ function AmbitionCards() {
 
                 return (
                     <div key={elem.id} className={"border-2 rounded-lg grid grid-cols-1 "} >
-                         <p className="flex justify-center ">Ambition {index + 1}: {elem.name}</p> 
+                         <p className="flex justify-center border">Ambition {index + 1}: {elem.name}</p> 
                          <br />
-                         <p className="flex justify-center ">Target value: {elem.endValue}</p> 
+                         <p className="flex justify-center border">Target value: {elem.endValue}kg</p> 
                          <br />
-                         <p className="flex justify-center ">Daily Plan: {elem.dailyPlan}</p> 
+                         <p className="flex justify-center border">Daily Plan: {elem.dailyPlan}</p> 
                          <br />
                          <CreateRecord ambitionIdPass={elem.id} />
                          <br />
