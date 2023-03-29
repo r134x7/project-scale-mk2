@@ -87,37 +87,44 @@ function GrowthOnion(props: {ambitionGet: Ambitions & {
         
         Works fine with slate colour probably because it's being used elsewhere.
     */
-    function recursiveOnion(depth: number[], index: number, onion: JSX.Element, colorRange: string[]): JSX.Element {
+    function recursiveOnion(depth: number[], index: number, onion: JSX.Element, animate: number): JSX.Element {
 
         if (depth?.[index] === undefined) {
             return onion
         } else {
 
             const newOnion = (
-                    <span className={`border rounded-full p-2 grid col-span-1 justify-items-stretch text-center text-cyan-900`} 
-                    style={{ backgroundColor: colorRange?.[index] ?? colorRange.at(-1)}}
+                    <span className={`border rounded-full p-2 grid col-span-1 justify-items-stretch text-center text-cyan-900 
+                    ${animate === 1 
+                        ? "animate-colorChange3" 
+                        : animate === 2
+                        ? "animate-colorChange2"
+                        : "animate-colorChange1"
+                    }
+                    `} 
+                    // style={{ backgroundColor: colorRange?.[index] ?? colorRange.at(-1)}}
                     >
                        Lost {depth[index]}kg
                         {onion}
                     </span>
             )
 
-            return recursiveOnion(depth, index + 1, newOnion, runtimeColours)
+            return recursiveOnion(depth, index + 1, newOnion, (animate === 3 ? 1 : animate + 1))
         }
     }
 
-    const runtimeColours = [
-        // "rgb(207 250 254)", // cyan-100 
-        "rgb(165 243 252)", // cyan-200
-        "rgb(103 232 249)", // cyan-300
-        "rgb(34 211 238)", // cyan-400
-        "rgb(6 182 212)", // cyan-500
-        "rgb(8 145 178)", // cyan-600
-        "rgb(14 116 144)", // cyan-700
-        "rgb(21 94 117)", // cyan-800 
-        "rgb(22 78 99)", // cyan-900 
-        "rgb(8 51 68)", // cyan-950
-    ]
+    // const runtimeColours = [
+    //     // "rgb(207 250 254)", // cyan-100 
+    //     "rgb(165 243 252)", // cyan-200
+    //     "rgb(103 232 249)", // cyan-300
+    //     "rgb(34 211 238)", // cyan-400
+    //     "rgb(6 182 212)", // cyan-500
+    //     "rgb(8 145 178)", // cyan-600
+    //     "rgb(14 116 144)", // cyan-700
+    //     "rgb(21 94 117)", // cyan-800 
+    //     "rgb(22 78 99)", // cyan-900 
+    //     "rgb(8 51 68)", // cyan-950
+    // ]
 
     return (
         <div>
@@ -127,7 +134,7 @@ function GrowthOnion(props: {ambitionGet: Ambitions & {
             <span className={`border bg-cyan-100 rounded-full p-2 grid col-span-1 justify-items-stretch text-center text-cyan-900`}>
                 Beginning...
                     </span>,
-            runtimeColours)
+            1)
         }
         </div>
     )
