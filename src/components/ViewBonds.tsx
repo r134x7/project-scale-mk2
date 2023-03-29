@@ -16,6 +16,7 @@ export default function ViewBonds(props: {ambitionPass: Ambitions & {
     const { data } = api.newBond.getBonds.useQuery({ ambitionId: props.ambitionPass.id})
 
     const bondIDs: string[][] | undefined = data?.map((elem, index) => {
+        // [] containing bond id, partner ambition id or "Empty", index number
         return [elem.id, elem.partnerId ?? "Empty", index.toString()]
     })
 
@@ -144,11 +145,11 @@ function UpdateBond(props: {bondIdsGet: string[][] | undefined}) {
     )
 }
 
-function DeleteBond(props: {bondIdsGet: string[][] | undefined}) {
+function DeleteBondInner(props: {bondId: string | undefined, partnerId: string | undefined, bondIndex: string | undefined}) {
+
+    const [partnerBondId, setPartnerBondId] = useState("");
 
     const deleteBondAPI = api.newBond.deleteBond.useMutation();
-
-    const [partnerBondId, setPartnerBondId] = useState("")
 
     const handleBondDeleteSubmit = (bondId: string | undefined) => {
 
@@ -165,22 +166,19 @@ function DeleteBond(props: {bondIdsGet: string[][] | undefined}) {
         }
     };
 
-    return (
-        <>
-            {
-                props?.bondIdsGet?.map((elem, index, array) => {
                     return (
                         <div
-                            key={elem[2]} 
-                            className={`border-black border flex justify-center items-end rounded-lg mt-2 ${index % 2 === 0 ? "bg-slate-500 text-slate-50" : "bg-sky-500 text-slate-900"}`}
+                            key={props.bondIndex} 
+                            className={`border-black border flex justify-center items-end rounded-lg mt-2 ${Number(props.bondIndex) % 2 === 0 ? "bg-slate-500 text-slate-50" : "bg-sky-500 text-slate-900"}`}
                         >
 
                         <form
                             onSubmit={(event) => { 
                             event.preventDefault()
-                            handleBondDeleteSubmit(elem[0]) }}
+                            handleBondDeleteSubmit(props.bondId) 
+                            }}
                         >
-                            <label className="flex justify-center mt-2">Enter the ambition ID within the quotes &quot;{elem[1]}&quot; to enable the delete button and then click delete:</label>
+                            <label className="flex justify-center mt-2">Enter the ambition ID within the quotes &quot;{props.partnerId}&quot; to enable the delete button and then click delete:</label>
                             <input 
                                 className="border-solid border-cyan-500 rounded-md border-4 m-2 text-black"
                                 onChange={(event) => setPartnerBondId(event.target.value)}
@@ -188,12 +186,28 @@ function DeleteBond(props: {bondIdsGet: string[][] | undefined}) {
                             />
 
                             <button 
-                                disabled={partnerBondId !== elem[1] ? true : false }
+                                disabled={partnerBondId !== props.partnerId ? true : false }
                                 className="disabled:opacity-25 disabled:border-gray-500 m-2 rounded-md border-4 border-cyan-500 bg-sky-200 text-sky-900 font-bold"
                                 type="submit"
                             >Delete</button>
                             </form>
                         </div>
+                    )
+}
+
+function DeleteBond(props: {bondIdsGet: string[][] | undefined}) {
+
+    /*
+        Had to create an inner component for Delete Bond to ensure that each item in the array has an independent useState for the form data otherwise each item ends up having the same data when typing into one of them.
+    */
+
+    return (
+        <>
+            {
+                props?.bondIdsGet?.map((elem, index, array) => {
+
+                    return (
+                        <DeleteBondInner bondId={elem[0]} partnerId={elem[1]} bondIndex={elem[2]} key={elem[2]} />
                     )
                 })
             } 

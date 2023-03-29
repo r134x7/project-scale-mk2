@@ -40,6 +40,7 @@ function BondForm(props: {ambitionIdGet: string}) {
     const bondAPI = api.newBond.createBond.useMutation();
 
     // const [open, setOpen] = useState(true);
+    const [lock, setLock] = useState(false);
 
     // make a simple modal with instructions for how to create and use a bond... 
     // after creating a bond, then I need to make another form for updating the bond when viewing that bond.
@@ -55,6 +56,7 @@ function BondForm(props: {ambitionIdGet: string}) {
             
         }
 
+        setLock(true)
         // setOpen(false);
     };
 
@@ -67,7 +69,6 @@ function BondForm(props: {ambitionIdGet: string}) {
                     handleBondSubmit() }}
             >
 
-            <p className="flex justify-center" >
                 <ol>
                     To create a bond with another user:
                     <li>
@@ -83,9 +84,10 @@ function BondForm(props: {ambitionIdGet: string}) {
                     <li>7) Enter the ID into form for Update Bond and update the bond.</li>
                     <li>8) You will then be able to view the ambition and records of the other person.</li>
                 </ol>
-            </p>
+
                 <button 
-                    className="m-2 pl-2 pr-2 rounded-md border-4 border-cyan-500 bg-sky-200 text-sky-900 font-bold"
+                    className={`m-2 pl-2 pr-2 rounded-md border-4 border-cyan-500 bg-sky-200 text-sky-900 font-bold ${lock === true ? "disabled:opacity-25" : ""}`}
+                    disabled={lock === true}
                     type="submit"
                     // onSubmit={(event) => { 
                     //     event.preventDefault()
