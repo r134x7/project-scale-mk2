@@ -94,7 +94,9 @@ function GrowthOnion(props: {ambitionGet: Ambitions & {
         } else {
 
             const newOnion = (
-                    <span className={`border rounded-full p-2 grid col-span-1 justify-items-stretch text-center text-cyan-900`} style={{ backgroundColor: colorRange?.[index] ?? colorRange.at(-1)}}>
+                    <span className={`border rounded-full p-2 grid col-span-1 justify-items-stretch text-center text-cyan-900`} 
+                    style={{ backgroundColor: colorRange?.[index] ?? colorRange.at(-1)}}
+                    >
                        Lost {depth[index]}kg
                         {onion}
                     </span>
