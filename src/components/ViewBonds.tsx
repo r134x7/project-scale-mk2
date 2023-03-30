@@ -11,6 +11,11 @@ export default function ViewBonds(props: {ambitionPass: Ambitions & {
         passing down the ambition and record data from viewAmbitions query
 
         when viewing bonds... instead of viewing individual records... should use chart.js to generate line charts
+
+        next steps:
+        - need to apply charts in view bonds and view records?
+        - need to apply text length validation in form for create record and create ambition...
+        - re-query things after doing a mutation
     */
 
     const { data } = api.newBond.getBonds.useQuery({ ambitionId: props.ambitionPass.id})

@@ -144,11 +144,12 @@ function ModalForm() {
                 />
 
 
-                <label className="flex justify-center mt-2">Write a daily plan for achieving your ambition:</label>
+                <label className="flex justify-center mt-2">Write a daily plan for achieving your ambition: (max 1000 characters)</label>
                 <textarea  
                     className="border-solid border-cyan-500 rounded-md border-4 m-2"
                     onChange={(event) => setPlan(event.target.value)}
                     value={plan}
+                    maxLength={1000}
                 />
 
                 <button 

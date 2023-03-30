@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { api } from "../utils/api";
+import { z } from "zod";
 
 export default function CreateRecord(props: {ambitionIdPass: string}) {
 
@@ -99,11 +100,12 @@ function RecordModal(props: {ambitionIdGet: string}) {
                     value={inputValue}
                 />
 
-                <label className="flex justify-center mt-2">Journal for today:</label>
+                <label className="flex justify-center mt-2">Journal for today: (max 200 characters)</label>
                 <textarea  
                     className="border-solid border-cyan-500 rounded-md border-4 m-2"
                     onChange={(event) => setNotes(event.target.value)}
                     value={notes}
+                    maxLength={200}
                 />
 
                 <button 
