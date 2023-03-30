@@ -1,10 +1,10 @@
 import { useSession } from "next-auth/react"
+import { api } from "../utils/api";
 import CreateAmbition from "../components/CreateAmbition";
 import ViewAmbitions from "../components/ViewAmbitions";
 
 export default function User() {
 
-    const { data: sessionData } = useSession();
 
     // need to have session: user signed in
     // create a new ambition 
@@ -63,12 +63,22 @@ export default function User() {
             - account settings (deleting user account? delete ambitions? )
     */
 
+    const { data: sessionData } = useSession();
+
+    const { data: ambitionData } = api.newAmbition.getAmbitions.useQuery();
+
     return (
         (sessionData)
         ? <div className={"grid grid-cols-1 gap-y-2  justify-center items-center"}>
             Welcome, {sessionData.user?.name ?? "ERROR"}.
             <CreateAmbition />
-            <ViewAmbitions />
+            {
+                ambitionData?.map((elem, index) => {
+                    return (
+                        <ViewAmbitions ambitionPass={elem} index={index + 1} key={elem.id} />
+                    )
+                })
+            }
         </div>
         : <div>
             You need to sign in to view this page.
