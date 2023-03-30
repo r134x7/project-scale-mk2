@@ -2,6 +2,10 @@ import type { Ambitions, Record } from "@prisma/client";
 import { useState } from "react";
 import { api } from "../utils/api"
 
+import { Line } from "react-chartjs-2";
+import { Chart, registerables } from 'chart.js'; // required to actually get chart.js with react-chartjs-2 to work
+Chart.register(...registerables); // to get the package working, source: https://www.chartjs.org/docs/next/getting-started/integration.html
+
 export default function ViewBonds(props: {ambitionPass: Ambitions & {
     record: Record[];
 } }) {
@@ -244,8 +248,17 @@ function BondCards(props: {bondIdsGet: string[][] | undefined, ambitionGet: Ambi
     const { data, error } = api.newAmbition.getManyAmbitionsByIds.useQuery({ id: filteredAmbitionIds })
 
     // console.log(error);
+    const userRecords = props.ambitionGet;
 
-    const userRecords = props.ambitionGet.record;
+    const userRecordsLength = props.ambitionGet.record.length;
+
+    const dataRecordsLength = data?.map(elem => {
+        return elem.record.length
+    }) ?? [0];
+
+    const maxRecordLength = Math.max(userRecordsLength, ...dataRecordsLength)
+
+
 
     /*
         changing this to charts to make an easier summary.
@@ -270,7 +283,60 @@ function BondCards(props: {bondIdsGet: string[][] | undefined, ambitionGet: Ambi
     
     return (
         <>
+            <Line 
+                datasetIdKey="Record Data"
+                data={{
+                    labels: Array.from({length:maxRecordLength}, (v,i) => i + 1),
+                    datasets: [
+                        {
+                            data: userRecords.record.map(elem => elem.value),
+                            label: `${userRecords.name} - ${userRecords.userName ?? "Error"}`,
+                            pointBorderColor: "black",
+                        },
+                        data?.map((elem, index) => {
+
+                            const colors = [
+                                "red",
+                                "green",
+                                "orange",
+                                "purple",
+                                "pink",
+                                "brown",
+                            ];
+
+                            return {
+                                    data: elem.record.map(value => value.value),
+                                    label: `${elem.name} - ${elem.userName ?? "Error"}`,
+                                    borderColor: colors[index],
+                                    backgroundColor: colors[index],
+                                    pointBorderColor: "black",
+                            }
+                        }) ?? {
+                         data: [0, 1],
+                         label: "Error",
+                        }
+                    ].flat()
+                }}
+
+                options={{
+                    scales: {
+                        y: {
+                            title: {
+                                display: true,
+                                text: "Weight in kilograms (kg)"
+                            },
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: "Days recorded"
+                            }
+                        }
+                    }
+                }}
+            />
         {
+
             data?.map((elem, index) => {
                 return (
                     <div
