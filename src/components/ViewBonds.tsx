@@ -301,7 +301,8 @@ function BondCards(props: {bondIdsGet: string[][] | undefined, ambitionGet: Ambi
                                 "orange",
                                 "purple",
                                 "pink",
-                                "brown",
+                                "crimson",
+                                "silver",
                             ];
 
                             return {

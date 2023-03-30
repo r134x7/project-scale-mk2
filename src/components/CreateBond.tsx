@@ -39,6 +39,10 @@ function BondForm(props: {ambitionIdGet: string}) {
 
     const bondAPI = api.newBond.createBond.useMutation();
 
+    const { data } = api.newBond.getBonds.useQuery({ ambitionId: props.ambitionIdGet});
+
+    const bondsLength = data?.length ?? Infinity;
+
     // const [open, setOpen] = useState(true);
     const [lock, setLock] = useState(false);
 
@@ -69,6 +73,10 @@ function BondForm(props: {ambitionIdGet: string}) {
                     handleBondSubmit() }}
             >
 
+                <p>Number of Bonds tied to this ambition: {bondsLength}</p>
+                <br />
+                <p>Max number of Bonds: 7</p>
+                <br />
                 <ol>
                     To create a bond with another user:
                     <li>
@@ -86,8 +94,8 @@ function BondForm(props: {ambitionIdGet: string}) {
                 </ol>
 
                 <button 
-                    className={`m-2 pl-2 pr-2 rounded-md border-4 border-cyan-500 bg-sky-200 text-sky-900 font-bold ${lock === true ? "disabled:opacity-25" : ""}`}
-                    disabled={lock === true}
+                    className={`m-2 pl-2 pr-2 rounded-md border-4 border-cyan-500 bg-sky-200 text-sky-900 font-bold ${bondsLength >= 7 || lock === true ? "disabled:opacity-25" : ""}`}
+                    disabled={bondsLength >= 7 || lock === true}
                     type="submit"
                     // onSubmit={(event) => { 
                     //     event.preventDefault()
