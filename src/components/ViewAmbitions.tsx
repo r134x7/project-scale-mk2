@@ -77,8 +77,6 @@ function AmbitionCards(props: {ambitionGet:
                          <br />
                          <ViewGrowth ambitionPass={props.ambitionGet} />
                          <br />
-                         <CreateBond ambitionIdPass={props.ambitionGet.id} />
-                         <br />
                          <ViewBonds ambitionPass={props.ambitionGet} />
                          <br />
                     </div>

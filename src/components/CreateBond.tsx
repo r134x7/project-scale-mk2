@@ -22,7 +22,7 @@ export default function CreateBond(props: {ambitionIdPass: string}) {
     return (
         <>
             <button 
-            className="bg-gray-600 border-solid border-4 border-zinc-300 rounded-lg text-white"
+            className="bg-gray-600 rounded-lg text-sm text-white p-1 m-1 border-solid border-l-indigo-800 border-r-indigo-800 border-t-purple-800 border-b-purple-800 border-2"
             onClick={() => setMenuOpen(!menuOpen)}
             >
                 Create Bond
@@ -65,7 +65,7 @@ function BondForm(props: {ambitionIdGet: string}) {
     };
 
     return (
-        <div>
+        <div >
 
             <form 
                 onSubmit={(event) => { 

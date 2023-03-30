@@ -4,6 +4,7 @@ import { api } from "../utils/api"
 
 import { Line } from "react-chartjs-2";
 import { Chart, registerables } from 'chart.js'; // required to actually get chart.js with react-chartjs-2 to work
+import CreateBond from "./CreateBond";
 Chart.register(...registerables); // to get the package working, source: https://www.chartjs.org/docs/next/getting-started/integration.html
 
 export default function ViewBonds(props: {ambitionPass: Ambitions & {
@@ -49,6 +50,7 @@ export default function ViewBonds(props: {ambitionPass: Ambitions & {
             </button>
 
             <div className={`${menuOpen ? "" : "hidden" }`}>
+                <CreateBond ambitionIdPass={props.ambitionPass.id} />
 
                 <button 
                 className="bg-gray-600 rounded-lg text-sm text-white p-1 m-1 border-solid border-l-indigo-800 border-r-indigo-800 border-t-purple-800 border-b-purple-800 border-2" 
