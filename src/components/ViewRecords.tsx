@@ -2,6 +2,10 @@
 import { useState } from "react";
 import type { Ambitions, Record } from "@prisma/client";
 
+import { Line, Bar } from "react-chartjs-2";
+import { Chart, registerables } from 'chart.js'; // required to actually get chart.js with react-chartjs-2 to work
+Chart.register(...registerables); // to get the package working, source: https://www.chartjs.org/docs/next/getting-started/integration.html
+
 export default function ViewRecords(props: {ambitionPass: Ambitions & {
     record: Record[];
 }}) {
@@ -31,6 +35,7 @@ export default function ViewRecords(props: {ambitionPass: Ambitions & {
             </button>
 
             <div className={`${menuOpen ? "" : "hidden" }`}>
+                <LineGraph ambitionGet={props.ambitionPass}/>
                 <RecordCards ambitionGet={props.ambitionPass} />
             </div>
         </>
@@ -68,6 +73,49 @@ function RecordCards(props: {ambitionGet: Ambitions & {
                 )
             })
         }
+        </>
+    )
+}
+
+function LineGraph(props: {ambitionGet: Ambitions & {
+    record: Record[];
+}}) {
+
+    const ambitionData = props.ambitionGet;
+
+    const recordData = props.ambitionGet.record;
+
+    return (
+        <>
+            <Line 
+                datasetIdKey="Record Data"
+                data={{
+                    labels: recordData?.map((elem, index) => index.toString()) ?? ["0"],
+                    datasets: [
+                        {
+                            data: recordData?.map(elem => elem.value) ?? [0],
+                            label: ambitionData.name,
+                        },
+                    ],
+                }}
+
+                options={{
+                    scales: {
+                        y: {
+                            title: {
+                                display: true,
+                                text: "Weight in kilograms (kg)"
+                            },
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: "Days recorded"
+                            }
+                        }
+                    }
+                }}
+            />
         </>
     )
 }
