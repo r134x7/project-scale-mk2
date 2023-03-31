@@ -77,7 +77,24 @@ export const newAmbitionRouter = createTRPCRouter({
           id: input.id,
         }
       })
-    })
+    }),
   
   // UPDATE
+  updateAmbitions: protectedProcedure
+    .input(z.object({
+      id: z.string(),
+      endValue: z.number(),
+      dailyPlan: z.string(),
+    }))
+    .mutation(({ input, ctx }) => {
+      return ctx.prisma.ambitions.update({
+        where: {
+          id: input.id
+        },
+        data: {
+          endValue: input.endValue,
+          dailyPlan: input.dailyPlan,
+        }
+      })
+    })
 });
