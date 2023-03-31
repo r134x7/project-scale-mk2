@@ -1,9 +1,10 @@
 import { Dialog, Listbox } from "@headlessui/react";
 import { useState, useReducer, createContext, useContext, useEffect } from "react";
 import { api } from "../utils/api";
-import { menuContext } from "../pages/user";
+import type { Dispatch, SetStateAction } from "react";
 
-// const menuContext = createContext<undefined | boolean>(undefined);
+// const MenuContext = createContext< Dispatch<SetStateAction<boolean>>>(() => (true));
+// const MenuContext = createContext<any>(undefined);
 // console.log(menuContext);
 
 
@@ -11,7 +12,7 @@ function reducer(state: {close: boolean}, action: {type: string}) {
     if (action.type === "close_menu") {
         return {
             ...state,
-            close: !state.close
+            close: !state.close,
         };
     }
 
@@ -20,7 +21,6 @@ function reducer(state: {close: boolean}, action: {type: string}) {
 
 export default function CreateAmbition() {
 
-    // const [state, dispatch] = useReducer(reducer, { close: false })
 
     /*
         have to use a useQuery for the categories kept in the database
@@ -40,37 +40,31 @@ export default function CreateAmbition() {
 
     */
 
-    const menuValue = useContext(menuContext)
-
-    const [menuOpen, setMenuOpen] = useState(menuValue);
+    // const [menuOpen, setMenuOpen] = useState(state.close);
+    const [state, dispatch] = useReducer(reducer, { close: false })
 
     return (
         <>
             <button 
             className="bg-gray-600 border-solid border-4 border-zinc-300 rounded-lg text-white"
-            onClick={() => setMenuOpen(!menuOpen)}
+            // onClick={() => setMenuOpen(!menuOpen)}
+            onClick={() => dispatch({ type: "close_menu"})}
             >
-                Create Ambition
+                Create Ambition 
             </button> 
-            <div 
-            className={`${menuOpen ? "" : "hidden" }`}
-            >
-                <ModalForm />
-            </div>
+            {/* <div  */}
+            {/* className={`${menuOpen ? "" : "hidden" }`} */}
+            {/* > */}
+                <ModalForm menuOpen={state.close} dispatch={dispatch} />
+            {/* </div> */}
         </>
     )
 }
 
-function ModalForm() {
+function ModalForm(props: {menuOpen: boolean, dispatch: Dispatch<{
+    type: string;
+}>}) {
 
-    const [state, dispatch] = useReducer(reducer, { close: false });
-
-    // const hello = api.example.hello.useQuery({ text: "from tRPC" });
-
-    // to retrieve user id.
-    // const { data: sessionData } = useSession();
-    
-    // you have to call useMutation here i.e. the top level of the function. do not call it inside handleAmbitionSubmit else it errors due to invalid hook call - rule of hooks error
     const ambitionAPI = api.newAmbition.createAmbition.useMutation();
 
     const ambitions = [
@@ -85,51 +79,28 @@ function ModalForm() {
 
     // code reused from project-scale
     const handleAmbitionSubmit = () => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        // event.preventDefault();
-
-        
-    // const testAPI = api.newAmbition.createAmbition.useMutation()
         
         try {
-            // api.newAmbition.createAmbition.useMutation().mutate({
-            ambitionAPI.mutate({
-                name: ambitionName,
-                endValue: target,
-                dailyPlan: plan,
-            })
-
-            
-            // addAmbition is a useMutation
-            // const { data } = await addAmbition({
-            //     variables: {
-            //         id: sessionData?.user.id
-            //         category: ambition,
-            //         dailyPlan: dailyPlan,
-            //         endValue: endValue,
-            //     },
-            // });
+                ambitionAPI.mutate({
+                    name: ambitionName,
+                    endValue: target,
+                    dailyPlan: plan,
+                })
             } catch (error) {
                 console.log(error);
             }
 
-            // setDailyPlan("");
-            // setEndValue("");
-            // setOpenNewAmbition((o) => (!o));
-            // setOpen(false)
-            
-            // need to set up useReducer and useDispatch to dispatch to user to trigger a re-render to query ambitions again
-            dispatch({
+            setAmbitionName(ambitions?.[1]?.name ?? "ERROR");
+            setTarget(0);
+            setPlan("");
+            props.dispatch({
                 type: "close_menu",
             })
-            // useContext(
-            //     state.close
-            // )
     };
 
 
     return (
-        <>
+        <div className={`${props.menuOpen ? "" : "hidden" }`}>
             
         {/* <Dialog 
         className={"bg-stone-600 mt-2"}
@@ -198,6 +169,6 @@ function ModalForm() {
             </button> */}
           {/* </Dialog.Panel>
         </Dialog> */}
-        </>
+        </div>
     )
 }
