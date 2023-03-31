@@ -1,10 +1,30 @@
 import { useSession } from "next-auth/react"
 import { api } from "../utils/api";
+import { useReducer, useContext, createContext } from "react";
 import CreateAmbition from "../components/CreateAmbition";
 import ViewAmbitions from "../components/ViewAmbitions";
 
+export const menuContext = createContext<undefined | boolean>(undefined);
+console.log(menuContext);
+
+
+function reducer(state: {close: boolean}, action: {type: string}) {
+    if (action.type === "close_menu") {
+        return {
+            ...state,
+            close: !state.close
+        };
+    }
+
+    throw Error("Oops.");
+}
+            
+
+
 export default function User() {
 
+
+    const [state, dispatch] = useReducer(reducer, { close: false })
 
     // need to have session: user signed in
     // create a new ambition 
@@ -71,7 +91,10 @@ export default function User() {
         (sessionData)
         ? <div className={"grid grid-cols-1 gap-y-2  justify-center items-center"}>
             Welcome, {sessionData.user?.name ?? "ERROR"}.
-            <CreateAmbition />
+
+            <menuContext.Provider value={state.close} >
+                <CreateAmbition />
+            </menuContext.Provider>
             {
                 ambitionData?.map((elem, index) => {
                     return (

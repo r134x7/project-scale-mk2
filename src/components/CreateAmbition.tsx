@@ -1,8 +1,26 @@
 import { Dialog, Listbox } from "@headlessui/react";
-import { useState } from "react";
+import { useState, useReducer, createContext, useContext, useEffect } from "react";
 import { api } from "../utils/api";
+import { menuContext } from "../pages/user";
+
+// const menuContext = createContext<undefined | boolean>(undefined);
+// console.log(menuContext);
+
+
+function reducer(state: {close: boolean}, action: {type: string}) {
+    if (action.type === "close_menu") {
+        return {
+            ...state,
+            close: !state.close
+        };
+    }
+
+    throw Error("Oops.");
+}
 
 export default function CreateAmbition() {
+
+    // const [state, dispatch] = useReducer(reducer, { close: false })
 
     /*
         have to use a useQuery for the categories kept in the database
@@ -21,7 +39,10 @@ export default function CreateAmbition() {
         have to put the form inside the modal, the form needs onSubmit.
 
     */
-   const [menuOpen, setMenuOpen] = useState(false);
+
+    const menuValue = useContext(menuContext)
+
+    const [menuOpen, setMenuOpen] = useState(menuValue);
 
     return (
         <>
@@ -31,7 +52,6 @@ export default function CreateAmbition() {
             >
                 Create Ambition
             </button> 
-
             <div 
             className={`${menuOpen ? "" : "hidden" }`}
             >
@@ -42,6 +62,8 @@ export default function CreateAmbition() {
 }
 
 function ModalForm() {
+
+    const [state, dispatch] = useReducer(reducer, { close: false });
 
     // const hello = api.example.hello.useQuery({ text: "from tRPC" });
 
@@ -96,7 +118,15 @@ function ModalForm() {
             // setOpenNewAmbition((o) => (!o));
             // setOpen(false)
             
+            // need to set up useReducer and useDispatch to dispatch to user to trigger a re-render to query ambitions again
+            dispatch({
+                type: "close_menu",
+            })
+            // useContext(
+            //     state.close
+            // )
     };
+
 
     return (
         <>
