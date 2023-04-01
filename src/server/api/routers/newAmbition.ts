@@ -34,6 +34,9 @@ export const newAmbitionRouter = createTRPCRouter({
           where: {
             id: input.id,
           },
+          include: {
+            record: true,
+          }
         })
     }),
 

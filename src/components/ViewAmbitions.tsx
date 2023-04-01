@@ -117,7 +117,7 @@ function AmbitionCards(props: {ambitionGet:
                          <br />
                          <ViewRecords ambitionPass={props.ambitionGet} recordsGet={state.records} />
                          <br />
-                         {/* <ViewGrowth ambitionPass={props.ambitionGet} /> */}
+                         <ViewGrowth ambitionPass={props.ambitionGet} />
                          <br />
                          {/* <ViewBonds ambitionPass={props.ambitionGet} /> */}
                          <br />

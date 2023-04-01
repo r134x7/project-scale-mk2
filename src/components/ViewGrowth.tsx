@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { api } from "../utils/api";
 import type { Ambitions, Record } from "@prisma/client";
 
-export default function ViewGrowth(props: {ambitionPass: Ambitions & {
-    record: Record[];
-}}) {
+export default function ViewGrowth(props: {ambitionPass: Ambitions 
+    // & {
+    // record: Record[];
+    // }
+}) {
 
     /*
         Now that I have a growth onion:
@@ -32,15 +35,23 @@ export default function ViewGrowth(props: {ambitionPass: Ambitions & {
     )
 }
 
-function GrowthOnion(props: {ambitionGet: Ambitions & {
-    record: Record[];
-}}) {
+function GrowthOnion(props: {ambitionGet: Ambitions 
+    // & {
+    // record: Record[];
+    // }
+}) {
+
+    const { data } = api.newRecord.getRecords.useQuery({ ambitionId: props.ambitionGet.id});
     
     const endValue = props.ambitionGet.endValue;
 
-    const startValue = props.ambitionGet.record[0]?.value;
+    // const startValue = props.ambitionGet.record[0]?.value;
     
-    const latestValue = props.ambitionGet.record?.at(-1)?.value;
+    // const latestValue = props.ambitionGet.record?.at(-1)?.value;
+
+    const startValue = data?.[0]?.value;
+
+    const latestValue = data?.at(-1)?.value;
 
     const progressValue = -((startValue ?? 0) - (latestValue ?? 0))
 
@@ -48,11 +59,11 @@ function GrowthOnion(props: {ambitionGet: Ambitions & {
 
     // need to get the target value from ambition and then the first record value which is the start value and then for weight loss: start value - end value * .2 to get 20% value... don't want to use 10% to give almost instant gratification
     // having found a way to calculate this using array length, could have the option changing the growth values from 20% to 10%
-    const growthValues = Array.from({length:5},(v,i) => {
+    const growthValues = Array.from({length:20},(v,i) => {
 
         return (startValue === undefined)
             ? []
-            : (endValue - startValue) * ((i+1) / 5)
+            : (endValue - startValue) * ((i+1) / 20)
     }).flat()
 
     // make a loop checking that the progress value is greater than the growth value to get the onionDepth
