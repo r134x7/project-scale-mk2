@@ -52,7 +52,14 @@ function RecordModal(props: {ambitionIdGet: string,
     }>
 }) {
 
-    const writeRecord = api.newRecord.createRecord.useMutation();
+    const writeRecord = api.newRecord.createRecord.useMutation({
+        onSuccess(data) {
+            props.dispatch({
+                type: "concat",
+                payload: data,
+            })
+        },
+    });
 
 
     // const [open, setOpen] = useState(true);

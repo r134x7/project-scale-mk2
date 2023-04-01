@@ -29,6 +29,8 @@ export default function ViewRecords(props: {ambitionPass: Ambitions //& {
 
     const { data: recordData } = api.newRecord.getRecords.useQuery({ ambitionId: props.ambitionPass.id })
 
+    const concatData = recordData?.concat(props.recordsGet);
+
     return (
         <>
             <button 
@@ -39,8 +41,8 @@ export default function ViewRecords(props: {ambitionPass: Ambitions //& {
             </button>
 
             <div className={`${menuOpen ? "" : "hidden" }`}>
-                <LineGraph ambitionGet={props.ambitionPass} recordGet={recordData} />
-                <RecordCards recordsGet={recordData} />
+                <LineGraph ambitionGet={props.ambitionPass} recordGet={concatData} />
+                <RecordCards recordsGet={concatData} />
             </div>
         </>
     )
@@ -61,7 +63,7 @@ function RecordCards(props: {
         <>
         {
             // data?.map((elem, index, array) => {
-            props.recordsGet?.map((elem, index, array) => {
+            props.recordsGet?.flatMap((elem, index, array) => {
                 return (
                     <div 
                         key={elem.id}
@@ -100,10 +102,10 @@ function LineGraph(props: {ambitionGet: Ambitions //& {
             <Line 
                 datasetIdKey="Record Data"
                 data={{
-                    labels: props.recordGet?.map((elem, index) => index.toString()) ?? ["0"],
+                    labels: props.recordGet?.flatMap((elem, index) => index.toString()) ?? ["0"],
                     datasets: [
                         {
-                            data: props.recordGet?.map(elem => elem.value) ?? [0],
+                            data: props.recordGet?.flatMap(elem => elem.value) ?? [0],
                             label: ambitionData.name,
                         },
                     ],
