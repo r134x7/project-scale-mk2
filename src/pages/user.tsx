@@ -16,6 +16,18 @@ function reducer(state: {ambitions: Ambitions[]}, action: {type: string, payload
     throw Error("Oops.");
 }
 
+// need reducer here for deleting ambitions
+function deleteReducer(state: {ambitionId: string[]}, action: {type: string, payload: string}) {
+    if (action.type === "delete") {
+        return {
+            ...state,
+            ambitionId: state.ambitionId.concat(action.payload),
+        }
+    }
+
+    throw Error("Oops.");
+}
+
 export default function User() {
 
     // need to have session: user signed in
@@ -88,6 +100,8 @@ export default function User() {
         // }
     ]});
 
+    const [deleteState, deleteDispatch] = useReducer(deleteReducer, { ambitionId: []});
+
     const { data: sessionData } = useSession();
 
     const { data: ambitionData } = api.newAmbition.getAmbitions.useQuery();
@@ -104,9 +118,10 @@ export default function User() {
 
             {
                 // ambitionData?.map((elem, index) => {
-                concatData?.flatMap((elem, index) => {
+                concatData?.filter(elem => !deleteState.ambitionId.includes(elem.id))
+                ?.flatMap((elem, index) => {
                     return (
-                        <ViewAmbitions ambitionPass={elem} index={index + 1} key={elem.id} />
+                        <ViewAmbitions ambitionPass={elem} index={index + 1} key={elem.id} deleteDispatch={deleteDispatch} />
                     )
                 })
             }

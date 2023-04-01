@@ -27,6 +27,10 @@ export default function UpdateAmbition(props: {ambitionPass:
             plan: string;
         };
     }>,
+    deleteDispatch: Dispatch<{
+        type: string;
+        payload: string;
+    }>,
 }) {
 
     const [menuOpen, setMenuOpen] = useState(false);
@@ -62,7 +66,7 @@ export default function UpdateAmbition(props: {ambitionPass:
                    Delete Ambition
                 </button>
                 <div className={`${deleteOpen ? "" : "hidden" }`}>
-                    <DeleteAmbitionInner ambitionGet={props.ambitionPass} />
+                    <DeleteAmbitionInner ambitionGet={props.ambitionPass} deleteDispatch={props.deleteDispatch} />
                 </div>
             </div>
         </>
@@ -165,11 +169,23 @@ function DeleteAmbitionInner(props: {ambitionGet:
     Ambitions //& {
         // record: Record[];
     // }
+    ,
+    deleteDispatch: Dispatch<{
+        type: string;
+        payload: string;
+    }>,
 }) {
 
     const [ambitionId, setAmbitionId] = useState("");
 
-    const deleteAmbitionAPI = api.newAmbition.deleteAmbitions.useMutation(); 
+    const deleteAmbitionAPI = api.newAmbition.deleteAmbitions.useMutation({
+        onSuccess(data) {
+            props.deleteDispatch({
+                type: "delete",
+                payload: data.id,
+            })   
+        },
+    }); 
 
     const handleAmbitionDeleteSubmit = (ambitionId: string) => {
 

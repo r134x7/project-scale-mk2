@@ -5,6 +5,7 @@ import ViewBonds from "./ViewBonds";
 import ViewGrowth from "./ViewGrowth";
 import UpdateAmbition from "./UpdateAmbition";
 import type { Ambitions, Record } from "@prisma/client";
+import type { Dispatch } from "react";
 
 function reducer(state: {records: Record[]}, action: {type: string, payload: Record}) {
     if (action.type === "concat") {
@@ -35,6 +36,10 @@ export default function ViewAmbitions(props: {ambitionPass:
     // }
     ,
     index: number,
+    deleteDispatch: Dispatch<{
+        type: string;
+        payload: string;
+    }>,
 }) {
 
     /*
@@ -59,7 +64,7 @@ export default function ViewAmbitions(props: {ambitionPass:
             </button>
 
             <div className={`${menuOpen ? "" : "hidden" }`}>
-                <AmbitionCards ambitionGet={props.ambitionPass} index={props.index} />
+                <AmbitionCards ambitionGet={props.ambitionPass} index={props.index} deleteDispatch={props.deleteDispatch} />
             </div>
         </>
     )
@@ -69,7 +74,12 @@ function AmbitionCards(props: {ambitionGet:
     Ambitions //& {
         // record: Record[];
     // }
-    , index: number}) {
+    , index: number
+    deleteDispatch: Dispatch<{
+        type: string;
+        payload: string;
+    }>,
+}) {
 
     /*
     need to display...
@@ -111,7 +121,7 @@ function AmbitionCards(props: {ambitionGet:
                          <br />
                          {/* <ViewBonds ambitionPass={props.ambitionGet} /> */}
                          <br />
-                         <UpdateAmbition ambitionPass={props.ambitionGet} dispatch={ambitionDispatch} index={props.index} />
+                         <UpdateAmbition ambitionPass={props.ambitionGet} dispatch={ambitionDispatch} deleteDispatch={props.deleteDispatch} index={props.index} />
                     </div>
     )
     
