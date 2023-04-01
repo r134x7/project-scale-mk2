@@ -1,6 +1,18 @@
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import { api } from "../utils/api";
 import type { Ambitions, Record } from "@prisma/client";
+import type { Dispatch } from "react";
+
+function reducer(state: {close: boolean}, action: {type: string}) {
+    if (action.type === "change") {
+        return {
+            ...state,
+            close: !state.close,
+        };
+    }
+
+    throw Error("Oops.");
+}
 
 export default function UpdateAmbition(props: {ambitionPass: 
     Ambitions //& {
@@ -8,11 +20,20 @@ export default function UpdateAmbition(props: {ambitionPass:
     // }
     ,
     index: number,
+    dispatch: Dispatch<{
+        type: string;
+        payload: {
+            value: number;
+            plan: string;
+        };
+    }>,
 }) {
 
     const [menuOpen, setMenuOpen] = useState(false);
-    const [updateOpen, setUpateOpen] = useState(false);
+    // const [updateOpen, setUpateOpen] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
+
+    const [updateState, updateDispatch] = useReducer(reducer, { close: false });
 
     return (
         <>
@@ -26,12 +47,12 @@ export default function UpdateAmbition(props: {ambitionPass:
             <div className={`${menuOpen ? "" : "hidden" }`}>
                 <button 
                 className={`bg-gray-600 rounded-lg text-sm text-white p-1 m-1 border-solid border-l-indigo-800 border-r-indigo-800 border-t-purple-800 border-b-purple-800 border-2`} 
-                onClick={() => setUpateOpen(!updateOpen)}
+                onClick={() => updateDispatch({ type: "change"})}
                 >
                    Update Ambition 
                 </button>
-                <div className={`${updateOpen ? "" : "hidden" }`}>
-                    <UpdateAmbitionInner ambitionGet={props.ambitionPass} />
+                <div className={`${updateState.close ? "" : "hidden" }`}>
+                    <UpdateAmbitionInner ambitionGet={props.ambitionPass} dispatch={props.dispatch} changeMenuDispatch={updateDispatch} />
                 </div>
 
                 <button 
@@ -53,13 +74,34 @@ function UpdateAmbitionInner(props: {ambitionGet:
     Ambitions //& {
         // record: Record[];
     // }
+    ,
+    dispatch: Dispatch<{
+        type: string;
+        payload: {
+            value: number;
+            plan: string;
+        };
+    }>,
+    changeMenuDispatch: Dispatch<{
+        type: string;
+    }>, 
 }) {
 
     const [target, setTarget] = useState(props.ambitionGet.endValue);
 
     const [plan, setPlan] = useState(props.ambitionGet.dailyPlan);
 
-    const updateAmbitionAPI = api.newAmbition.updateAmbitions.useMutation();
+    const updateAmbitionAPI = api.newAmbition.updateAmbitions.useMutation({
+        onSuccess(data) {
+            props.dispatch({
+                type: "update",
+                payload: {
+                    value: data.endValue, 
+                    plan: data.dailyPlan,
+                },
+            })
+        },
+    });
 
     const handleAmbitionUpdateSubmit = (ambitionId: string, dailyPlan: string, endValue: number ) => {
 
@@ -72,6 +114,10 @@ function UpdateAmbitionInner(props: {ambitionGet:
         } catch (error) {
             console.log(error);
         }
+
+        props.changeMenuDispatch({
+            type: "change"
+        })
     };
 
     return (

@@ -17,6 +17,18 @@ function reducer(state: {records: Record[]}, action: {type: string, payload: Rec
     throw Error("Oops.");
 }
 
+function ambitionReducer(state: {ambitionValue:  number, ambitionPlan: string}, action: {type: string, payload: {value: number, plan: string}}) {
+    if (action.type === "update") {
+        return {
+            ...state,
+            ambitionValue: action.payload.value,
+            ambitionPlan: action.payload.plan,
+        };
+    }
+
+    throw Error("Oops.");
+}
+
 export default function ViewAmbitions(props: {ambitionPass: 
     Ambitions //& {
         // record: Record[];
@@ -78,13 +90,18 @@ function AmbitionCards(props: {ambitionGet:
 
     const [state, dispatch] = useReducer(reducer, { records: []})
 
+    const [ambitionState, ambitionDispatch] = useReducer(ambitionReducer, {
+        ambitionValue: props.ambitionGet.endValue,
+        ambitionPlan: props.ambitionGet.dailyPlan, 
+    })
+
     return (
                     <div key={props.ambitionGet.id} className={"border-2 rounded-lg grid grid-cols-1 "} >
                          <p className="flex justify-center border">Ambition: {props.ambitionGet.name}</p> 
                          <br />
-                         <p className="flex justify-center border">Target value: {props.ambitionGet.endValue}kg</p> 
+                         <p className="flex justify-center border">Target value: {ambitionState.ambitionValue}kg</p> 
                          <br />
-                         <p className="flex justify-center border">Daily Plan: {props.ambitionGet.dailyPlan}</p> 
+                         <p className="flex justify-center border">Daily Plan: {ambitionState.ambitionPlan}</p> 
                          <br />
                          <CreateRecord ambitionIdPass={props.ambitionGet.id} dispatch={dispatch} />
                          <br />
@@ -94,7 +111,7 @@ function AmbitionCards(props: {ambitionGet:
                          <br />
                          {/* <ViewBonds ambitionPass={props.ambitionGet} /> */}
                          <br />
-                         <UpdateAmbition ambitionPass={props.ambitionGet} index={props.index} />
+                         <UpdateAmbition ambitionPass={props.ambitionGet} dispatch={ambitionDispatch} index={props.index} />
                     </div>
     )
     
