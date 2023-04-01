@@ -1,13 +1,8 @@
 import { Listbox } from "@headlessui/react";
 import { useState, useReducer } from "react";
 import { api } from "../utils/api";
-import type { Dispatch, SetStateAction } from "react";
+import type { Dispatch } from "react";
 import type { Ambitions } from "@prisma/client";
-
-// const MenuContext = createContext< Dispatch<SetStateAction<boolean>>>(() => (true));
-// const MenuContext = createContext<any>(undefined);
-// console.log(menuContext);
-
 
 function reducer(state: {close: boolean}, action: {type: string}) {
     if (action.type === "close_menu") {

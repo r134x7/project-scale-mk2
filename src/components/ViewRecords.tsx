@@ -1,4 +1,4 @@
-// import { api } from "../utils/api";
+import { api } from "../utils/api";
 import { useState } from "react";
 import type { Ambitions, Record } from "@prisma/client";
 
@@ -6,9 +6,11 @@ import { Line } from "react-chartjs-2";
 import { Chart, registerables } from 'chart.js'; // required to actually get chart.js with react-chartjs-2 to work
 Chart.register(...registerables); // to get the package working, source: https://www.chartjs.org/docs/next/getting-started/integration.html
 
-export default function ViewRecords(props: {ambitionPass: Ambitions & {
-    record: Record[];
-}}) {
+export default function ViewRecords(props: {ambitionPass: Ambitions //& {
+    //record: Record[];
+    //}
+    , recordsGet: Record[],
+}) {
 
     /*
         create a button to view records
@@ -25,6 +27,8 @@ export default function ViewRecords(props: {ambitionPass: Ambitions & {
 
     const [menuOpen, setMenuOpen] = useState(false);
 
+    const { data: recordData } = api.newRecord.getRecords.useQuery({ ambitionId: props.ambitionPass.id })
+
     return (
         <>
             <button 
@@ -35,25 +39,29 @@ export default function ViewRecords(props: {ambitionPass: Ambitions & {
             </button>
 
             <div className={`${menuOpen ? "" : "hidden" }`}>
-                <LineGraph ambitionGet={props.ambitionPass}/>
-                <RecordCards ambitionGet={props.ambitionPass} />
+                <LineGraph ambitionGet={props.ambitionPass} recordGet={recordData} />
+                <RecordCards recordsGet={recordData} />
             </div>
         </>
     )
 }
 
-function RecordCards(props: {ambitionGet: Ambitions & {
-    record: Record[];
-}}) {
+function RecordCards(props: {
+    // ambitionGet: Ambitions //& {
+    //record: Record[];
+    //}
+    recordsGet: Record[] | undefined,
+}) {
     
     // const { data } = api.newRecord.getRecords.useQuery({ ambitionId: props.ambitionIdGet }); 
 
-    const data = props.ambitionGet.record
+    // const data = props.ambitionGet.record
 
     return (
         <>
         {
-            data?.map((elem, index, array) => {
+            // data?.map((elem, index, array) => {
+            props.recordsGet?.map((elem, index, array) => {
                 return (
                     <div 
                         key={elem.id}
@@ -77,23 +85,25 @@ function RecordCards(props: {ambitionGet: Ambitions & {
     )
 }
 
-function LineGraph(props: {ambitionGet: Ambitions & {
-    record: Record[];
-}}) {
+function LineGraph(props: {ambitionGet: Ambitions //& {
+    //record: Record[];
+    //}
+    , recordGet: Record[] | undefined,
+}) {
 
     const ambitionData = props.ambitionGet;
 
-    const recordData = props.ambitionGet.record;
+    // const recordData = props.ambitionGet.record;
 
     return (
         <>
             <Line 
                 datasetIdKey="Record Data"
                 data={{
-                    labels: recordData?.map((elem, index) => index.toString()) ?? ["0"],
+                    labels: props.recordGet?.map((elem, index) => index.toString()) ?? ["0"],
                     datasets: [
                         {
-                            data: recordData?.map(elem => elem.value) ?? [0],
+                            data: props.recordGet?.map(elem => elem.value) ?? [0],
                             label: ambitionData.name,
                         },
                     ],

@@ -1,10 +1,21 @@
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import CreateRecord from "./CreateRecord";
 import ViewRecords from "./ViewRecords";
 import ViewBonds from "./ViewBonds";
 import ViewGrowth from "./ViewGrowth";
 import UpdateAmbition from "./UpdateAmbition";
 import type { Ambitions, Record } from "@prisma/client";
+
+function reducer(state: {records: Record[]}, action: {type: string, payload: Record}) {
+    if (action.type === "concat") {
+        return {
+            ...state,
+            records: state.records.concat(action.payload)
+        };
+    }
+
+    throw Error("Oops.");
+}
 
 export default function ViewAmbitions(props: {ambitionPass: 
     Ambitions //& {
@@ -65,6 +76,8 @@ function AmbitionCards(props: {ambitionGet:
 
     // const { data } = callAmbitions
 
+    const [state, dispatch] = useReducer(reducer, { records: []})
+
     return (
                     <div key={props.ambitionGet.id} className={"border-2 rounded-lg grid grid-cols-1 "} >
                          <p className="flex justify-center border">Ambition: {props.ambitionGet.name}</p> 
@@ -73,9 +86,9 @@ function AmbitionCards(props: {ambitionGet:
                          <br />
                          <p className="flex justify-center border">Daily Plan: {props.ambitionGet.dailyPlan}</p> 
                          <br />
-                         <CreateRecord ambitionIdPass={props.ambitionGet.id} />
+                         <CreateRecord ambitionIdPass={props.ambitionGet.id} dispatch={dispatch} />
                          <br />
-                         {/* <ViewRecords ambitionPass={props.ambitionGet} /> */}
+                         <ViewRecords ambitionPass={props.ambitionGet} recordsGet={state.records} />
                          <br />
                          {/* <ViewGrowth ambitionPass={props.ambitionGet} /> */}
                          <br />

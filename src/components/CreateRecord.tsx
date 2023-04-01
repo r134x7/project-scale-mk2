@@ -1,8 +1,14 @@
 import { useState } from "react";
 import { api } from "../utils/api";
-import { z } from "zod";
+import type { Dispatch } from "react";
+import type { Record } from "@prisma/client";
 
-export default function CreateRecord(props: {ambitionIdPass: string}) {
+export default function CreateRecord(props: {ambitionIdPass: string, 
+    dispatch: Dispatch<{
+        type: string;
+        payload: Record;
+    }>
+}) {
 
     /*
         create a button to create record
@@ -33,14 +39,18 @@ export default function CreateRecord(props: {ambitionIdPass: string}) {
             </button>
 
             <div className={`${menuOpen && latestDate !== today ? "" : "hidden" }`}>
-                <RecordModal ambitionIdGet={props.ambitionIdPass
-                } />
+                <RecordModal ambitionIdGet={props.ambitionIdPass} dispatch={props.dispatch} />
             </div>
         </>
     )
 }
 
-function RecordModal(props: {ambitionIdGet: string}) {
+function RecordModal(props: {ambitionIdGet: string,
+    dispatch: Dispatch<{
+        type: string;
+        payload: Record;
+    }>
+}) {
 
     const writeRecord = api.newRecord.createRecord.useMutation();
 
