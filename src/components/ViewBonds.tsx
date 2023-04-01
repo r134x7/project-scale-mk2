@@ -1,15 +1,39 @@
 import type { Ambitions, Record } from "@prisma/client";
 import { useState } from "react";
 import { api } from "../utils/api"
+import type { Bonds } from "@prisma/client";
 
 import { Line } from "react-chartjs-2";
 import { Chart, registerables } from 'chart.js'; // required to actually get chart.js with react-chartjs-2 to work
 import CreateBond from "./CreateBond";
 Chart.register(...registerables); // to get the package working, source: https://www.chartjs.org/docs/next/getting-started/integration.html
 
-export default function ViewBonds(props: {ambitionPass: Ambitions & {
-    record: Record[];
-} }) {
+function updateReducer(state: { bonds: Bonds[]}, action: { type: string, payload: Bonds}) {
+    if (action.type === "update") {
+        return {
+            ...state,
+            bonds: state.bonds.concat(action.payload)
+        };
+    }
+
+    throw Error("Oops.")
+}
+
+function deleteReducer(state: {bondId: string[]}, action: {type: string, payload: string}) {
+    if (action.type === "delete") {
+        return {
+            ...state,
+            bondId: state.bondId.concat(action.payload),
+        };
+    }
+
+    throw Error("Oops");
+}
+
+export default function ViewBonds(props: {ambitionPass: Ambitions //& {
+    //record: Record[];
+    //} 
+}) {
 
     /*
         .............. 
@@ -39,6 +63,9 @@ export default function ViewBonds(props: {ambitionPass: Ambitions & {
     const [updateOpen, setUpateOpen] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [viewOpen, setViewOpen] = useState(false);
+
+    // need to use reducers for update and delete
+    // will need to requery bonds when updating...
 
     return (
         <>
@@ -111,37 +138,36 @@ function UpdateBondInner(props: {bondId: string | undefined, bondIndex: string |
         }
     };
 
-                    return (
-                        <div
-                            key={props.bondIndex} 
-                            className={`border-black border flex justify-center items-end rounded-lg mt-2 ${Number(props.bondIndex) % 2 === 0 ? "bg-slate-500 text-slate-50" : "bg-sky-500 text-slate-900"}`}
-                        >
+    return (
+        <div
+            key={props.bondIndex} 
+            className={`border-black border flex justify-center items-end rounded-lg mt-2 ${Number(props.bondIndex) % 2 === 0 ? "bg-slate-500 text-slate-50" : "bg-sky-500 text-slate-900"}`}
+        >
                         
-                        <form 
-                        className="bg-slate-50 grid grid-cols-1"
-                        onSubmit={(event) => { 
+            <form 
+                className="bg-slate-50 grid grid-cols-1"
+                onSubmit={(event) => { 
                             event.preventDefault()
                             handleBondUpdateSubmit(props.bondId) 
                         }}
-                        >
+            >
 
-                        <label className="flex justify-center mt-2 text-black">Enter the ambition ID of the other person you will share a bond with:</label>
-                        <input 
-                            className="border-solid border-cyan-500 rounded-md border-4 m-2 text-black"
-                            onChange={(event) => setPartnerBondId(event.target.value)}
-                            value={partnerBondId}
-                        />
+            <label className="flex justify-center mt-2 text-black">Enter the ambition ID of the other person you will share a bond with:</label>
+            <input 
+                className="border-solid border-cyan-500 rounded-md border-4 m-2 text-black"
+                onChange={(event) => setPartnerBondId(event.target.value)}
+                value={partnerBondId}
+            />
 
-                        <button 
-                            className="m-2 rounded-md border-4 border-cyan-500 bg-sky-200 text-sky-900 font-bold"
-                            type="submit"
-                            // onSubmit={() => setOpen(false)}
-                        >Submit</button>
+            <button 
+                className="m-2 rounded-md border-4 border-cyan-500 bg-sky-200 text-sky-900 font-bold"
+                type="submit"
+            >Submit</button>
 
-                        </form>
+        </form>
 
-                        </div>
-                    )
+    </div>
+    )
 }
 
 function UpdateBond(props: {bondIdsGet: string[][] | undefined}) {
@@ -184,33 +210,34 @@ function DeleteBondInner(props: {bondId: string | undefined, partnerId: string |
         }
     };
 
-                    return (
-                        <div
-                            key={props.bondIndex} 
-                            className={`border-black border flex justify-center items-end rounded-lg mt-2 ${Number(props.bondIndex) % 2 === 0 ? "bg-slate-500 text-slate-50" : "bg-sky-500 text-slate-900"}`}
-                        >
+    return (
+        <div
+            key={props.bondIndex} 
+            className={`border-black border flex justify-center items-end rounded-lg mt-2 ${Number(props.bondIndex) % 2 === 0 ? "bg-slate-500 text-slate-50" : "bg-sky-500 text-slate-900"}`}
+        >
 
-                        <form
-                            onSubmit={(event) => { 
-                            event.preventDefault()
-                            handleBondDeleteSubmit(props.bondId) 
-                            }}
-                        >
-                            <label className="flex justify-center mt-2">Enter the ambition ID within the quotes &quot;{props.partnerId}&quot; to enable the delete button and then click delete:</label>
-                            <input 
-                                className="border-solid border-cyan-500 rounded-md border-4 m-2 text-black"
-                                onChange={(event) => setPartnerBondId(event.target.value)}
-                                value={partnerBondId}
-                            />
+            <form
+                onSubmit={(event) => { 
+                event.preventDefault()
+                handleBondDeleteSubmit(props.bondId) 
+                }}
+            >
 
-                            <button 
-                                disabled={partnerBondId !== props.partnerId ? true : false }
-                                className="disabled:opacity-25 disabled:border-gray-500 m-2 rounded-md border-4 border-cyan-500 bg-sky-200 text-sky-900 font-bold"
-                                type="submit"
-                            >Delete</button>
-                            </form>
-                        </div>
-                    )
+            <label className="flex justify-center mt-2">Enter the ambition ID within the quotes &quot;{props.partnerId}&quot; to enable the delete button and then click delete:</label>
+            <input 
+                className="border-solid border-cyan-500 rounded-md border-4 m-2 text-black"
+                onChange={(event) => setPartnerBondId(event.target.value)}
+                value={partnerBondId}
+            />
+
+            <button 
+                disabled={partnerBondId !== props.partnerId ? true : false }
+                className="disabled:opacity-25 disabled:border-gray-500 m-2 rounded-md border-4 border-cyan-500 bg-sky-200 text-sky-900 font-bold"
+                type="submit"
+            >Delete</button>
+        </form>
+    </div>
+    )
 }
 
 function DeleteBond(props: {bondIdsGet: string[][] | undefined}) {
@@ -234,10 +261,14 @@ function DeleteBond(props: {bondIdsGet: string[][] | undefined}) {
 
 }
 
-function BondCards(props: {bondIdsGet: string[][] | undefined, ambitionGet: Ambitions & {
-    record: Record[];
-}}) {
+function BondCards(props: {bondIdsGet: string[][] | undefined, ambitionGet: Ambitions 
+    //& {
+    //record: Record[];
+    //}
+}) {
 
+    // to update the bonds query after updating a bond, I need to concatenate it to the filtered bonds that way it will query again...
+    
     const filteredBonds = props?.bondIdsGet?.filter((value) => {
                     // filtering out bonds that are not updated
                     return value[1] !== "Empty"
@@ -250,9 +281,12 @@ function BondCards(props: {bondIdsGet: string[][] | undefined, ambitionGet: Ambi
     const { data, error } = api.newAmbition.getManyAmbitionsByIds.useQuery({ id: filteredAmbitionIds })
 
     // console.log(error);
-    const userRecords = props.ambitionGet;
+    // const userRecords = props.ambitionGet;
 
-    const userRecordsLength = props.ambitionGet.record.length;
+    const { data: userRecords } = api.newRecord.getRecords.useQuery({ ambitionId: props.ambitionGet.id })
+
+    // const userRecordsLength = props.ambitionGet.record.length;
+    const userRecordsLength = userRecords?.length ?? 0;
 
     const dataRecordsLength = data?.map(elem => {
         return elem.record.length
@@ -291,8 +325,8 @@ function BondCards(props: {bondIdsGet: string[][] | undefined, ambitionGet: Ambi
                     labels: Array.from({length:maxRecordLength}, (v,i) => i + 1),
                     datasets: [
                         {
-                            data: userRecords.record.map(elem => elem.value),
-                            label: `${userRecords.name} - ${userRecords.userName ?? "Error"}`,
+                            data: userRecords?.map(elem => elem.value) ?? [0],
+                            label: `${props.ambitionGet.name} - ${props.ambitionGet.userName ?? "Error"}`,
                             pointBorderColor: "black",
                         },
                         data?.map((elem, index) => {

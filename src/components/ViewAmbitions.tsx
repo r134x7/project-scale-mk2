@@ -119,7 +119,7 @@ function AmbitionCards(props: {ambitionGet:
                          <br />
                          <ViewGrowth ambitionPass={props.ambitionGet} />
                          <br />
-                         {/* <ViewBonds ambitionPass={props.ambitionGet} /> */}
+                         <ViewBonds ambitionPass={props.ambitionGet} />
                          <br />
                          <UpdateAmbition ambitionPass={props.ambitionGet} dispatch={ambitionDispatch} deleteDispatch={props.deleteDispatch} index={props.index} />
                     </div>
