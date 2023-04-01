@@ -1,7 +1,24 @@
-import { useState } from "react";
+import { useState, useReducer } from "react";
 import { api } from "../utils/api";
 import type { Dispatch } from "react";
 import type { Record } from "@prisma/client";
+
+function reducer(state: {close: boolean, recorded: Record[]}, action: {type: string, payload: Record | undefined}) {
+    if (action.type === "change") {
+        return {
+            ...state,
+            close: !state.close,
+        };
+    } else if (action.type === "record") {
+        return {
+            ...state,
+            close: !state.close,
+            recorded: (action?.payload) ? state.recorded.concat(action.payload) : state.recorded,
+        }
+    }
+
+    throw Error("Oops.");
+}
 
 export default function CreateRecord(props: {ambitionIdPass: string, 
     dispatch: Dispatch<{
@@ -17,11 +34,15 @@ export default function CreateRecord(props: {ambitionIdPass: string,
         need to get 
     */
 
-    const [menuOpen, setMenuOpen] = useState(false);
+    // const [menuOpen, setMenuOpen] = useState(false);
+
+    const [state, dispatch] = useReducer(reducer, { close: false, recorded: []});
 
     const { data } = api.newRecord.getRecords.useQuery({ ambitionId: props.ambitionIdPass }); 
 
-    const latestDate = data?.at?.(-1)?.createdAt.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) ?? "ERROR";
+    const concatDataFlat = data?.concat(state.recorded).flat()
+
+    const latestDate = concatDataFlat?.at?.(-1)?.createdAt.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) ?? "ERROR";
 
     const today = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
 
@@ -33,13 +54,13 @@ export default function CreateRecord(props: {ambitionIdPass: string,
         <>
             <button 
             className="bg-gray-600 border-solid border-l-indigo-800 border-r-indigo-800 border-t-purple-800 border-b-purple-800 border-2 rounded-lg text-white text-sm p-1 m-1"
-            onClick={() => setMenuOpen(!menuOpen)}
+            onClick={() => dispatch({ type: "change", payload: undefined})}
             >
                 {buttonText}
             </button>
 
-            <div className={`${menuOpen && latestDate !== today ? "" : "hidden" }`}>
-                <RecordModal ambitionIdGet={props.ambitionIdPass} dispatch={props.dispatch} />
+            <div className={`${state.close && latestDate !== today ? "" : "hidden" }`}>
+                <RecordModal ambitionIdGet={props.ambitionIdPass} dispatch={props.dispatch} changeMenu={dispatch} />
             </div>
         </>
     )
@@ -49,6 +70,10 @@ function RecordModal(props: {ambitionIdGet: string,
     dispatch: Dispatch<{
         type: string;
         payload: Record;
+    }>,
+    changeMenu: Dispatch<{
+        type: string;
+        payload: Record | undefined;
     }>
 }) {
 
@@ -56,6 +81,10 @@ function RecordModal(props: {ambitionIdGet: string,
         onSuccess(data) {
             props.dispatch({
                 type: "concat",
+                payload: data,
+            }),
+            props.changeMenu({
+                type: "record",
                 payload: data,
             })
         },

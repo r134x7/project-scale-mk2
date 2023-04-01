@@ -5,7 +5,7 @@ import type { Dispatch } from "react";
 import type { Ambitions } from "@prisma/client";
 
 function reducer(state: {close: boolean}, action: {type: string}) {
-    if (action.type === "close_menu") {
+    if (action.type === "change") {
         return {
             ...state,
             close: !state.close,
@@ -49,7 +49,7 @@ export default function CreateAmbition(props: {
             <button 
             className="bg-gray-600 border-solid border-4 border-zinc-300 rounded-lg text-white"
             // onClick={() => setMenuOpen(!menuOpen)}
-            onClick={() => dispatch({ type: "close_menu"})}
+            onClick={() => dispatch({ type: "change"})}
             >
                 Create Ambition 
             </button> 
@@ -107,7 +107,7 @@ dispatchAmbition: Dispatch<{
             setTarget(0);
             setPlan("");
             props.dispatch({
-                type: "close_menu",
+                type: "change",
             })
     };
 
