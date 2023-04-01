@@ -60,9 +60,9 @@ export const newAmbitionRouter = createTRPCRouter({
       where: {
         userId: ctx.session.user.id
       },
-      include: {
-        record: true,
-      }
+      // include: {
+      //   record: true,
+      // }
     })
   }),
       

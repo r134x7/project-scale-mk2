@@ -2,6 +2,19 @@ import { useSession } from "next-auth/react"
 import { api } from "../utils/api";
 import CreateAmbition from "../components/CreateAmbition";
 import ViewAmbitions from "../components/ViewAmbitions";
+import type { Ambitions } from "@prisma/client";
+import { useReducer } from "react";
+
+function reducer(state: {ambitions: Ambitions[]}, action: {type: string, payload: Ambitions}) {
+    if (action.type === "concat") {
+        return {
+            ...state,
+            ambitions: state.ambitions.concat(action.payload)
+        };
+    }
+
+    throw Error("Oops.");
+}
 
 export default function User() {
 
@@ -62,19 +75,36 @@ export default function User() {
             - account settings (deleting user account? delete ambitions? )
     */
 
+    const [state, dispatch] = useReducer(reducer, { ambitions:  [
+        // {
+        //     id: "0",
+        //     name: "test",
+        //     endValue: 0,
+        //     dailyPlan: "0",
+        //     createdAt: new Date(),
+        //     updatedAt: new Date(),
+        //     userId: "0",
+        //     userName: "0",
+        // }
+    ]});
+
     const { data: sessionData } = useSession();
 
     const { data: ambitionData } = api.newAmbition.getAmbitions.useQuery();
+
+    // const concatData = ambitionData?.concat(...(state?.ambitions));
+    const concatData = ambitionData?.concat(state.ambitions);
 
     return (
         (sessionData)
         ? <div className={"grid grid-cols-1 gap-y-2  justify-center items-center"}>
             Welcome, {sessionData.user?.name ?? "ERROR"}.
 
-            <CreateAmbition />
+            <CreateAmbition dispatch={dispatch} />
 
             {
-                ambitionData?.map((elem, index) => {
+                // ambitionData?.map((elem, index) => {
+                concatData?.flatMap((elem, index) => {
                     return (
                         <ViewAmbitions ambitionPass={elem} index={index + 1} key={elem.id} />
                     )

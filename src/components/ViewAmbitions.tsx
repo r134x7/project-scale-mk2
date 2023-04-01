@@ -7,9 +7,10 @@ import UpdateAmbition from "./UpdateAmbition";
 import type { Ambitions, Record } from "@prisma/client";
 
 export default function ViewAmbitions(props: {ambitionPass: 
-    Ambitions & {
-        record: Record[];
-    },
+    Ambitions //& {
+        // record: Record[];
+    // }
+    ,
     index: number,
 }) {
 
@@ -42,9 +43,10 @@ export default function ViewAmbitions(props: {ambitionPass:
 }
 
 function AmbitionCards(props: {ambitionGet: 
-    Ambitions & {
-        record: Record[];
-    }, index: number}) {
+    Ambitions //& {
+        // record: Record[];
+    // }
+    , index: number}) {
 
     /*
     need to display...
@@ -73,11 +75,11 @@ function AmbitionCards(props: {ambitionGet:
                          <br />
                          <CreateRecord ambitionIdPass={props.ambitionGet.id} />
                          <br />
-                         <ViewRecords ambitionPass={props.ambitionGet} />
+                         {/* <ViewRecords ambitionPass={props.ambitionGet} /> */}
                          <br />
-                         <ViewGrowth ambitionPass={props.ambitionGet} />
+                         {/* <ViewGrowth ambitionPass={props.ambitionGet} /> */}
                          <br />
-                         <ViewBonds ambitionPass={props.ambitionGet} />
+                         {/* <ViewBonds ambitionPass={props.ambitionGet} /> */}
                          <br />
                          <UpdateAmbition ambitionPass={props.ambitionGet} index={props.index} />
                     </div>

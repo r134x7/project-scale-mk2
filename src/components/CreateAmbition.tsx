@@ -1,7 +1,8 @@
-import { Dialog, Listbox } from "@headlessui/react";
-import { useState, useReducer, createContext, useContext, useEffect } from "react";
+import { Listbox } from "@headlessui/react";
+import { useState, useReducer } from "react";
 import { api } from "../utils/api";
 import type { Dispatch, SetStateAction } from "react";
+import type { Ambitions } from "@prisma/client";
 
 // const MenuContext = createContext< Dispatch<SetStateAction<boolean>>>(() => (true));
 // const MenuContext = createContext<any>(undefined);
@@ -19,7 +20,12 @@ function reducer(state: {close: boolean}, action: {type: string}) {
     throw Error("Oops.");
 }
 
-export default function CreateAmbition() {
+export default function CreateAmbition(props: {
+    dispatch: Dispatch<{
+        type: string;
+        payload: Ambitions;
+    }>
+}) {
 
 
     /*
@@ -55,7 +61,7 @@ export default function CreateAmbition() {
             {/* <div  */}
             {/* className={`${menuOpen ? "" : "hidden" }`} */}
             {/* > */}
-                <ModalForm menuOpen={state.close} dispatch={dispatch} />
+                <ModalForm menuOpen={state.close} dispatch={dispatch} dispatchAmbition={props.dispatch} />
             {/* </div> */}
         </>
     )
@@ -63,9 +69,21 @@ export default function CreateAmbition() {
 
 function ModalForm(props: {menuOpen: boolean, dispatch: Dispatch<{
     type: string;
-}>}) {
+}>, 
+dispatchAmbition: Dispatch<{
+    type: string;
+    payload: Ambitions;
+}> 
+}) {
 
-    const ambitionAPI = api.newAmbition.createAmbition.useMutation();
+    const ambitionAPI = api.newAmbition.createAmbition.useMutation({
+        onSuccess(data) {
+            props.dispatchAmbition({
+                type: "concat",
+                payload: data,
+            })
+        },
+    });
 
     const ambitions = [
         { id: 1, name: "Lose Weight"},

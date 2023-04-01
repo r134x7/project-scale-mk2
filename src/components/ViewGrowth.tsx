@@ -58,7 +58,7 @@ function GrowthOnion(props: {ambitionGet: Ambitions & {
     // make a loop checking that the progress value is greater than the growth value to get the onionDepth
     const onionDepth = growthValues?.flatMap(elem => {
 
-        console.log(progressValue < elem);
+        // console.log(progressValue < elem);
         
         return (progressValue < elem)
             ? elem
@@ -69,7 +69,7 @@ function GrowthOnion(props: {ambitionGet: Ambitions & {
     
     // console.log(growthValues);
     
-    console.log(onionDepth);
+    // console.log(onionDepth);
     
 
     // need to figure out how to make this nested...

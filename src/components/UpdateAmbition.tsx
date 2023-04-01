@@ -3,9 +3,10 @@ import { api } from "../utils/api";
 import type { Ambitions, Record } from "@prisma/client";
 
 export default function UpdateAmbition(props: {ambitionPass: 
-    Ambitions & {
-        record: Record[];
-    },
+    Ambitions //& {
+        // record: Record[];
+    // }
+    ,
     index: number,
 }) {
 
@@ -49,9 +50,10 @@ export default function UpdateAmbition(props: {ambitionPass:
 
 
 function UpdateAmbitionInner(props: {ambitionGet: 
-    Ambitions & {
-        record: Record[];
-    }}) {
+    Ambitions //& {
+        // record: Record[];
+    // }
+}) {
 
     const [target, setTarget] = useState(props.ambitionGet.endValue);
 
@@ -114,9 +116,10 @@ function UpdateAmbitionInner(props: {ambitionGet:
 }
 
 function DeleteAmbitionInner(props: {ambitionGet: 
-    Ambitions & {
-        record: Record[];
-    }}) {
+    Ambitions //& {
+        // record: Record[];
+    // }
+}) {
 
     const [ambitionId, setAmbitionId] = useState("");
 
