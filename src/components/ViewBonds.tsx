@@ -9,6 +9,17 @@ import { Chart, registerables } from 'chart.js'; // required to actually get cha
 import CreateBond from "./CreateBond";
 Chart.register(...registerables); // to get the package working, source: https://www.chartjs.org/docs/next/getting-started/integration.html
 
+function createReducer(state: { bonds: Bonds[]}, action: { type: string, payload: Bonds}) {
+    if (action.type === "create") {
+        return {
+            ...state,
+            bonds: state.bonds.concat(action.payload)
+        };
+    }
+
+    throw Error("Oops.")
+}
+
 function updateReducer(state: { bonds: Bonds[]}, action: { type: string, payload: Bonds}) {
     if (action.type === "update") {
         return {
@@ -48,14 +59,18 @@ export default function ViewBonds(props: {ambitionPass: Ambitions //& {
         - re-query things after doing a mutation
     */
 
+    const [createState, createDispatch] = useReducer(createReducer, { bonds: []})    
+
     const [updateState, updateDispatch] = useReducer(updateReducer, { bonds: []});
 
     const [deleteState, deleteDispatch] = useReducer(deleteReducer, { bondId: []});
 
     const { data } = api.newBond.getBonds.useQuery({ ambitionId: props.ambitionPass.id})
 
+    const createdBonds = data?.concat(createState.bonds);
+
     // have to filter out the old bond that just got updated before concatenating with the updated bond
-    const updatedBonds = data?.filter(elem => {
+    const updatedBonds = createdBonds?.filter(elem => {
 
        const getBondIds = updateState.bonds?.map(value => value.id)
 
@@ -93,7 +108,7 @@ export default function ViewBonds(props: {ambitionPass: Ambitions //& {
             </button>
 
             <div className={`${menuOpen ? "" : "hidden" }`}>
-                <CreateBond ambitionIdPass={props.ambitionPass.id} />
+                <CreateBond ambitionIdPass={props.ambitionPass.id} createDispatch={createDispatch} />
 
                 <button 
                 className="bg-gray-600 rounded-lg text-sm text-white p-1 m-1 border-solid border-l-indigo-800 border-r-indigo-800 border-t-purple-800 border-b-purple-800 border-2" 

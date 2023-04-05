@@ -115,7 +115,7 @@ function GrowthOnion(props: {ambitionGet: Ambitions
                     `} 
                     // style={{ backgroundColor: colorRange?.[index] ?? colorRange.at(-1)}}
                     >
-                       Lost {depth[index]}kg
+                       Lost {depth[index]?.toFixed(2)}kg
                         {onion}
                     </span>
             )

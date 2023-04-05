@@ -1,8 +1,15 @@
 import { api } from "../utils/api";
 import { useState } from "react";
 import { Dialog } from "@headlessui/react";
+import type { Dispatch } from "react";
+import type { Bonds } from "@prisma/client";
 
-export default function CreateBond(props: {ambitionIdPass: string}) {
+export default function CreateBond(props: {ambitionIdPass: string, 
+    createDispatch: Dispatch<{
+        type: string;
+        payload: Bonds;
+    }>
+}) {
 
     /*
         need to useMutation to create a bond... 
@@ -29,15 +36,27 @@ export default function CreateBond(props: {ambitionIdPass: string}) {
             </button>
 
             <div className={`${menuOpen ? "" : "hidden" }`}>
-                <BondForm ambitionIdGet={props.ambitionIdPass} />
+                <BondForm ambitionIdGet={props.ambitionIdPass} createDispatch={props.createDispatch} />
             </div>
         </>
     )
 }
 
-function BondForm(props: {ambitionIdGet: string}) {
+function BondForm(props: {ambitionIdGet: string, 
+    createDispatch: Dispatch<{
+        type: string;
+        payload: Bonds;
+    }>
+}) {
 
-    const bondAPI = api.newBond.createBond.useMutation();
+    const bondAPI = api.newBond.createBond.useMutation({
+        onSuccess(data) {
+          props.createDispatch({
+            type: "create",
+            payload: data,
+          })  
+        },
+    });
 
     const { data } = api.newBond.getBonds.useQuery({ ambitionId: props.ambitionIdGet});
 
@@ -73,6 +92,9 @@ function BondForm(props: {ambitionIdGet: string}) {
                     handleBondSubmit() }}
             >
 
+                <br />
+                <p>Your Ambition ID: {props.ambitionIdGet}</p>
+                <br />
                 <p>Number of Bonds tied to this ambition: {bondsLength}</p>
                 <br />
                 <p>Max number of Bonds: 7</p>
@@ -80,17 +102,16 @@ function BondForm(props: {ambitionIdGet: string}) {
                 <ol>
                     To create a bond with another user:
                     <li>
-                        1) Click the submit button to confirm creating bond for this ambition you are on.
+                        1) Click the submit button to confirm creating a bond for this ambition you are on.
                     </li>
                     <li>
-                        2) Go to View Bond for this ambition.
+                        2) Your Ambition ID is: {props.ambitionIdGet} 
                     </li>
-                    <li>3) View Bond will display the ID number for your ambition.</li>
-                    <li>4) You can copy the ID number and share it through your preferred means of communication with the person who you want to create a bond with.</li>
-                    <li>5) The person you want to create a bond with will need to create their own bond from one of their ambitions and then share the ID number of their ambition with you.</li>
-                    <li>6) Take the ID from the other person you want to create a bond with and go to Update Bond.</li>
-                    <li>7) Enter the ID into form for Update Bond and update the bond.</li>
-                    <li>8) You will then be able to view the ambition and records of the other person.</li>
+                    <li>3) You can copy the ID number and share it through your preferred means of communication with the person who you want to create a bond with.</li>
+                    <li>4) The person you want to create a bond with will need to create their own bond from one of their ambitions and then share the ID of their ambition with you.</li>
+                    <li>5) Take the ID from the other person you want to create a bond with and go to Update Bond.</li>
+                    <li>6) Enter the ID into form for Update Bond and update the bond.</li>
+                    <li>7) You will then be able to view the ambition and records of the other person.</li>
                 </ol>
 
                 <button 
