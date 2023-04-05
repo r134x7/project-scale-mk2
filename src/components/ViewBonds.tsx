@@ -1,7 +1,8 @@
 import type { Ambitions, Record } from "@prisma/client";
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import { api } from "../utils/api"
 import type { Bonds } from "@prisma/client";
+import type { Dispatch } from "react";
 
 import { Line } from "react-chartjs-2";
 import { Chart, registerables } from 'chart.js'; // required to actually get chart.js with react-chartjs-2 to work
@@ -47,11 +48,18 @@ export default function ViewBonds(props: {ambitionPass: Ambitions //& {
         - re-query things after doing a mutation
     */
 
+    const [updateState, updateDispatch] = useReducer(updateReducer, { bonds: [] });
+
+    const [deleteState, deleteDispatch] = useReducer(deleteReducer, { bondId: [] });
+
     const { data } = api.newBond.getBonds.useQuery({ ambitionId: props.ambitionPass.id})
 
-    const bondIDs: string[][] | undefined = data?.map((elem, index) => {
+    const filterBonds = data?.filter(elem => !deleteState.bondId.includes(elem.id))
+
+    const bondIDs: string[][] | undefined = filterBonds?.map((elem, index) => {
         // [] containing bond id, partner ambition id or "Empty", index number
-        return [elem.id, elem.partnerId ?? "Empty", index.toString()]
+        // return [elem.id, elem.partnerId ?? "Empty", index.toString()]
+        return [elem.id, elem.partnerId ?? "Empty"]
     })
 
     const checkEmptyBonds = bondIDs?.filter((value) => {
@@ -97,7 +105,7 @@ export default function ViewBonds(props: {ambitionPass: Ambitions //& {
                    Update Bonds 
                 </button>
                 <div className={`${updateOpen ? "" : "hidden" }`}>
-                    <UpdateBond bondIdsGet={bondIDs} />
+                    <UpdateBond bondIdsGet={bondIDs} updateDispatch={updateDispatch} />
                 </div>
 
                 <button 
@@ -107,7 +115,7 @@ export default function ViewBonds(props: {ambitionPass: Ambitions //& {
                    Delete Bonds 
                 </button>
                 <div className={`${deleteOpen ? "" : "hidden" }`}>
-                    <DeleteBond bondIdsGet={bondIDs} />
+                    <DeleteBond bondIdsGet={bondIDs} deleteDispatch={deleteDispatch} />
                 </div>
 
 
@@ -116,9 +124,21 @@ export default function ViewBonds(props: {ambitionPass: Ambitions //& {
     )
 }
 
-function UpdateBondInner(props: {bondId: string | undefined, bondIndex: string | undefined}) {
+function UpdateBondInner(props: {bondId: string | undefined, bondIndex: string | undefined,
+updateDispatch: Dispatch<{
+    type: string;
+    payload: Bonds;
+}>
+}) {
 
-    const updateBondAPI = api.newBond.updateBond.useMutation();
+    const updateBondAPI = api.newBond.updateBond.useMutation({
+        onSuccess(data) {
+          props.updateDispatch({
+            type: "update",
+            payload: data,
+          })  
+        },
+    });
 
     const [partnerBondId, setPartnerBondId] = useState("")
 
@@ -170,7 +190,12 @@ function UpdateBondInner(props: {bondId: string | undefined, bondIndex: string |
     )
 }
 
-function UpdateBond(props: {bondIdsGet: string[][] | undefined}) {
+function UpdateBond(props: {bondIdsGet: string[][] | undefined,
+    updateDispatch: Dispatch<{
+        type: string;
+        payload: Bonds;
+    }>
+}) {
 
     return (
         <>
@@ -181,7 +206,7 @@ function UpdateBond(props: {bondIdsGet: string[][] | undefined}) {
                 })
                 .map((elem, index, array) => {
                     return (
-                        <UpdateBondInner key={elem[2]} bondId={elem[0]} bondIndex={elem[2]} />
+                        <UpdateBondInner key={elem[2]} bondId={elem[0]} bondIndex={elem[2]} updateDispatch={props.updateDispatch} />
                     )
                 })
             }        
@@ -189,11 +214,23 @@ function UpdateBond(props: {bondIdsGet: string[][] | undefined}) {
     )
 }
 
-function DeleteBondInner(props: {bondId: string | undefined, partnerId: string | undefined, bondIndex: string | undefined}) {
+function DeleteBondInner(props: {bondId: string | undefined, partnerId: string | undefined, bondIndex: number,
+deleteDispatch: Dispatch<{
+    type: string;
+    payload: string;
+}>
+}) {
 
     const [partnerBondId, setPartnerBondId] = useState("");
 
-    const deleteBondAPI = api.newBond.deleteBond.useMutation();
+    const deleteBondAPI = api.newBond.deleteBond.useMutation({
+        onSuccess(data) {
+          props.deleteDispatch({
+            type: "delete",
+            payload: data.id,
+          })  
+        },
+    });
 
     const handleBondDeleteSubmit = (bondId: string | undefined) => {
 
@@ -212,8 +249,8 @@ function DeleteBondInner(props: {bondId: string | undefined, partnerId: string |
 
     return (
         <div
-            key={props.bondIndex} 
-            className={`border-black border flex justify-center items-end rounded-lg mt-2 ${Number(props.bondIndex) % 2 === 0 ? "bg-slate-500 text-slate-50" : "bg-sky-500 text-slate-900"}`}
+            key={props.bondId} 
+            className={`border-black border flex justify-center items-end rounded-lg mt-2 ${props.bondIndex % 2 === 0 ? "bg-slate-500 text-slate-50" : "bg-sky-500 text-slate-900"}`}
         >
 
             <form
@@ -240,7 +277,12 @@ function DeleteBondInner(props: {bondId: string | undefined, partnerId: string |
     )
 }
 
-function DeleteBond(props: {bondIdsGet: string[][] | undefined}) {
+function DeleteBond(props: {bondIdsGet: string[][] | undefined,
+    deleteDispatch: Dispatch<{
+        type: string;
+        payload: string;
+    }>,
+}) {
 
     /*
         Had to create an inner component for Delete Bond to ensure that each item in the array has an independent useState for the form data otherwise each item ends up having the same data when typing into one of them.
@@ -252,7 +294,7 @@ function DeleteBond(props: {bondIdsGet: string[][] | undefined}) {
                 props?.bondIdsGet?.map((elem, index, array) => {
 
                     return (
-                        <DeleteBondInner bondId={elem[0]} partnerId={elem[1]} bondIndex={elem[2]} key={elem[2]} />
+                        <DeleteBondInner bondId={elem[0]} partnerId={elem[1]} key={elem[0]} bondIndex={index} deleteDispatch={props.deleteDispatch} />
                     )
                 })
             } 
