@@ -59,9 +59,9 @@ function GrowthOnion(props: {ambitionGet: Ambitions
 
     const progressValue = -((startValue ?? 0) - (latestValue ?? 0))
 
-    const filterJournals = updatedData?.filter(elem => elem.journal.length !== 0);
+    // const filterJournals = updatedData?.filter(elem => elem.journal.length !== 0);
 
-    const journalLength = filterJournals?.length ?? 0;
+    // const journalLength = filterJournals?.length ?? 0;
 
     // need to get the target value from ambition and then the first record value which is the start value and then for weight loss: start value - end value * .2 to get 20% value... don't want to use 10% to give almost instant gratification
     // having found a way to calculate this using array length, could have the option changing the growth values from 20% to 10%
@@ -143,27 +143,29 @@ function GrowthOnion(props: {ambitionGet: Ambitions
     //     "rgb(8 51 68)", // cyan-950
     // ]
 
-    const [testNumber, setTestNumber] = useState(0)
+    // const [testNumber, setTestNumber] = useState("")
     
-    let aJournal: number;
+    // let aJournal: number;
 
-    function setJournal() {
-        if (!aJournal) {
-            aJournal = window.setInterval(function journalMaker(){
-                    if (journalLength === 0) {
-                        // return "Beginning..."
-                        return setTestNumber(0)
-                    } else {
-                        // return filterJournals?.[(Math.floor(Math.random() * (journalLength - 1)))]?.journal ?? "Error..."
-                        return setTestNumber(aJournal);
-                    }
-                }, 1000)
-        }
+    // function setJournal() {
+    //     if (!aJournal) {
+    //         aJournal = window.setInterval(function journalMaker(){
+    //                 if (journalLength === 0) {
+    //                     // return "Beginning..."
+    //                     return setTestNumber("Beginning...")
+    //                 } else {
+    //                     // return filterJournals?.[(Math.floor(Math.random() * (journalLength - 1)))]?.journal ?? "Error..."
+    //                     return setTestNumber(
+    //                         filterJournals?.[(Math.floor(Math.random() * (journalLength - 1)))]?.journal ?? "Error..."
+    //                     );
+    //                 }
+    //             }, 5000)
+    //     }
             
-        console.log(aJournal);
+    //     console.log(aJournal);
         
-        
-    }
+    //    return testNumber 
+    // }
 
     return (
         <div>
@@ -171,13 +173,8 @@ function GrowthOnion(props: {ambitionGet: Ambitions
             recursiveOnion(onionDepth, 0, 
             // <></>, 
             <span className={`border bg-cyan-100 rounded-full p-2 grid col-span-1 justify-items-stretch text-center text-cyan-900`}>
-                {/* Beginning... */}
-                {
-                // filterJournals?.[0]?.journal ?? "Beginning..."
-                setJournal()
-                }
-                {testNumber}
-                    </span>,
+                Beginning...
+            </span>,
             1)
         }
         </div>
