@@ -6,6 +6,7 @@ export default function ViewGrowth(props: {ambitionPass: Ambitions
     // & {
     // record: Record[];
     // }
+    , recordsGet: Record[],
 }) {
 
     /*
@@ -29,7 +30,7 @@ export default function ViewGrowth(props: {ambitionPass: Ambitions
             </button>
 
             <div className={`${menuOpen ? "" : "hidden" }`}>
-                <GrowthOnion ambitionGet={props.ambitionPass} />
+                <GrowthOnion ambitionGet={props.ambitionPass} recordsGet={props.recordsGet} />
             </div>
         </>
     )
@@ -39,9 +40,12 @@ function GrowthOnion(props: {ambitionGet: Ambitions
     // & {
     // record: Record[];
     // }
+    , recordsGet: Record[],
 }) {
 
     const { data } = api.newRecord.getRecords.useQuery({ ambitionId: props.ambitionGet.id});
+
+    const updatedData = data?.concat(props.recordsGet);
     
     const endValue = props.ambitionGet.endValue;
 
@@ -49,13 +53,15 @@ function GrowthOnion(props: {ambitionGet: Ambitions
     
     // const latestValue = props.ambitionGet.record?.at(-1)?.value;
 
-    const startValue = data?.[0]?.value;
+    const startValue = updatedData?.[0]?.value;
 
-    const latestValue = data?.at(-1)?.value;
+    const latestValue = updatedData?.at(-1)?.value;
 
     const progressValue = -((startValue ?? 0) - (latestValue ?? 0))
 
-    // const data = props.ambitionGet.record
+    const filterJournals = updatedData?.filter(elem => elem.journal.length !== 0);
+
+    const journalLength = filterJournals?.length ?? 0;
 
     // need to get the target value from ambition and then the first record value which is the start value and then for weight loss: start value - end value * .2 to get 20% value... don't want to use 10% to give almost instant gratification
     // having found a way to calculate this using array length, could have the option changing the growth values from 20% to 10%
@@ -137,13 +143,40 @@ function GrowthOnion(props: {ambitionGet: Ambitions
     //     "rgb(8 51 68)", // cyan-950
     // ]
 
+    const [testNumber, setTestNumber] = useState(0)
+    
+    let aJournal: number;
+
+    function setJournal() {
+        if (!aJournal) {
+            aJournal = window.setInterval(function journalMaker(){
+                    if (journalLength === 0) {
+                        // return "Beginning..."
+                        return setTestNumber(0)
+                    } else {
+                        // return filterJournals?.[(Math.floor(Math.random() * (journalLength - 1)))]?.journal ?? "Error..."
+                        return setTestNumber(aJournal);
+                    }
+                }, 1000)
+        }
+            
+        console.log(aJournal);
+        
+        
+    }
+
     return (
         <div>
         {
             recursiveOnion(onionDepth, 0, 
             // <></>, 
             <span className={`border bg-cyan-100 rounded-full p-2 grid col-span-1 justify-items-stretch text-center text-cyan-900`}>
-                Beginning...
+                {/* Beginning... */}
+                {
+                // filterJournals?.[0]?.journal ?? "Beginning..."
+                setJournal()
+                }
+                {testNumber}
                     </span>,
             1)
         }
