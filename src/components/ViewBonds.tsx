@@ -48,13 +48,21 @@ export default function ViewBonds(props: {ambitionPass: Ambitions //& {
         - re-query things after doing a mutation
     */
 
-    const [updateState, updateDispatch] = useReducer(updateReducer, { bonds: [] });
+    const [updateState, updateDispatch] = useReducer(updateReducer, { bonds: []});
 
-    const [deleteState, deleteDispatch] = useReducer(deleteReducer, { bondId: [] });
+    const [deleteState, deleteDispatch] = useReducer(deleteReducer, { bondId: []});
 
     const { data } = api.newBond.getBonds.useQuery({ ambitionId: props.ambitionPass.id})
 
-    const filterBonds = data?.filter(elem => !deleteState.bondId.includes(elem.id))
+    // have to filter out the old bond that just got updated before concatenating with the updated bond
+    const updatedBonds = data?.filter(elem => {
+
+       const getBondIds = updateState.bonds?.map(value => value.id)
+
+       return !getBondIds.includes(elem.id) 
+    }).concat(updateState.bonds)
+    
+    const filterBonds = updatedBonds?.filter(elem => !deleteState.bondId.includes(elem.id)).flat();
 
     const bondIDs: string[][] | undefined = filterBonds?.map((elem, index) => {
         // [] containing bond id, partner ambition id or "Empty", index number
@@ -124,7 +132,7 @@ export default function ViewBonds(props: {ambitionPass: Ambitions //& {
     )
 }
 
-function UpdateBondInner(props: {bondId: string | undefined, bondIndex: string | undefined,
+function UpdateBondInner(props: {bondId: string | undefined, bondIndex: number,
 updateDispatch: Dispatch<{
     type: string;
     payload: Bonds;
@@ -160,8 +168,8 @@ updateDispatch: Dispatch<{
 
     return (
         <div
-            key={props.bondIndex} 
-            className={`border-black border flex justify-center items-end rounded-lg mt-2 ${Number(props.bondIndex) % 2 === 0 ? "bg-slate-500 text-slate-50" : "bg-sky-500 text-slate-900"}`}
+            key={props.bondId} 
+            className={`border-black border flex justify-center items-end rounded-lg mt-2 ${props.bondIndex % 2 === 0 ? "bg-slate-500 text-slate-50" : "bg-sky-500 text-slate-900"}`}
         >
                         
             <form 
@@ -206,7 +214,7 @@ function UpdateBond(props: {bondIdsGet: string[][] | undefined,
                 })
                 .map((elem, index, array) => {
                     return (
-                        <UpdateBondInner key={elem[2]} bondId={elem[0]} bondIndex={elem[2]} updateDispatch={props.updateDispatch} />
+                        <UpdateBondInner key={elem[0]} bondId={elem[0]} bondIndex={index} updateDispatch={props.updateDispatch} />
                     )
                 })
             }        
