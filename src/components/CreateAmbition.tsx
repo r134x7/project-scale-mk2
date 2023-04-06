@@ -81,9 +81,9 @@ dispatchAmbition: Dispatch<{
     });
 
     const ambitions = [
-        { id: 1, name: "Lose Weight", target:"Select a weight to reach in kilograms:"},
-        { id: 2, name: "Study Subject", target:"Select a study duration to reach in minutes per day:"},
-        { id: 3, name: "Perform Activity", target:"Select an activity duration to reach in minutes per day:"},
+        { id: 1, name: "Lose Weight", target:"Select a weight to reach in kilograms: (e.g. 60 for 60kg)"},
+        { id: 2, name: "Study Subject", target:"Select a duration to reach in minutes per day: (e.g. 30 for 30 minutes per day)"},
+        { id: 3, name: "Perform Activity", target:"Select a duration to reach in minutes per day: (e.g. 30 for 30 minutes per day)"},
     ];
 
     // const [open, setOpen] = useState(props.menu);

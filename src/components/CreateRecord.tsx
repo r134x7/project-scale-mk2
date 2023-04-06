@@ -143,6 +143,7 @@ function RecordModal(props: {ambitionIdGet: string,
                     className="border-solid border-cyan-500 rounded-md border-4 m-2"
                     type="number" 
                     min="0"
+                    required
                     onChange={(event) => setInputValue(Number(event.target.value))}
                     value={inputValue}
                 />

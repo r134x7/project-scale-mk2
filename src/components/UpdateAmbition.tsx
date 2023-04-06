@@ -124,6 +124,14 @@ function UpdateAmbitionInner(props: {ambitionGet:
         })
     };
 
+    const subjectList = [
+        {ambition: "Lose Weight", target: "Select a weight to reach in kilograms: (e.g. 60 for 60kg)"},
+        {ambition: "Study Subject", target:"Select a duration to reach in minutes per day: (e.g. 30 for 30 minutes per day)"},
+        {ambition: "Perform Activity", target:"Select a duration to reach in minutes per day: (e.g. 30 for 30 minutes per day)"},
+    ]
+
+    const [getValue, restOfValues] = subjectList.filter(elem => elem.ambition === props.ambitionGet.name)
+
     return (
             <div
                 className={`border-black border flex justify-center items-end rounded-lg mt-2 `}
@@ -137,7 +145,7 @@ function UpdateAmbitionInner(props: {ambitionGet:
                 }}
                 >
 
-                <label className="flex justify-center mt-2">Select target value in kilograms:</label>
+                <label className="flex justify-center mt-2">{getValue?.target ?? "Error"}</label>
                 <input 
                     className="border-solid border-cyan-500 rounded-md border-4 m-2"
                     type="number" 
@@ -145,13 +153,14 @@ function UpdateAmbitionInner(props: {ambitionGet:
                     value={target}
                 />
 
-                <label className="flex justify-center mt-2">Write a daily plan for achieving your ambition: (max 1000 characters)</label>
+                <label className="flex justify-center mt-2">Write a daily plan for achieving your ambition:</label>
                 <textarea  
                     className="border-solid border-cyan-500 rounded-md border-4 m-2"
                     onChange={(event) => setPlan(event.target.value)}
                     value={plan}
                     maxLength={1000}
                 />
+                <p className="flex justify-start ml-2 text-sm">  {plan.length}/1000 characters.</p>
 
                 <button 
                     className="m-2 rounded-md border-4 border-cyan-500 bg-sky-200 text-sky-900 font-bold"

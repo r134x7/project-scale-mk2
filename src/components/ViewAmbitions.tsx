@@ -105,13 +105,21 @@ function AmbitionCards(props: {ambitionGet:
         ambitionPlan: props.ambitionGet.dailyPlan, 
     })
 
+    const subjectList = [
+        {ambition: "Lose Weight", subject: "Targeted weight:", units: "kg"},
+        {ambition: "Study Subject", subject: "Targeted minutes per day:", units: " minutes"},
+        {ambition: "Perform Activity", subject: "Targeted minutes per day", units: " minutes"}
+    ]
+
+    const [getSubject, otherSubjects] = subjectList.filter(elem => elem.ambition === props.ambitionGet.name)
+
     return (
                     <div key={props.ambitionGet.id} className={"border-2 rounded-lg grid grid-cols-1 "} >
                          <p className="flex justify-center border">Ambition: {props.ambitionGet.name}</p> 
                          <br />
-                         <p className="flex justify-center border">Target value: {ambitionState.ambitionValue}kg</p> 
+                         <p className="flex justify-center border">{getSubject?.subject ?? "Error"} {ambitionState.ambitionValue}{getSubject?.units ?? "Error"}</p> 
                          <br />
-                         <p className="flex justify-center border">Daily Plan: {ambitionState.ambitionPlan}</p> 
+                         <p className="grid grid-cols-1 border overflow-auto">Daily Plan: {ambitionState.ambitionPlan}</p> 
                          <br />
                          <CreateRecord ambitionIdPass={props.ambitionGet.id} dispatch={dispatch} />
                          <br />
