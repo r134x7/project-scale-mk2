@@ -359,7 +359,11 @@ function BondCards(props: {bondIdsGet: string[][] | undefined, ambitionGet: Ambi
 
     const maxRecordLength = Math.max(userRecordsLength, ...dataRecordsLength)
 
-
+    const subjectList = [
+        {ambition: "Lose Weight", subject: "Weight:", units: "kg"},
+        {ambition: "Study Subject", subject: "Study time: ", units: " minutes"},
+        {ambition: "Perform Activity", subject: "Activity time:", units: " minutes"}
+    ]
 
     /*
         changing this to charts to make an easier summary.
@@ -451,8 +455,19 @@ function BondCards(props: {bondIdsGet: string[][] | undefined, ambitionGet: Ambi
                         <br />
                         End value: {elem.endValue}kg
                         <br />
+                        Latest record:
+                                    <div
+                                        key={elem.record?.at(-1)?.id}
+                                        className={`border-black border grid grid-cols-1 justify-center items-end rounded-lg mt-2 bg-slate-500 text-slate-50`}
+                                    >
+                                        Date recorded: {elem.record?.at(-1)?.createdAt.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                                        <br />
+                                        Weight: {elem.record?.at(-1)?.value}kg 
+                                        <br />
+                                        Difference to previous record: {(elem.record?.at(-1)?.value ?? 0) - (elem.record?.at(-2)?.value ?? 0)}kg
+                                    </div>
 
-                        {
+                        {/* {
                             elem.record.map((value, secondIndex, secondArray) => {
                                 return (
                                     <div
@@ -469,7 +484,7 @@ function BondCards(props: {bondIdsGet: string[][] | undefined, ambitionGet: Ambi
                                     </div>
                                 )
                             })
-                        }
+                        } */}
                     </div>
                 )
             })
