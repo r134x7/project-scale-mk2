@@ -1,10 +1,22 @@
 import { api } from "../utils/api";
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import type { Ambitions, Record } from "@prisma/client";
+import type { Dispatch } from "react";
 
 import { Line } from "react-chartjs-2";
 import { Chart, registerables } from 'chart.js'; // required to actually get chart.js with react-chartjs-2 to work
 Chart.register(...registerables); // to get the package working, source: https://www.chartjs.org/docs/next/getting-started/integration.html
+
+function reducer(state: {index: number}, action: {type: string, payload: number}) {
+    if (action.type === "change") {
+        return {
+            ...state,
+            index: action.payload
+        };
+    }
+
+    throw Error("Oops.");
+}
 
 export default function ViewRecords(props: {ambitionPass: Ambitions //& {
     //record: Record[];
@@ -41,6 +53,8 @@ export default function ViewRecords(props: {ambitionPass: Ambitions //& {
         return !getRecordIds.includes(elem.id)
     }).concat(props.recordsGet);
 
+    const [state, dispatch] = useReducer(reducer, {index: 0})
+
     return (
         <>
             <button 
@@ -51,8 +65,8 @@ export default function ViewRecords(props: {ambitionPass: Ambitions //& {
             </button>
 
             <div className={`${menuOpen ? "" : "hidden" }`}>
-                <LineGraph ambitionGet={props.ambitionPass} recordGet={concatData} />
-                <RecordCards recordsGet={concatData} ambitionGet={props.ambitionPass} />
+                <LineGraph ambitionGet={props.ambitionPass} recordGet={concatData} indexGet={state.index} />
+                <RecordCards recordsGet={concatData} ambitionGet={props.ambitionPass} dispatch={dispatch} />
             </div>
         </>
     )
@@ -63,6 +77,10 @@ function RecordCards(props: {
     //record: Record[];
     //}
     recordsGet: Record[] | undefined,
+    dispatch: Dispatch<{
+        type: string;
+        payload: number;
+    }> 
 }) {
     
     // const { data } = api.newRecord.getRecords.useQuery({ ambitionId: props.ambitionIdGet }); 
@@ -87,14 +105,26 @@ function RecordCards(props: {
         <div className="grid grid-cols-2 ">
         <button 
             className={`bg-gray-600 rounded-lg text-sm text-white p-1 m-1 border-solid border-l-indigo-800 border-r-indigo-800 border-t-purple-800 border-b-purple-800 border-2`}
-            onClick={() => setRecordIndex(
-            (recordIndex === 0) ? 0 : recordIndex - 1
-            )}>Previous Day</button>
+            // onClick={() => setRecordIndex(
+            // (recordIndex === 0) ? 0 : recordIndex - 1
+            // )}
+            onClick={() => {
+                setRecordIndex((recordIndex === 0) ? 0 : recordIndex - 1)
+                props.dispatch({type: "change", payload: (recordIndex === 0) ? 0 : recordIndex - 1 })
+            }}
+            >Previous Day</button>
         <button 
             className={`bg-gray-600 rounded-lg text-sm text-white p-1 m-1 border-solid border-l-indigo-800 border-r-indigo-800 border-t-purple-800 border-b-purple-800 border-2`}
-            onClick={() => setRecordIndex(
-            (recordIndex === recordsLength - 1) ? recordIndex : recordIndex + 1
-            )}>Next Day</button>
+            // onClick={() => setRecordIndex(
+            // (recordIndex === recordsLength - 1) ? recordIndex : recordIndex + 1
+            // )}
+            onClick={() => {
+
+                setRecordIndex(
+                (recordIndex === recordsLength - 1) ? recordIndex : recordIndex + 1)
+                props.dispatch({type: "change", payload: (recordIndex === recordsLength - 1) ? recordIndex : recordIndex + 1 })
+            }} 
+            >Next Day</button>
         </div>
             <div 
                         key={props.recordsGet?.[recordIndex]?.id}
@@ -147,6 +177,7 @@ function LineGraph(props: {ambitionGet: Ambitions //& {
     //record: Record[];
     //}
     , recordGet: Record[] | undefined,
+    indexGet: number
 }) {
 
     const ambitionData = props.ambitionGet;
@@ -171,6 +202,13 @@ function LineGraph(props: {ambitionGet: Ambitions //& {
                         {
                             data: props.recordGet?.flatMap(elem => elem.value) ?? [0],
                             label: ambitionData.name,
+                            backgroundColor: props.recordGet?.flatMap((elem, index) => {
+                                if (index === props.indexGet) {
+                                    return "red"
+                                } else {
+                                    return "violet"
+                                }
+                            })
                         },
                     ],
                 }}
