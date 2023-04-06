@@ -29,7 +29,17 @@ export default function ViewRecords(props: {ambitionPass: Ambitions //& {
 
     const { data: recordData } = api.newRecord.getRecords.useQuery({ ambitionId: props.ambitionPass.id })
 
-    const concatData = recordData?.concat(props.recordsGet);
+    // surprisingly, a query is occurring when recordData is of length 0 and you add a new record.
+    // so this is for the edge case where you create a new ambition and fill out your first record.
+    // because that record will occur twice if the following is used const concatData = recordData?.concat(props.recordsGet);
+    
+    // same filtering method used in view bonds.
+    const concatData = recordData?.filter(elem => {
+
+        const getRecordIds = props.recordsGet?.map(value => value.id)
+
+        return !getRecordIds.includes(elem.id)
+    }).concat(props.recordsGet);
 
     return (
         <>
