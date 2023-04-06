@@ -75,18 +75,20 @@ function RecordCards(props: {
                 return (
                     <div 
                         key={elem.id}
-                        className={`border-black border flex justify-center items-end rounded-lg mt-2 ${index % 2 === 0 ? "bg-slate-500 text-slate-50" : "bg-sky-500 text-slate-900"}`}
+                        className={`border-black border grid grid-cols-1 rounded-lg mt-2 ${index % 2 === 0 ? "bg-slate-500 text-slate-50" : "bg-sky-500 text-slate-900"}`}
                     >
+                    <p className="overflow-auto ml-2">
                     Date recorded: {elem.createdAt.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-                    <br />
+                    </p>
+                    <p className="overflow-auto ml-2">
                     {getSubject?.subject ?? "Error"} {elem.value}{getSubject?.units ?? "Error"} 
-                    <br />
+                    </p>
+                    <p className="overflow-auto ml-2">
                     Difference to previous record: {elem.value - (array?.at((index === 0 
                         ? 0 
                         : index-1))?.value ?? 0)}{getSubject?.units ?? "Error"}
-                    <br />
-                    Journal: {elem.journal} 
-                    <br />
+                    </p>
+                    <p className="overflow-auto ml-2">Journal: {elem.journal}</p> 
                     </div>
                 )
             })

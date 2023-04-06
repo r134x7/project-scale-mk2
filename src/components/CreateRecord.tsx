@@ -142,17 +142,19 @@ function RecordModal(props: {ambitionIdGet: string,
                 <input 
                     className="border-solid border-cyan-500 rounded-md border-4 m-2"
                     type="number" 
+                    min="0"
                     onChange={(event) => setInputValue(Number(event.target.value))}
                     value={inputValue}
                 />
 
-                <label className="flex justify-center mt-2">Journal for today: (max 200 characters)</label>
+                <label className="flex justify-center mt-2">Journal for today:</label>
                 <textarea  
                     className="border-solid border-cyan-500 rounded-md border-4 m-2"
                     onChange={(event) => setNotes(event.target.value)}
                     value={notes}
                     maxLength={200}
                 />
+                <p className="flex justify-start ml-2 text-sm">  {notes.length}/200 characters.</p>
 
                 <button 
                     className="m-2 rounded-md border-4 border-cyan-500 bg-sky-200 text-sky-900 font-bold"

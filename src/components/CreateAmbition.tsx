@@ -81,9 +81,9 @@ dispatchAmbition: Dispatch<{
     });
 
     const ambitions = [
-        { id: 1, name: "Lose Weight", target:"Select desired weight in kilograms:"},
-        { id: 2, name: "Study Subject", target:"Select a desired study duration in minutes per day:"},
-        { id: 3, name: "Perform Activity", target:"Select a desired activity duration in minutes per day:"},
+        { id: 1, name: "Lose Weight", target:"Select a weight to reach in kilograms:"},
+        { id: 2, name: "Study Subject", target:"Select a study duration to reach in minutes per day:"},
+        { id: 3, name: "Perform Activity", target:"Select an activity duration to reach in minutes per day:"},
     ];
 
     // const [open, setOpen] = useState(props.menu);
@@ -160,18 +160,21 @@ dispatchAmbition: Dispatch<{
                 <input 
                     className="border-solid border-cyan-500 rounded-md border-4 m-2"
                     type="number" 
+                    min="0"
+                    required
                     onChange={(event) => setTarget(Number(event.target.value))}
                     value={target}
                 />
 
 
-                <label className="flex justify-center mt-2">Write a daily plan for achieving your ambition: (max 1000 characters)</label>
+                <label className="flex justify-center mt-2">Write a daily plan for achieving your ambition:</label>
                 <textarea  
                     className="border-solid border-cyan-500 rounded-md border-4 m-2"
                     onChange={(event) => setPlan(event.target.value)}
                     value={plan}
                     maxLength={1000}
                 />
+                <p className="flex justify-start ml-2 text-sm">  {plan.length}/1000 characters.</p>
 
                 <button 
                     className="m-2 rounded-md border-4 border-cyan-500 bg-sky-200 text-sky-900 font-bold"
