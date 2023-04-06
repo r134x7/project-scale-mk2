@@ -444,6 +444,9 @@ function BondCards(props: {bondIdsGet: string[][] | undefined, ambitionGet: Ambi
         {
 
             data?.map((elem, index) => {
+
+                const [getValue, restOfValues]= subjectList.filter(value => value.ambition === elem.name)
+
                 return (
                     <div
                         key={elem.id}
@@ -453,7 +456,7 @@ function BondCards(props: {bondIdsGet: string[][] | undefined, ambitionGet: Ambi
                         <br />
                         Ambition: {elem.name}
                         <br />
-                        End value: {elem.endValue}kg
+                        Targeted {getValue?.subject} {elem.endValue}{getValue?.units}
                         <br />
                         Latest record:
                                     <div
@@ -462,9 +465,9 @@ function BondCards(props: {bondIdsGet: string[][] | undefined, ambitionGet: Ambi
                                     >
                                         Date recorded: {elem.record?.at(-1)?.createdAt.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                                         <br />
-                                        Weight: {elem.record?.at(-1)?.value}kg 
+                                        {getValue?.subject} {elem.record?.at(-1)?.value}{getValue?.units}
                                         <br />
-                                        Difference to previous record: {(elem.record?.at(-1)?.value ?? 0) - (elem.record?.at(-2)?.value ?? 0)}kg
+                                        Difference to previous record: {(elem.record?.at(-1)?.value ?? 0) - (elem.record?.at(-2)?.value ?? 0)}{getValue?.units}
                                     </div>
 
                         {/* {
