@@ -43,21 +43,42 @@ function GrowthOnion(props: {ambitionGet: Ambitions
     , recordsGet: Record[],
 }) {
 
-    const { data } = api.newRecord.getRecords.useQuery({ ambitionId: props.ambitionGet.id});
+    const { data: recordData } = api.newRecord.getRecords.useQuery({ ambitionId: props.ambitionGet.id});
 
-    const updatedData = data?.concat(props.recordsGet);
+    // const updatedData = data?.concat(props.recordsGet);
+    // same filtering method used in view bonds.
+    const updatedData = recordData?.filter(elem => {
+
+        const getRecordIds = props.recordsGet?.map(value => value.id)
+
+        return !getRecordIds.includes(elem.id)
+    }).concat(props.recordsGet);
     
     const endValue = props.ambitionGet.endValue;
 
+    const subjectList = [
+        {ambition: "Lose Weight", subject: "Lost", units: ["kg"]},
+        {ambition: "Study Subject", subject: "Spent", units: [" minutes", " minutes per day", " days"] },
+        {ambition: "Perform Activity", subject: "Spent", units:[" minutes", " minutes per day", " days"]},
+    ]
+
+    const [getSubject, restOfSubjects] = subjectList.filter(elem => elem.ambition === props.ambitionGet.name)
     // const startValue = props.ambitionGet.record[0]?.value;
     
     // const latestValue = props.ambitionGet.record?.at(-1)?.value;
+    const sumValue: number | undefined = updatedData?.reduce((acc, next) => {
+        return acc + (next?.value ?? 0)
+    }, 0)
+
+    const sumLength = updatedData?.length ?? 0;
 
     const startValue = updatedData?.[0]?.value;
 
     const latestValue = updatedData?.at(-1)?.value;
 
     const progressValue = -((startValue ?? 0) - (latestValue ?? 0))
+
+    // const progressSum = 
 
     // const filterJournals = updatedData?.filter(elem => elem.journal.length !== 0);
 
@@ -67,19 +88,45 @@ function GrowthOnion(props: {ambitionGet: Ambitions
     // having found a way to calculate this using array length, could have the option changing the growth values from 20% to 10%
     const growthValues = Array.from({length:20},(v,i) => {
 
-        return (startValue === undefined)
-            ? []
-            : (endValue - startValue) * ((i+1) / 20)
+        if (startValue === undefined) {
+            return []
+        } else if (getSubject?.ambition === "Lose Weight") {
+            return (endValue - startValue) * ((i+1) / 20)
+        } else {
+            return (i === 0)
+                ? sumValue ?? 0
+                : (i === 1)
+                    ? (sumValue ?? 0) / sumLength
+                    : (i === 2)
+                        ? sumLength
+                        : []
+        }
+
+        // return (startValue === undefined)
+        //     ? []
+        //     : (getSubject?.ambition === "Lose Weight")
+        //         ? (endValue - startValue) * ((i+1) / 20)
+        //         // we take the sumValue...
+        //         // 1000 minutes and then
+        //         : (sumValue ?? 0) / (endValue)
     }).flat()
+
+    /* 
+    days sum
+    minutes average = minutes sum / days sum
+    minutes sum
+    */
 
     // make a loop checking that the progress value is greater than the growth value to get the onionDepth
     const onionDepth = growthValues?.flatMap(elem => {
 
         // console.log(progressValue < elem);
         
-        return (progressValue < elem)
+        return (progressValue < elem && getSubject?.ambition === "Lose Weight")
             ? elem
-            : []
+            : (getSubject?.ambition !== "Lose Weight")
+                ? elem
+                : []
     })
 
     // console.log(progressValue);
@@ -104,7 +151,11 @@ function GrowthOnion(props: {ambitionGet: Ambitions
         
         Works fine with slate colour probably because it's being used elsewhere.
     */
-    function recursiveOnion(depth: number[], index: number, onion: JSX.Element, animate: number): JSX.Element {
+    function recursiveOnion(subject: {
+        ambition: string;
+        subject: string;
+        units: string[];
+    } | undefined, depth: number[], index: number, onion: JSX.Element, animate: number): JSX.Element {
 
         if (depth?.[index] === undefined) {
             return onion
@@ -121,12 +172,12 @@ function GrowthOnion(props: {ambitionGet: Ambitions
                     `} 
                     // style={{ backgroundColor: colorRange?.[index] ?? colorRange.at(-1)}}
                     >
-                       Lost {depth[index]?.toFixed(2)}kg
+                      {subject?.subject ?? "Error"} {depth[index]?.toFixed((subject?.ambition === "Lose Weight") ? 2 : 0)}{subject?.units?.[index] ?? "kg"}
                         {onion}
                     </span>
             )
 
-            return recursiveOnion(depth, index + 1, newOnion, (animate === 3 ? 1 : animate + 1))
+            return recursiveOnion(subject, depth, index + 1, newOnion, (animate === 3 ? 1 : animate + 1))
         }
     }
 
@@ -170,7 +221,7 @@ function GrowthOnion(props: {ambitionGet: Ambitions
     return (
         <div>
         {
-            recursiveOnion(onionDepth, 0, 
+            recursiveOnion(getSubject, onionDepth, 0, 
             // <></>, 
             <span className={`border bg-cyan-100 rounded-full p-2 grid col-span-1 justify-items-stretch text-center text-cyan-900`}>
                 Beginning...

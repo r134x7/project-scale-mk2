@@ -115,11 +115,11 @@ function AmbitionCards(props: {ambitionGet:
 
     return (
                     <div key={props.ambitionGet.id} className={"border-2 rounded-lg grid grid-cols-1 "} >
-                         <p className="flex justify-center border">Ambition: {props.ambitionGet.name}</p> 
+                         <p className="flex justify-center border bg-slate-700">Ambition: {props.ambitionGet.name}</p> 
                          <br />
-                         <p className="flex justify-center border">{getSubject?.subject ?? "Error"} {ambitionState.ambitionValue}{getSubject?.units ?? "Error"}</p> 
+                         <p className="flex justify-center border bg-slate-700">{getSubject?.subject ?? "Error"} {ambitionState.ambitionValue}{getSubject?.units ?? "Error"}</p> 
                          <br />
-                         <p className="grid grid-cols-1 border overflow-auto">Daily Plan: {ambitionState.ambitionPlan}</p> 
+                         <p className="grid grid-cols-1 border overflow-auto bg-slate-700">Daily Plan: {ambitionState.ambitionPlan}</p> 
                          <br />
                          <CreateRecord ambitionIdPass={props.ambitionGet.id} dispatch={dispatch} />
                          <br />
