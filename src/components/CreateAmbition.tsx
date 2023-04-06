@@ -128,7 +128,7 @@ dispatchAmbition: Dispatch<{
             {/* <form onSubmit={(event) => handleAmbitionSubmit(event)} */}
             {/* seemingly have to call the function like this due to the React.EventFormHandler<T> */}
             <form 
-            className="bg-slate-50 grid grid-cols-1 border-2 border-black rounded-lg"
+            className="bg-slate-700 grid grid-cols-1 border-2 border-black rounded-lg"
             onSubmit={(event) => { 
                 event.preventDefault()
                 handleAmbitionSubmit() }}
@@ -138,7 +138,7 @@ dispatchAmbition: Dispatch<{
                     Click on the list below to select an ambition:
                     </label>
                 <Listbox value={ambitionName} onChange={setAmbitionName}>
-                    <Listbox.Button className={"mt-2 ml-2 mr-2 border-solid border-4 rounded-md border-cyan-500"}>
+                    <Listbox.Button className={"mt-2 ml-2 mr-2 border-solid border-4 rounded-md border-cyan-500 bg-slate-800"}>
                       Selected Ambition: {ambitionName}
                     </Listbox.Button>
                     <Listbox.Options className={"ml-2 mr-2 border-solid border-4 rounded-md"}>
@@ -158,7 +158,7 @@ dispatchAmbition: Dispatch<{
                     {getValue?.target}
                     </label>
                 <input 
-                    className="border-solid border-cyan-500 rounded-md border-4 m-2"
+                    className="border-solid border-cyan-500 rounded-md border-4 m-2 bg-slate-800"
                     type="number" 
                     min="0"
                     required
@@ -169,7 +169,7 @@ dispatchAmbition: Dispatch<{
 
                 <label className="flex justify-center mt-2">Write a daily plan for achieving your ambition:</label>
                 <textarea  
-                    className="border-solid border-cyan-500 rounded-md border-4 m-2"
+                    className="border-solid border-cyan-500 rounded-md border-4 m-2 bg-slate-800"
                     onChange={(event) => setPlan(event.target.value)}
                     value={plan}
                     maxLength={1000}

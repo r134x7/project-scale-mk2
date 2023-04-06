@@ -138,7 +138,7 @@ function UpdateAmbitionInner(props: {ambitionGet:
             >
             
                 <form 
-                className="bg-slate-50 grid grid-cols-1"
+                className="bg-slate-700 grid grid-cols-1"
                 onSubmit={(event) => { 
                     event.preventDefault()
                     handleAmbitionUpdateSubmit(props.ambitionGet.id, plan, target) 
@@ -147,7 +147,7 @@ function UpdateAmbitionInner(props: {ambitionGet:
 
                 <label className="flex justify-center mt-2">{getValue?.target ?? "Error"}</label>
                 <input 
-                    className="border-solid border-cyan-500 rounded-md border-4 m-2"
+                    className="border-solid border-cyan-500 rounded-md border-4 m-2 bg-slate-800"
                     type="number" 
                     onChange={(event) => setTarget(Number(event.target.value))}
                     value={target}
@@ -155,7 +155,7 @@ function UpdateAmbitionInner(props: {ambitionGet:
 
                 <label className="flex justify-center mt-2">Write a daily plan for achieving your ambition:</label>
                 <textarea  
-                    className="border-solid border-cyan-500 rounded-md border-4 m-2"
+                    className="border-solid border-cyan-500 rounded-md border-4 m-2 bg-slate-800"
                     onChange={(event) => setPlan(event.target.value)}
                     value={plan}
                     maxLength={1000}
@@ -213,7 +213,7 @@ function DeleteAmbitionInner(props: {ambitionGet:
             >
             
                 <form 
-                className="bg-slate-50 grid grid-cols-1"
+                className="bg-slate-700 grid grid-cols-1"
                 onSubmit={(event) => { 
                     event.preventDefault()
                     handleAmbitionDeleteSubmit(props.ambitionGet.id) 
@@ -222,7 +222,7 @@ function DeleteAmbitionInner(props: {ambitionGet:
 
                 <label className="flex justify-center mt-2">Enter the ambition ID within the quotes &quot;{props.ambitionGet.id}&quot; to enable the delete button and then click delete:</label>
                 <input 
-                    className="border-solid border-cyan-500 rounded-md border-4 m-2 text-black"
+                    className="border-solid border-cyan-500 rounded-md border-4 m-2 bg-slate-800"
                     onChange={(event) => setAmbitionId(event.target.value)}
                     value={ambitionId}
                 />

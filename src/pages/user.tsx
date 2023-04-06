@@ -111,7 +111,7 @@ export default function User() {
 
     return (
         (sessionData)
-        ? <div className={"grid grid-cols-1 gap-y-2  justify-center items-center"}>
+        ? <div className={"grid grid-cols-1 gap-y-4  justify-center items-center bg-slate-900 text-white"}>
             Welcome, {sessionData.user?.name ?? "ERROR"}.
 
             <CreateAmbition dispatch={dispatch} />

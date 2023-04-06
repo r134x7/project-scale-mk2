@@ -184,20 +184,20 @@ updateDispatch: Dispatch<{
     return (
         <div
             key={props.bondId} 
-            className={`border-black border flex justify-center items-end rounded-lg mt-2 ${props.bondIndex % 2 === 0 ? "bg-slate-500 text-slate-50" : "bg-sky-500 text-slate-900"}`}
+            className={`border-black border flex justify-center items-end rounded-lg mt-2 ${props.bondIndex % 2 === 0 ? "bg-slate-500 text-slate-50" : "bg-sky-500 text-slate-50"}`}
         >
                         
             <form 
-                className="bg-slate-50 grid grid-cols-1"
+                className="bg-slate-700 grid grid-cols-1"
                 onSubmit={(event) => { 
                             event.preventDefault()
                             handleBondUpdateSubmit(props.bondId) 
                         }}
             >
 
-            <label className="flex justify-center mt-2 text-black">Enter the ambition ID of the other person you will share a bond with:</label>
+            <label className="flex justify-center mt-2 ">Enter the ambition ID of the other person you will share a bond with:</label>
             <input 
-                className="border-solid border-cyan-500 rounded-md border-4 m-2 text-black"
+                className="border-solid border-cyan-500 rounded-md border-4 m-2 bg-slate-800"
                 onChange={(event) => setPartnerBondId(event.target.value)}
                 value={partnerBondId}
             />
@@ -273,7 +273,7 @@ deleteDispatch: Dispatch<{
     return (
         <div
             key={props.bondId} 
-            className={`border-black border flex justify-center items-end rounded-lg mt-2 ${props.bondIndex % 2 === 0 ? "bg-slate-500 text-slate-50" : "bg-sky-500 text-slate-900"}`}
+            className={`border-black border flex justify-center items-end rounded-lg mt-2 ${props.bondIndex % 2 === 0 ? "bg-slate-500 text-slate-50" : "bg-sky-500 text-slate-50"}`}
         >
 
             <form
@@ -285,7 +285,7 @@ deleteDispatch: Dispatch<{
 
             <label className="flex justify-center mt-2">Enter the ambition ID within the quotes &quot;{props.partnerId}&quot; to enable the delete button and then click delete:</label>
             <input 
-                className="border-solid border-cyan-500 rounded-md border-4 m-2 text-black"
+                className="border-solid border-cyan-500 rounded-md border-4 m-2 bg-slate-800"
                 onChange={(event) => setPartnerBondId(event.target.value)}
                 value={partnerBondId}
             />

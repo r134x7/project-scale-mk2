@@ -131,7 +131,7 @@ function RecordModal(props: {ambitionIdGet: string,
             </Dialog.Description> */}
 
             <form 
-            className="bg-slate-50 grid grid-cols-1 border-2 border-black rounded-lg"
+            className="bg-slate-700 grid grid-cols-1 border-2 border-black rounded-lg"
             onSubmit={(event) => { 
                 event.preventDefault()
                 handleRecordSubmit() }}
@@ -140,7 +140,7 @@ function RecordModal(props: {ambitionIdGet: string,
 
                 <label className="flex justify-center mt-2">Record today&apos;s weight:</label>
                 <input 
-                    className="border-solid border-cyan-500 rounded-md border-4 m-2"
+                    className="border-solid border-cyan-500 rounded-md border-4 m-2 bg-slate-800"
                     type="number" 
                     min="0"
                     required
@@ -150,7 +150,7 @@ function RecordModal(props: {ambitionIdGet: string,
 
                 <label className="flex justify-center mt-2">Journal for today:</label>
                 <textarea  
-                    className="border-solid border-cyan-500 rounded-md border-4 m-2"
+                    className="border-solid border-cyan-500 rounded-md border-4 m-2 bg-slate-800"
                     onChange={(event) => setNotes(event.target.value)}
                     value={notes}
                     maxLength={200}
