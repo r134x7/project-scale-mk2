@@ -81,12 +81,13 @@ dispatchAmbition: Dispatch<{
     });
 
     const ambitions = [
-        { id: 1, name: "Lose Weight"},
-        { id: 2, name: "Do nothing..."},
+        { id: 1, name: "Lose Weight", target:"Select desired weight in kilograms:"},
+        { id: 2, name: "Study Subject", target:"Select a desired study duration in minutes per day:"},
+        { id: 3, name: "Perform Activity", target:"Select a desired activity duration in minutes per day:"},
     ];
 
     // const [open, setOpen] = useState(props.menu);
-    const [ambitionName, setAmbitionName] = useState(ambitions?.[1]?.name ?? "ERROR")
+    const [ambitionName, setAmbitionName] = useState(ambitions?.[0]?.name ?? "ERROR")
     const [target, setTarget] = useState(0);
     const [plan, setPlan] = useState("");
 
@@ -111,6 +112,7 @@ dispatchAmbition: Dispatch<{
             })
     };
 
+    const [getValue, restOfValues] = ambitions.filter(value => value.name === ambitionName)
 
     return (
         <div className={`${props.menuOpen ? "" : "hidden" }`}>
@@ -132,6 +134,9 @@ dispatchAmbition: Dispatch<{
                 handleAmbitionSubmit() }}
             >
 
+                <label className="flex justify-center mt-2">
+                    Click on the list below to select an ambition:
+                    </label>
                 <Listbox value={ambitionName} onChange={setAmbitionName}>
                     <Listbox.Button className={"mt-2 ml-2 mr-2 border-solid border-4 rounded-md border-cyan-500"}>
                       Selected Ambition: {ambitionName}
@@ -149,7 +154,9 @@ dispatchAmbition: Dispatch<{
                     </Listbox.Options>
                 </Listbox>
 
-                <label className="flex justify-center mt-2">Select target value in kilograms:</label>
+                <label className="flex justify-center mt-2">
+                    {getValue?.target}
+                    </label>
                 <input 
                     className="border-solid border-cyan-500 rounded-md border-4 m-2"
                     type="number" 

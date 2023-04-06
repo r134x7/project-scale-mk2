@@ -42,14 +42,14 @@ export default function ViewRecords(props: {ambitionPass: Ambitions //& {
 
             <div className={`${menuOpen ? "" : "hidden" }`}>
                 <LineGraph ambitionGet={props.ambitionPass} recordGet={concatData} />
-                <RecordCards recordsGet={concatData} />
+                <RecordCards recordsGet={concatData} ambitionGet={props.ambitionPass} />
             </div>
         </>
     )
 }
 
 function RecordCards(props: {
-    // ambitionGet: Ambitions //& {
+    ambitionGet: Ambitions //& {
     //record: Record[];
     //}
     recordsGet: Record[] | undefined,
@@ -58,6 +58,14 @@ function RecordCards(props: {
     // const { data } = api.newRecord.getRecords.useQuery({ ambitionId: props.ambitionIdGet }); 
 
     // const data = props.ambitionGet.record
+
+    const subjectList = [
+        {ambition: "Lose Weight", subject: "Weight:", units: "kg"},
+        {ambition: "Study Subject", subject: "Study time: ", units: " minutes"},
+        {ambition: "Perform Activity", subject: "Activity time:", units: " minutes"}
+    ]
+
+    const [getSubject, otherSubjects] = subjectList.filter(elem => elem.ambition === props.ambitionGet.name)
 
     return (
         <>
@@ -71,13 +79,13 @@ function RecordCards(props: {
                     >
                     Date recorded: {elem.createdAt.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                     <br />
-                    Weight: {elem.value}kg 
+                    {getSubject?.subject ?? "Error"} {elem.value}{getSubject?.units ?? "Error"} 
                     <br />
                     Difference to previous record: {elem.value - (array?.at((index === 0 
                         ? 0 
-                        : index-1))?.value ?? 0)}kg
+                        : index-1))?.value ?? 0)}{getSubject?.units ?? "Error"}
                     <br />
-                    Notes: {elem.journal} 
+                    Journal: {elem.journal} 
                     <br />
                     </div>
                 )
@@ -96,6 +104,14 @@ function LineGraph(props: {ambitionGet: Ambitions //& {
     const ambitionData = props.ambitionGet;
 
     // const recordData = props.ambitionGet.record;
+
+    const unitsList = [
+        {ambition: "Lose Weight", yLabel: "Weight in kilograms (kg)"},
+        {ambition: "Study Subject", yLabel: "Minutes spent"},
+        {ambition: "Perform Activity", yLabel: "Minutes spent"}
+    ]
+
+    const getUnits = unitsList.filter(elem => elem.ambition === props.ambitionGet.name)
 
     return (
         <>
@@ -116,7 +132,7 @@ function LineGraph(props: {ambitionGet: Ambitions //& {
                         y: {
                             title: {
                                 display: true,
-                                text: "Weight in kilograms (kg)"
+                                text: getUnits[0]?.yLabel ?? "Error"
                             },
                         },
                         x: {
