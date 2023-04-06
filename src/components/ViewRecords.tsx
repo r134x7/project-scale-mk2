@@ -77,9 +77,45 @@ function RecordCards(props: {
 
     const [getSubject, otherSubjects] = subjectList.filter(elem => elem.ambition === props.ambitionGet.name)
 
+    const recordsLength = props.recordsGet?.length ?? 0;
+
+    const [recordIndex, setRecordIndex] = useState(0);
+
     return (
         <>
-        {
+
+        <div className="grid grid-cols-2 ">
+        <button 
+            className={`bg-gray-600 rounded-lg text-sm text-white p-1 m-1 border-solid border-l-indigo-800 border-r-indigo-800 border-t-purple-800 border-b-purple-800 border-2`}
+            onClick={() => setRecordIndex(
+            (recordIndex === 0) ? 0 : recordIndex - 1
+            )}>Previous Day</button>
+        <button 
+            className={`bg-gray-600 rounded-lg text-sm text-white p-1 m-1 border-solid border-l-indigo-800 border-r-indigo-800 border-t-purple-800 border-b-purple-800 border-2`}
+            onClick={() => setRecordIndex(
+            (recordIndex === recordsLength - 1) ? recordIndex : recordIndex + 1
+            )}>Next Day</button>
+        </div>
+            <div 
+                        key={props.recordsGet?.[recordIndex]?.id}
+                        className={`border-black border grid grid-cols-1 rounded-lg mt-2 bg-slate-500 text-slate-50`}
+            >
+                <p className="overflow-auto ml-2">
+                    Date recorded: {props.recordsGet?.[recordIndex]?.createdAt.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                </p>
+                <p className="overflow-auto ml-2">
+                    {getSubject?.subject ?? "Error"} {props.recordsGet?.[recordIndex]?.value}{getSubject?.units ?? "Error"} 
+                </p>
+                <p className="overflow-auto ml-2">
+                    Difference to previous record: {(props.recordsGet?.[recordIndex]?.value ?? 0) - (props.recordsGet?.at((recordIndex === 0 
+                        ? 0 
+                        : recordIndex-1))?.value ?? 0)}{getSubject?.units ?? "Error"}
+                </p>
+                <p className="overflow-auto ml-2">Journal: {props.recordsGet?.[recordIndex]?.journal}</p> 
+            </div>
+        
+
+        {/* {
             // data?.map((elem, index, array) => {
             props.recordsGet?.flatMap((elem, index, array) => {
                 return (
@@ -102,7 +138,7 @@ function RecordCards(props: {
                     </div>
                 )
             })
-        }
+        } */}
         </>
     )
 }
