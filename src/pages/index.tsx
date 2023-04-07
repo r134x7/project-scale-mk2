@@ -62,8 +62,7 @@ function PageOne() {
   return (
     <>
     <ol className="list-decimal">Starting out:
-      <li>Click on the menu button and sign-in using your Discord account.</li>
-      <li>Go to the user page in the menu.</li>
+      <li>After signing in, go to the user page in the menu.</li>
       <li>Create an ambition.</li>
       <li>Three ambitions to choose from: Lose Weight, Study Subject, Perform Activity.</li>
       <li>You can create up to 24 ambitions.</li>
