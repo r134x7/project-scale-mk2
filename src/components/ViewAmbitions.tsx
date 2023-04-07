@@ -121,7 +121,7 @@ function AmbitionCards(props: {ambitionGet:
                          <br />
                          <p className="grid grid-cols-1 border overflow-auto bg-slate-700">Daily Plan: {ambitionState.ambitionPlan}</p> 
                          <br />
-                         <CreateRecord ambitionIdPass={props.ambitionGet.id} dispatch={dispatch} />
+                         <CreateRecord ambitionPass={props.ambitionGet} dispatch={dispatch} />
                          <br />
                          <ViewRecords ambitionPass={props.ambitionGet} recordsGet={state.records} />
                          <br />

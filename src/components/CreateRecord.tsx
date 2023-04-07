@@ -1,7 +1,7 @@
 import { useState, useReducer } from "react";
 import { api } from "../utils/api";
 import type { Dispatch } from "react";
-import type { Record } from "@prisma/client";
+import type { Ambitions, Record } from "@prisma/client";
 
 function reducer(state: {close: boolean, recorded: Record[]}, action: {type: string, payload: Record | undefined}) {
     if (action.type === "change") {
@@ -20,7 +20,7 @@ function reducer(state: {close: boolean, recorded: Record[]}, action: {type: str
     throw Error("Oops.");
 }
 
-export default function CreateRecord(props: {ambitionIdPass: string, 
+export default function CreateRecord(props: {ambitionPass: Ambitions, 
     dispatch: Dispatch<{
         type: string;
         payload: Record;
@@ -38,7 +38,7 @@ export default function CreateRecord(props: {ambitionIdPass: string,
 
     const [state, dispatch] = useReducer(reducer, { close: false, recorded: []});
 
-    const { data } = api.newRecord.getRecords.useQuery({ ambitionId: props.ambitionIdPass }); 
+    const { data } = api.newRecord.getRecords.useQuery({ ambitionId: props.ambitionPass.id }); 
 
     const concatDataFlat = data?.concat(state.recorded).flat()
 
@@ -60,13 +60,13 @@ export default function CreateRecord(props: {ambitionIdPass: string,
             </button>
 
             <div className={`${state.close && latestDate !== today ? "" : "hidden" }`}>
-                <RecordModal ambitionIdGet={props.ambitionIdPass} dispatch={props.dispatch} changeMenu={dispatch} />
+                <RecordModal ambitionGet={props.ambitionPass} dispatch={props.dispatch} changeMenu={dispatch} />
             </div>
         </>
     )
 }
 
-function RecordModal(props: {ambitionIdGet: string,
+function RecordModal(props: {ambitionGet: Ambitions,
     dispatch: Dispatch<{
         type: string;
         payload: Record;
@@ -99,7 +99,7 @@ function RecordModal(props: {ambitionIdGet: string,
         
         try {
             writeRecord.mutate({
-                ambitionId: props.ambitionIdGet,
+                ambitionId: props.ambitionGet.id,
                 /* 
                     new Date must be created from client side to prevent a bug found back in project-scale 
                     where the server time is in a different time zone compared to the client which
@@ -117,6 +117,14 @@ function RecordModal(props: {ambitionIdGet: string,
             setInputValue(0);
             // setOpen(false);
     };
+
+    const subjectList = [
+        {ambition: "Lose Weight", subject: "Record today\'s weight in kilograms."},
+        {ambition: "Study Subject", subject: "Record how much you studied today in minutes."},
+        {ambition: "Perform Activity", subject: "Record   the duration of today's activity in minutes."},
+    ]
+
+    const [getSubject, restOfOtherSubjects] = subjectList.filter(elem => elem.ambition === props.ambitionGet.name);
 
     return (
         <>
@@ -138,7 +146,7 @@ function RecordModal(props: {ambitionIdGet: string,
             >
 
 
-                <label className="flex justify-center mt-2">Record today&apos;s weight:</label>
+                <label className="flex justify-center mt-2">{getSubject?.subject ?? "Error"}</label>
                 <input 
                     className="border-solid border-cyan-500 rounded-md border-4 m-2 bg-slate-800"
                     type="number" 
@@ -148,7 +156,7 @@ function RecordModal(props: {ambitionIdGet: string,
                     value={inputValue}
                 />
 
-                <label className="flex justify-center mt-2">Journal for today:</label>
+                <label className="flex justify-center mt-2">Journal for today: (Optional)</label>
                 <textarea  
                     className="border-solid border-cyan-500 rounded-md border-4 m-2 bg-slate-800"
                     onChange={(event) => setNotes(event.target.value)}

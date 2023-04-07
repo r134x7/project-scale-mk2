@@ -107,14 +107,16 @@ export default function User() {
     const { data: ambitionData } = api.newAmbition.getAmbitions.useQuery();
 
     // const concatData = ambitionData?.concat(...(state?.ambitions));
-    const concatData = ambitionData?.concat(state.ambitions);
+    const concatData = ambitionData?.concat(state.ambitions).flat();
 
     return (
         (sessionData)
         ? <div className={"grid grid-cols-1 gap-y-4  justify-center items-center bg-slate-900 text-white min-h-screen"}>
             Welcome, {sessionData.user?.name ?? "ERROR"}.
 
-            <CreateAmbition dispatch={dispatch} />
+            <div className={`grid grid-cols-1 gap-y-4  justify-center items-center ${(concatData?.length ?? 0) >= 24  ? "hidden" : "" }`}>
+                <CreateAmbition dispatch={dispatch} />
+            </div>
 
             {
                 // ambitionData?.map((elem, index) => {
