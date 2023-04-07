@@ -8,10 +8,11 @@ export default function Layout() {
     // need to create a layout to wrap around the _app.tsx return statement to persist the layout between pages
     // source: https://nextjs.org/docs/basic-features/layouts
     return (
-        <div className={"p-1 bg-slate-400"}>
+        <div className={"p-1 bg-slate-400 text-white"}>
         <Menu>
-            <Menu.Button className={"p-2 bg-slate-600 rounded-lg font-bold text-white uppercase font-mono"}
+            <Menu.Button className={"p-2 mr-4 bg-slate-600 rounded-lg font-bold text-white uppercase font-mono"}
             >Menu</Menu.Button>
+            Ambitions S.C.A.L.E. Up!
             <Menu.Items className={"grid grid-cols-1 bg-slate-200 rounded-lg"}>
                 <Menu.Item>
                     {({active}) => (
@@ -38,6 +39,7 @@ export default function Layout() {
                 </Menu.Item>
             </Menu.Items>
         </Menu>
+
         </div>
     )
 }
