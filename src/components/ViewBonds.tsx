@@ -376,7 +376,11 @@ function BondCards(props: {bondIdsGet: string[][] | undefined, ambitionGet: Ambi
 
     const yLabelSet = new Set(yLabel?.concat(userAmbitionYLabel));
 
-    const yLabelArray = [...yLabelSet].reduce((acc, next) => acc + " or " + next);
+    const yLabelArray = [...yLabelSet].reduce((acc, next, index, array) => {
+        return (index === 0)
+            ? acc + next
+            : acc + " or " + next
+    }, "");
 
     /*
         changing this to charts to make an easier summary.

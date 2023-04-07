@@ -14,11 +14,11 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
+// model Example {
+//     id        String   @id @default(cuid())
+//     createdAt DateTime @default(now())
+//     updatedAt DateTime @updatedAt
+// }
 
 // so it looks like "user User" is the part of the data that gets deleted when needing to delete account data.
 // Necessary for Next auth
@@ -81,7 +81,7 @@ model Ambitions {
     bonds         Bonds[]
     user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId        String
-    userName      String?
+    userName      String
 }
 
 // Will need to make sure to check project-scale how I dealt with getting the client's current time and not the SERVER TIME to make sure one record per day works
