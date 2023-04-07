@@ -74,7 +74,7 @@ model Ambitions {
     id            String   @id @default(cuid())
     name          String
     endValue      Float
-    dailyPlan     String
+    dailyPlan     String   @db.VarChar(1000)
     createdAt     DateTime @default(now())
     updatedAt     DateTime @updatedAt
     record        Record[]
@@ -88,7 +88,7 @@ model Ambitions {
 model Record {
     id            String    @id @default(cuid())
     value         Float
-    journal       String
+    journal       String   @db.VarChar(200)
     createdAt     DateTime @default(now())
     ambition      Ambitions @relation(fields: [ambitionId], references: [id], onDelete: Cascade)
     ambitionId    String
