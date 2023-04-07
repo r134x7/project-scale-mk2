@@ -115,7 +115,7 @@ function AmbitionCards(props: {ambitionGet:
 
     return (
                     <div key={props.ambitionGet.id} className={"border-2 rounded-lg grid grid-cols-1 "} >
-                         <p className="flex justify-center border bg-slate-700">Ambition: {props.ambitionGet.name}</p> 
+                         <p className="flex justify-center border bg-slate-700 font-bold">Ambition: {props.ambitionGet.name}</p> 
                          <br />
                          <p className="flex justify-center border bg-slate-700">{getSubject?.subject ?? "Error"} {ambitionState.ambitionValue}{getSubject?.units ?? "Error"}</p> 
                          <br />

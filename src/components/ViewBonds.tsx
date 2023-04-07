@@ -343,7 +343,7 @@ function BondCards(props: {bondIdsGet: string[][] | undefined, ambitionGet: Ambi
         return elem?.[1] ?? []
     }) ?? ["ERROR"] // not the best error handling... I need to see what goes wrong to fix it 
     
-    const { data, error } = api.newAmbition.getManyAmbitionsByIds.useQuery({ id: filteredAmbitionIds })
+    const { data: ambitionRecords, error } = api.newAmbition.getManyAmbitionsByIds.useQuery({ id: filteredAmbitionIds })
 
     // console.log(error);
     // const userRecords = props.ambitionGet;
@@ -353,17 +353,30 @@ function BondCards(props: {bondIdsGet: string[][] | undefined, ambitionGet: Ambi
     // const userRecordsLength = props.ambitionGet.record.length;
     const userRecordsLength = userRecords?.length ?? 0;
 
-    const dataRecordsLength = data?.map(elem => {
+    const dataRecordsLength = ambitionRecords?.map(elem => {
         return elem.record.length
     }) ?? [0];
 
     const maxRecordLength = Math.max(userRecordsLength, ...dataRecordsLength)
 
     const subjectList = [
-        {ambition: "Lose Weight", subject: "Weight:", units: "kg"},
-        {ambition: "Study Subject", subject: "Study time: ", units: " minutes"},
-        {ambition: "Perform Activity", subject: "Activity time:", units: " minutes"}
+        {ambition: "Lose Weight", subject: "Weight:", units: "kg", yLabel: "Weight (kg)"},
+        {ambition: "Study Subject", subject: "Study time: ", units: " minutes", yLabel: "Minutes"},
+        {ambition: "Perform Activity", subject: "Activity time:", units: " minutes", yLabel: "Minutes"}
     ]
+
+    const yLabel = ambitionRecords?.flatMap(elem => {
+
+        const subjectCheck = subjectList.filter(value => value.ambition === elem.name).map(value => value.yLabel);
+
+        return subjectCheck
+    })
+
+    const userAmbitionYLabel = subjectList.filter(elem => props.ambitionGet.name === elem.ambition).map(value => value.yLabel); 
+
+    const yLabelSet = new Set(yLabel?.concat(userAmbitionYLabel));
+
+    const yLabelArray = [...yLabelSet].reduce((acc, next) => acc + " or " + next);
 
     /*
         changing this to charts to make an easier summary.
@@ -398,7 +411,7 @@ function BondCards(props: {bondIdsGet: string[][] | undefined, ambitionGet: Ambi
                             label: `${props.ambitionGet.name} - ${props.ambitionGet.userName ?? "Error"}`,
                             pointBorderColor: "black",
                         },
-                        data?.map((elem, index) => {
+                        ambitionRecords?.map((elem, index) => {
 
                             const colors = [
                                 "red",
@@ -429,8 +442,10 @@ function BondCards(props: {bondIdsGet: string[][] | undefined, ambitionGet: Ambi
                         y: {
                             title: {
                                 display: true,
-                                text: "Weight in kilograms (kg)"
+                                // text: "Weight in kilograms (kg)"
+                                text:([...yLabelSet].length > 1) ? "Logarithmic: " + yLabelArray : yLabelArray,
                             },
+                            type: ([...yLabelSet].length > 1) ? "logarithmic" : "linear", 
                         },
                         x: {
                             title: {
@@ -443,9 +458,9 @@ function BondCards(props: {bondIdsGet: string[][] | undefined, ambitionGet: Ambi
             />
         {
 
-            data?.map((elem, index) => {
+            ambitionRecords?.map((elem, index) => {
 
-                const [getValue, restOfValues]= subjectList.filter(value => value.ambition === elem.name)
+                const [getValue, restOfValues] = subjectList.filter(value => value.ambition === elem.name)
 
                 return (
                     <div
