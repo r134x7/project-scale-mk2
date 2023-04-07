@@ -46,7 +46,7 @@ const Home: NextPage = () => {
             }} 
             >Next Page</button>
       </div>
-      <div className="border rounded-lg flex flex-row justify-evenly items-center">
+      <div className="border rounded-lg flex flex-wrap justify-center items-center">
         {pageCollection[page]}
       </div>
       </main>
@@ -58,7 +58,6 @@ export default Home;
 
 function PageOne() {
 
-  // create an ambition
   return (
     <>
     <ol className="list-decimal">Starting out:
@@ -74,16 +73,15 @@ function PageOne() {
 
 function PageTwo() {
 
-  //
   return (
     <>
-    <ol className="list-decimal">Daily Use:
+    <ul className="list-disc">Daily Use:
       <li>At the user page, you can view your created ambitions.</li>
-      <li> </li>
-      <li></li>
-      <li></li>
-      <li></li>
-    </ol>
+      <li>When viewing an ambition you can create a record to track your progress.</li>
+      <li>Records can only be created once per day.</li>
+      <li>View records will display a line chart of your records.</li>
+      <li>View growth will display data depending on the ambition you are on.</li>
+    </ul>
     </>
   )
 }
@@ -92,7 +90,13 @@ function PageThree() {
 
   return (
     <>
-    Page 3
+    <ul className="list-disc ml-8">Engaging with others:
+      <li>To share your ambitions with others, you can form a bond with them by creating a bond.</li>
+      <li>Go to create bond to find how to create a bond.</li>
+      <li>You can create a bond with up to 7 other people for one ambition.</li>
+      <li>Viewing bonds will display a line chart containing the records from your ambition and the ambitions of the others.</li>
+      <li>Viewing bonds will display the ambition of each person you have bonded with, their targeted value and the most recent record they have made.</li>
+    </ul>
     </>
   )
 }
