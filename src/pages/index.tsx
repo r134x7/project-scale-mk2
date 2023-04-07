@@ -19,6 +19,7 @@ const Home: NextPage = () => {
     <PageOne key={0} />,
     <PageTwo key={1} />,
     <PageThree key={2} />,
+    <PageFour key={3} />
   ]
 
 
@@ -96,6 +97,23 @@ function PageThree() {
       <li>You can create a bond with up to 7 other people for one ambition.</li>
       <li>Viewing bonds will display a line chart containing the records from your ambition and the ambitions of the others.</li>
       <li>Viewing bonds will display the ambition of each person you have bonded with, their targeted value and the most recent record they have made.</li>
+    </ul>
+    </>
+  )
+}
+
+function PageFour() {
+
+  return (
+    <>
+    <ul className="list-disc ml-8">Example using S.C.A.L.E. (Small Changes Accumulate Large Effects):
+      <li>A person wants to lose 20kg, they start small by losing 5kg.</li>
+      <li>They create an ambition (Lose Weight) to lose 5kg.</li>
+      <li>They create another ambition (Study Subject) to study long-term diets and exercises.</li>
+      <li>They then create an ambition (Perform Activity) to keep track of how long they exercise or track how long it takes to cook and eat food.</li>
+      <li>After a period of time they lose 5kg, they can then update their lose weight ambition to change the target weight to 10kg less from where they started and make any updates to their daily plan.</li>
+      <li>They then repeat changing the amount of weight to lose until they reach their overall goal of losing 20kg. The long-term goal was broken down into multiple short-term goals to manage the outcome more easily.</li>
+      <li>This example was the most ideal outcome that it may not match your experience.</li>
     </ul>
     </>
   )
