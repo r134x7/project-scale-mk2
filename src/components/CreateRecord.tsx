@@ -93,6 +93,7 @@ function RecordModal(props: {ambitionGet: Ambitions,
 
     // const [open, setOpen] = useState(true);
     const [inputValue, setInputValue] = useState(0);
+    const [confirmValue, setConfirmValue] = useState<number | undefined>(undefined);
     const [notes, setNotes] = useState("");
 
     const handleRecordSubmit = () => {
@@ -156,6 +157,16 @@ function RecordModal(props: {ambitionGet: Ambitions,
                     value={inputValue}
                 />
 
+                <label className="flex justify-center mt-2">Confirm your entry by entering the same value as above:</label>
+                <input 
+                    className="border-solid border-cyan-500 rounded-md border-4 m-2 bg-slate-800"
+                    type="number" 
+                    min="0"
+                    required
+                    onChange={(event) => setConfirmValue(Number(event.target.value))}
+                    value={confirmValue}
+                />
+
                 <label className="flex justify-center mt-2">Journal for today: (Optional)</label>
                 <textarea  
                     className="border-solid border-cyan-500 rounded-md border-4 m-2 bg-slate-800"
@@ -166,8 +177,9 @@ function RecordModal(props: {ambitionGet: Ambitions,
                 <p className="flex justify-start ml-2 text-sm">  {notes.length}/200 characters.</p>
 
                 <button 
-                    className="m-2 rounded-md border-4 border-cyan-500 bg-sky-200 text-sky-900 font-bold"
+                    className="m-2 rounded-md border-4 border-cyan-500 bg-sky-200 text-sky-900 font-bold disabled:opacity-25"
                     type="submit"
+                    disabled={(confirmValue === inputValue) ? false : true}
                 >Create</button>
 
             </form>
