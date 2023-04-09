@@ -486,7 +486,7 @@ function BondCards(props: {bondIdsGet: string[][] | undefined, ambitionGet: Ambi
                                         <br />
                                         {getValue?.subject} {elem.record?.at(-1)?.value}{getValue?.units}
                                         <br />
-                                        Difference to previous record: {(elem.record?.at(-1)?.value ?? 0) - (elem.record?.at(-2)?.value ?? 0)}{getValue?.units}
+                                        Difference to previous record: {((elem.record?.at(-1)?.value ?? 0) - (elem.record?.at(-2)?.value ?? 0)).toFixed(1)}{getValue?.units}
                                     </div>
 
                         {/* {

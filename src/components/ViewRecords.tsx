@@ -137,9 +137,9 @@ function RecordCards(props: {
                     {getSubject?.subject ?? "Error"} {props.recordsGet?.[recordIndex]?.value}{getSubject?.units ?? "Error"} 
                 </p>
                 <p className="overflow-auto ml-2">
-                    Difference to previous record: {(props.recordsGet?.[recordIndex]?.value ?? 0) - (props.recordsGet?.at((recordIndex === 0 
+                    Difference to previous record: {((props.recordsGet?.[recordIndex]?.value ?? 0) - (props.recordsGet?.at((recordIndex === 0 
                         ? 0 
-                        : recordIndex-1))?.value ?? 0)}{getSubject?.units ?? "Error"}
+                        : recordIndex-1))?.value ?? 0)).toFixed(1)}{getSubject?.units ?? "Error"}
                 </p>
                 <p className="overflow-auto ml-2">Journal: {props.recordsGet?.[recordIndex]?.journal}</p> 
             </div>

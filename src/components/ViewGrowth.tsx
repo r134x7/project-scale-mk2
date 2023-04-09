@@ -172,7 +172,7 @@ function GrowthOnion(props: {ambitionGet: Ambitions
                     `} 
                     // style={{ backgroundColor: colorRange?.[index] ?? colorRange.at(-1)}}
                     >
-                      {subject?.subject ?? "Error"} {depth[index]?.toFixed((subject?.ambition === "Lose Weight") ? 2 : 0)}{subject?.units?.[index] ?? "kg"}
+                      {subject?.subject ?? "Error"} {depth[index]?.toFixed((subject?.ambition === "Lose Weight") ? 1 : 0)}{subject?.units?.[index] ?? "kg"}
                         {onion}
                     </span>
             )
