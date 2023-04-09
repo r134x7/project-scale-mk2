@@ -62,9 +62,8 @@ function PageOne() {
   return (
     <>
     <ol className="list-decimal">Starting out:
-      <li>After signing in, go to the user page in the menu.</li>
-      <li>Create an ambition.</li>
-      <li>Three ambitions to choose from: Lose Weight, Study Subject, Perform Activity.</li>
+      <li>Access the user menu to create an ambition.</li>
+      <li>There are three ambitions to choose from: Lose Weight, Study Subject, Perform Activity.</li>
       <li>You can create up to 24 ambitions.</li>
     </ol>
     </>
@@ -76,7 +75,7 @@ function PageTwo() {
   return (
     <>
     <ul className="list-disc">Daily Use:
-      <li>At the user page, you can view your created ambitions.</li>
+      <li>View your created ambitions in the user menu.</li>
       <li>When viewing an ambition you can create a record to track your progress.</li>
       <li>Records can only be created once per day.</li>
       <li>View records will display a line chart of your records.</li>
@@ -92,7 +91,7 @@ function PageThree() {
     <>
     <ul className="list-disc ml-8">Engaging with others:
       <li>To share your ambitions with others, you can form a bond with them by creating a bond.</li>
-      <li>Go to create bond to find how to create a bond.</li>
+      <li>Go to create bond to for further instructions.</li>
       <li>You can create a bond with up to 7 other people for one ambition.</li>
       <li>Viewing bonds will display a line chart containing the records from your ambition and the ambitions of the others.</li>
       <li>Viewing bonds will display the ambition of each person you have bonded with, their targeted value and the most recent record they have made.</li>
