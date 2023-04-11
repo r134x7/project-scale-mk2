@@ -31,7 +31,7 @@
 
   # Deployed App
   
-  Link to deployed app: [https://project-scale-mk2-next.vercel.app/](https://project-scale-mk2-next.vercel.app/)
+  Link to deployed app: [https://ambitions-scale-up-ii.vercel.app/](https://ambitions-scale-up-ii.vercel.app/)
 
   # Tests
   
